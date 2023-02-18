@@ -1,2 +1,2 @@
-# Find_a_friend
+# find a friend
 BSU's project for Technologies of programming
