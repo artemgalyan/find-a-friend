@@ -10,4 +10,12 @@ public record AnimalAdvert(int id,
                            List<Photo> photos,
                            User owner,
                            Date creationDate,
-                           Place place) {}
+                           Place place,
+                           Date birthdate,
+                           AnimalAdvert.Sex sex,
+                           boolean isCastrated) {
+    public enum Sex {
+        MALE,
+        FEMALE
+    }
+}

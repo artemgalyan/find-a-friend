@@ -5,6 +5,14 @@ import java.util.List;
 public record User(int id,
                    Contacts contacts,
                    List<AnimalAdvert> animalAdverts,
-                   List<VolunteerAdvert> volunteerAdverts,
-                   List<SitterAdvert> sitterAdverts,
-                   String role) {}
+                   List<Advert> adverts,
+                   String role,
+                   String login,
+                   String password) {
+    public enum Role {
+        USER,
+        MODERATOR,
+        ADMINISTRATOR,
+        SHELTER_ADMINISTRATOR
+    }
+}
