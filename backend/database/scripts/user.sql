@@ -6,7 +6,8 @@ CREATE TABLE user (
 	phone_number VARCHAR(50),
 	login VARCHAR(50) NOT NULL,
 	password VARCHAR(max) NOT NULL,
-	role_id INT NOT NULL
+	role_id INT NOT NULL,
+	type_person_id INT NOT NULL
 );
 
 --- insert into user (user_id, name) values (1, 'Ангелина', 'Варвашевич', 'vrv@gmail.com', 'vrv12', '12345edcb', 1);
