@@ -3,8 +3,7 @@ package by.fpmibsu.find_a_friend.entity;
 import java.util.Date;
 import java.util.List;
 
-public class AnimalAdvert {
-    private int id;
+public class AnimalAdvert extends Entity {
     private String title;
     private String description;
     private String animalType;
@@ -35,14 +34,6 @@ public class AnimalAdvert {
         this.birthdate = birthdate;
         this.sex = sex;
         this.isCastrated = isCastrated;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getTitle() {

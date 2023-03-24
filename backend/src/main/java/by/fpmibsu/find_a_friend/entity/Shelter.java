@@ -2,8 +2,7 @@ package by.fpmibsu.find_a_friend.entity;
 
 import java.util.List;
 
-public class Shelter {
-    private int id;
+public class Shelter extends Entity {
     private String name;
     private List<User> administrators;
     private List<AnimalAdvert> animalAdverts;
@@ -15,14 +14,6 @@ public class Shelter {
         this.administrators = administrators;
         this.animalAdverts = animalAdverts;
         this.place = place;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {

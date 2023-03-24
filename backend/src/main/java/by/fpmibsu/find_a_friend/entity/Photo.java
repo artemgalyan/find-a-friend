@@ -1,6 +1,6 @@
 package by.fpmibsu.find_a_friend.entity;
 
-public class Photo {
+public class Photo extends Entity {
     private byte[] data;
 
     public Photo(byte[] data) {

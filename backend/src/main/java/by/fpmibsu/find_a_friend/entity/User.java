@@ -2,8 +2,7 @@ package by.fpmibsu.find_a_friend.entity;
 
 import java.util.List;
 
-public class User {
-    private int id;
+public class User extends Entity {
     private Contacts contacts;
     private List<AnimalAdvert> animalAdverts;
     private List<Advert> adverts;
@@ -26,14 +25,6 @@ public class User {
         this.role = role;
         this.login = login;
         this.password = password;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public Contacts getContacts() {

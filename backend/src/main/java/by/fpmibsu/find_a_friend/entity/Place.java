@@ -1,12 +1,13 @@
 package by.fpmibsu.find_a_friend.entity;
 
-public class Place {
+public class Place extends Entity {
     private String country;
     private String region;
     private String city;
     private String district;
 
-    public Place(String country, String region, String city, String district) {
+    public Place(int id, String country, String region, String city, String district) {
+        this.id = id;
         this.country = country;
         this.region = region;
         this.city = city;

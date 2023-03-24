@@ -3,8 +3,7 @@ package by.fpmibsu.find_a_friend.entity;
 import java.util.Date;
 import java.util.Objects;
 
-class Advert {
-    private int id;
+class Advert extends Entity {
     private String title;
     private String description;
     private Date creationDate;
@@ -18,14 +17,6 @@ class Advert {
         this.creationDate = creationDate;
         this.place = place;
         this.owner = owner;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getTitle() {

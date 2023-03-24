@@ -1,6 +1,6 @@
 package by.fpmibsu.find_a_friend.entity;
 
-public class Contacts {
+public class Contacts extends Entity {
     private String name;
     private String surname;
     private String phoneNumber;
