@@ -4,27 +4,13 @@ import java.util.Date;
 import java.util.Objects;
 
 class Advert extends Entity {
-    public AdvertType getAdvertType() {
-        return advertType;
-    }
-
-    public void setAdvertType(AdvertType advertType) {
-        this.advertType = advertType;
-    }
-
-    public enum AdvertType {
-        VOLUNTEER,
-        SITTER
-    }
     private String title;
     private String description;
     private Date creationDate;
     private Place place;
     private User owner;
-    private AdvertType advertType;
 
-    public Advert(int id, String title, String description, Date creationDate, Place place, User owner, AdvertType advertType) {
-        this.advertType = advertType;
+    public Advert(int id, String title, String description, Date creationDate, Place place, User owner) {
         this.id = id;
         this.title = title;
         this.description = description;
