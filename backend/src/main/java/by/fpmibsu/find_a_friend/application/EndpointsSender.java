@@ -22,12 +22,13 @@ public class EndpointsSender implements RequestPipeLineHandler {
 
     @Override
     public void handle(HttpExchange exchange, RequestPipeLineHandler next) throws IOException {
+        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
         String method = exchange.getRequestMethod();
         URI uri = exchange.getRequestURI();
         var endpoint = endpoints.stream()
                 .filter(e -> e.path().equals(uri.getPath()) && e.method().equals(method))
                 .findFirst();
-        if (!endpoint.isPresent()) {
+        if (endpoint.isEmpty()) {
             exchange.sendResponseHeaders(ResponseCodes.NOT_FOUND, 0);
             exchange.close();
             return;

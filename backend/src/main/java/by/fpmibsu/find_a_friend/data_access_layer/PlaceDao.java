@@ -7,18 +7,18 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlaceDao implements Dao {
-    private static final String SQL_SELECT_ALL_PLACES = "SELECT place_id, country, region, city, district FROM place";
+public class PlaceDao implements Dao<Integer, Place> {
+    private static final String SQL_SELECT_ALL_PLACES = "SELECT place_id, country, region, city, district FROM dbo.place";
     private static final String SQL_SELECT_BY_ID = "SELECT place_id, country, region, city, district FROM place WHERE place_id=?";
     private static final String SQL_INSERT_PLACE = "INSERT INTO place VALUES(?,?,?,?,?)";
-    private Connection connection = null;
+    private Connection connection;
 
     public PlaceDao(Connection connection) {
         this.connection = connection;
     }
 
     @Override
-    public List getAll() throws DaoException {
+    public List<Place> getAll() throws DaoException {
         List<Place> places = new ArrayList<>();
         Statement statement = null;
         try {
@@ -35,35 +35,32 @@ public class PlaceDao implements Dao {
             }
         } catch (SQLException e) {
             throw new DaoException("", e);
-        } finally {
-            close(statement);
-            close(connection);
         }
         return places;
     }
 
     @Override
-    public Entity getEntityById(Object id) throws DaoException {
+    public Place getEntityById(Integer id) throws DaoException {
         return null;
     }
 
     @Override
-    public boolean delete(Entity instance) throws DaoException {
+    public boolean delete(Place instance) throws DaoException {
         return false;
     }
 
     @Override
-    public boolean delete(Object value) throws DaoException {
+    public boolean delete(Integer value) throws DaoException {
         return false;
     }
 
     @Override
-    public boolean create(Entity instance) throws DaoException {
+    public boolean create(Place instance) throws DaoException {
         return false;
     }
 
     @Override
-    public Entity update(Entity instance) throws DaoException {
+    public Place update(Place instance) throws DaoException {
         return null;
     }
 }
