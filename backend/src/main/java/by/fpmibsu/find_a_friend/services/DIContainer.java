@@ -46,7 +46,7 @@ public class DIContainer {
     public <T> T getRequiredService(Class<T> clazz) {
         var singleton = singletons.stream().filter(o -> clazz.equals(o.getClass())).findFirst();
         if (singleton.isPresent()) {
-            return (T) singleton;
+            return (T) singleton.get();
         }
         var item = entries.stream().filter(o -> clazz.equals(o.clazz)).findFirst();
         if (item.isEmpty()) {

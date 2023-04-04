@@ -1,10 +1,9 @@
 package by.fpmibsu.find_a_friend.controller;
 
-import by.fpmibsu.find_a_friend.services.DIContainer;
-
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.ConnectionBuilder;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
