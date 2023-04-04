@@ -14,6 +14,9 @@ public class Place extends Entity {
         this.district = district;
     }
 
+    public Place() {
+    }
+
     public String getCountry() {
         return country;
     }
@@ -44,5 +47,16 @@ public class Place extends Entity {
 
     public void setDistrict(String district) {
         this.district = district;
+    }
+
+    @Override
+    public String toString() {
+        return "Place{" +
+                "country='" + country + '\'' +
+                ", region='" + region + '\'' +
+                ", city='" + city + '\'' +
+                ", district='" + district + '\'' +
+                ", id=" + id +
+                '}';
     }
 }
