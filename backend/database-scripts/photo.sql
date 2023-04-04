@@ -1,4 +1,0 @@
-CREATE TABLE photo(
-    photo_id INT PRIMARY KEY AUTO INCREMENT,
-    data BLOB NOT NULL
-)

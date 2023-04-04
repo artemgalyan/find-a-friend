@@ -10,12 +10,12 @@ public class Mediatr {
         this.diContainer = diContainer;
     }
 
-    private static class RequestHandlerInfo<T extends Request, R extends Result<? extends T>> {
+    private static class RequestHandlerInfo<T, R extends Request<? super T>> {
         Class<? extends RequestHandler<T, R>> clazz;
         Class<?> requestType;
         Class<?> resultType;
 
-        public RequestHandlerInfo(Class<? extends RequestHandler<T, R>> clazz, Class<T> requestType, Class<R> resultType) {
+        public RequestHandlerInfo(Class<? extends RequestHandler<T, R>> clazz, Class<T> resultType, Class<R> requestType) {
             this.clazz = clazz;
             this.requestType = requestType;
             this.resultType = resultType;
@@ -25,15 +25,15 @@ public class Mediatr {
     private final DIContainer diContainer;
     private final List<RequestHandlerInfo<?, ?>> handlers = new ArrayList<>();
 
-    public <T extends Request, R extends Result<? extends T>> void registerHandler(Class<? extends RequestHandler<T, R>> clazz, Class<T> requestType, Class<R> resultType) {
+    public <T, R extends Request<? super T>> void registerHandler(Class<? extends RequestHandler<T, R>> clazz, Class<T> resultType, Class<R> requestType) {
         if (handlers.stream().anyMatch(h -> h.clazz.equals(clazz) || h.requestType.equals(requestType))) {
             throw new IllegalArgumentException("A handler of this type/for this request is already registered");
         }
 
-        handlers.add(new RequestHandlerInfo<>(clazz, requestType, resultType));
+        handlers.add(new RequestHandlerInfo<>(clazz, resultType, requestType));
     }
 
-    public <R extends Request> Result<? extends R> send(R request) {
+    public <T, R extends Request<? super T>> T send(R request) {
         var clazz = request.getClass();
         var handler = handlers.stream()
                 .filter(h -> h.requestType.equals(clazz))
@@ -42,7 +42,7 @@ public class Mediatr {
             throw new NoHandlerException("There is no handler for type " + clazz.getName());
         }
 
-        RequestHandler<R, ?> handlerInstance = (RequestHandler<R, ?>) diContainer.createObject(handler.get().clazz);
-        return handlerInstance.handle(request);
+        RequestHandler<?, R> handlerInstance = (RequestHandler<?, R>) diContainer.createObject(handler.get().clazz);
+        return (T) handlerInstance.handle(request);
     }
 }

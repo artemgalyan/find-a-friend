@@ -1,8 +1,5 @@
 package by.fpmibsu.find_a_friend.controller;
 
-import by.fpmibsu.find_a_friend.data_access_layer.DaoException;
-import by.fpmibsu.find_a_friend.data_access_layer.PlaceDao;
-import by.fpmibsu.find_a_friend.entity.Place;
 import by.fpmibsu.find_a_friend.services.DIContainer;
 
 import java.io.FileReader;
@@ -10,7 +7,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Properties;
 
 public class Runner {
@@ -24,19 +20,12 @@ public class Runner {
             return;
         }
         var dbPath = (String) properties.getProperty("database_url");
-        Connection connection;
+        Connection connection = null;
         try {
             connection = DriverManager.getConnection(dbPath);
-            PlaceDao placeDao = new PlaceDao(connection);
-            List<Place> places = placeDao.getAll();
-            for(var place: places){
-                System.out.println(place);
-            }
         } catch (SQLException e) {
             System.err.println("Failed to connect to the database.");
             return;
-        } catch (DaoException e) {
-            throw new RuntimeException(e);
         }
         try {
             connection.close();
