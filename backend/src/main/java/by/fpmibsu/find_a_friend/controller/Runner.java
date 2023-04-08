@@ -26,12 +26,19 @@ public class Runner {
         var dbPath = (String) properties.getProperty("database_url");
         Connection connection;
         try {
-                connection = DriverManager.getConnection(dbPath);
-                PlaceDao placeDao = new PlaceDao(connection);
-                List<Place> places = placeDao.getAll();
-                for(var place: places){
-                    System.out.println(place);
-                }
+            connection = DriverManager.getConnection(dbPath);
+            PlaceDao placeDao = new PlaceDao(connection);
+            List<Place> places = placeDao.getAll();
+            for (var place : places) {
+                System.out.println(place);
+            }
+            Place place = placeDao.getEntityById(2);
+            System.out.println(place);
+
+            Place new_place = new Place(4, "Беларусь", "Минский район", "Минск", "Московский");
+            placeDao.create(new_place);
+            placeDao.delete(3);
+
 
         } catch (SQLException e) {
             System.err.println("Failed to connect to the database.");
