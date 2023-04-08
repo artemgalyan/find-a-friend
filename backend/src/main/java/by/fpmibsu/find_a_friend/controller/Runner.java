@@ -38,6 +38,7 @@ public class Runner {
             Place new_place = new Place(4, "Беларусь", "Минский район", "Минск", "Московский");
             placeDao.create(new_place);
             placeDao.delete(3);
+            placeDao.delete(1);
 
 
         } catch (SQLException e) {
