@@ -85,21 +85,15 @@ public class TestApplication {
     }
 
     @ControllerRoute(route = "api")
-    public static class TestController extends Controller {
+    public interface TestController extends Controller {
         @Endpoint(route = "places", method = HttpMethod.GET, requestHandler = GetPlacesHandler.class)
-        public Place[] getPlaces(GetPlacesRequest request) {
-            return null;
-        }
+        public Place[] getPlaces(GetPlacesRequest request);
 
         @Endpoint(route = "count", method = HttpMethod.GET, requestHandler = CountHandler.class)
-        public String getCount(CountRequest request) {
-            return null;
-        }
+        public String getCount(CountRequest request);
 
         @Endpoint(route = "http", method = HttpMethod.GET, requestHandler = ExchangeHandler.class)
-        public String httpExample(HttpExchangeAccessExampleRequest request) {
-            return null;
-        }
+        public String httpExample(HttpExchangeAccessExampleRequest request);
     }
 
     public static void main(String[] args) {
