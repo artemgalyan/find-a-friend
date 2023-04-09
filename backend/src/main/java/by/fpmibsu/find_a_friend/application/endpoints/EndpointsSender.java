@@ -3,6 +3,7 @@ package by.fpmibsu.find_a_friend.application.endpoints;
 import by.fpmibsu.find_a_friend.application.ResponseCodes;
 import by.fpmibsu.find_a_friend.application.mediatr.Mediatr;
 import by.fpmibsu.find_a_friend.application.requestpipeline.RequestPipeLineHandler;
+import by.fpmibsu.find_a_friend.application.serviceproviders.ScopedServiceProvider;
 import by.fpmibsu.find_a_friend.application.serviceproviders.ServiceProvider;
 import by.fpmibsu.find_a_friend.services.Request;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,7 +22,7 @@ public class EndpointsSender implements RequestPipeLineHandler {
     }
 
     @Override
-    public void handle(HttpExchange exchange, ServiceProvider serviceProvider, RequestPipeLineHandler next) throws IOException {
+    public void handle(HttpExchange exchange, ScopedServiceProvider serviceProvider, RequestPipeLineHandler next) throws IOException {
         exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
         String method = exchange.getRequestMethod();
         URI uri = exchange.getRequestURI();

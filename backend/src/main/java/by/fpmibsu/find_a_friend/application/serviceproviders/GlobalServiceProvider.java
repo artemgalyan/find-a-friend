@@ -2,6 +2,8 @@ package by.fpmibsu.find_a_friend.application.serviceproviders;
 
 import by.fpmibsu.find_a_friend.utils.ObjectConstructor;
 
+import by.fpmibsu.find_a_friend.application.serviceproviders.ScopedServiceProvider;
+
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -14,7 +16,7 @@ public interface GlobalServiceProvider extends ServiceProvider {
 
     <T> GlobalServiceProvider addService(Class<T> clazz, ServiceType type, Function<ServiceProvider, ? extends T> supplier);
 
-    ServiceProvider getRequestServiceProvider();
+    ScopedServiceProvider getRequestServiceProvider();
 
     default <T> GlobalServiceProvider addService(Class<T> clazz, ServiceType type, Supplier<? extends T> supplier) {
         return addService(clazz, type, (d) -> supplier.get());

@@ -1,7 +1,7 @@
 package by.fpmibsu.find_a_friend.application.requestpipeline;
 
 import by.fpmibsu.find_a_friend.application.serviceproviders.GlobalServiceProvider;
-import by.fpmibsu.find_a_friend.application.serviceproviders.ServiceProvider;
+import by.fpmibsu.find_a_friend.application.serviceproviders.ScopedServiceProvider;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -26,7 +26,7 @@ public class HttpRequestPipeLineHandler implements HttpHandler {
         private int index = 0;
 
         @Override
-        public void handle(HttpExchange exchange, ServiceProvider serviceProvider, RequestPipeLineHandler next) throws IOException {
+        public void handle(HttpExchange exchange, ScopedServiceProvider serviceProvider, RequestPipeLineHandler next) throws IOException {
             ++index;
             handlers.get(index).handle(exchange, serviceProvider, this);
         }

@@ -66,7 +66,7 @@ public class DefaultGlobalServiceProvider implements GlobalServiceProvider {
     }
 
     @Override
-    public ServiceProvider getRequestServiceProvider() {
+    public ScopedServiceProvider getRequestServiceProvider() {
         return new RequestServiceProvider();
     }
 

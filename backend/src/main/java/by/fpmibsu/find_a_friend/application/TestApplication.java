@@ -3,21 +3,18 @@ package by.fpmibsu.find_a_friend.application;
 import by.fpmibsu.find_a_friend.application.controllers.Controller;
 import by.fpmibsu.find_a_friend.application.controllers.ControllerRoute;
 import by.fpmibsu.find_a_friend.application.controllers.Endpoint;
-import by.fpmibsu.find_a_friend.application.serviceproviders.GlobalServiceProvider;
 import by.fpmibsu.find_a_friend.data_access_layer.PlaceDao;
 import by.fpmibsu.find_a_friend.entity.Place;
-import by.fpmibsu.find_a_friend.application.serviceproviders.DefaultGlobalServiceProvider;
-import by.fpmibsu.find_a_friend.application.mediatr.Mediatr;
+import by.fpmibsu.find_a_friend.services.HttpExchangeAccessor;
 import by.fpmibsu.find_a_friend.services.Request;
 import by.fpmibsu.find_a_friend.services.RequestHandler;
+import com.sun.net.httpserver.HttpExchange;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Properties;
 
 public class TestApplication {
@@ -72,6 +69,21 @@ public class TestApplication {
         }
     }
 
+    public static class HttpExchangeAccessExampleRequest extends Request<String> {}
+
+    public static class ExchangeHandler extends RequestHandler<String, HttpExchangeAccessExampleRequest> {
+        private final HttpExchange exchange;
+
+        public ExchangeHandler(HttpExchange exchange) {
+            this.exchange = exchange;
+        }
+
+        @Override
+        public String handle(HttpExchangeAccessExampleRequest request) {
+            return exchange.getProtocol();
+        }
+    }
+
     @ControllerRoute(route = "api")
     public static class TestController extends Controller {
         @Endpoint(route = "places", method = HttpMethod.GET, requestHandler = GetPlacesHandler.class)
@@ -81,6 +93,11 @@ public class TestApplication {
 
         @Endpoint(route = "count", method = HttpMethod.GET, requestHandler = CountHandler.class)
         public String getCount(CountRequest request) {
+            return null;
+        }
+
+        @Endpoint(route = "http", method = HttpMethod.GET, requestHandler = ExchangeHandler.class)
+        public String httpExample(HttpExchangeAccessExampleRequest request) {
             return null;
         }
     }
@@ -103,7 +120,12 @@ public class TestApplication {
             e.printStackTrace();
             return;
         }
-        int serverPort = 8080;
+        int serverPort;
+        try {
+            serverPort = Integer.parseInt(properties.getProperty("port"));
+        } catch (Exception e) {
+            serverPort = 8080;
+        }
 
         var builder = new ApplicationBuilder();
         builder.services()
@@ -112,6 +134,7 @@ public class TestApplication {
                 .addSingleton(CountHolder.class);
         builder.mapController(TestController.class);
         builder.setPort(serverPort);
+        builder.addPipeLineHandler(new HttpExchangeAccessor());
         var application = builder.build();
         application.start();
     }
