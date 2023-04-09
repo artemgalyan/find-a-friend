@@ -3,7 +3,6 @@ package by.fpmibsu.find_a_friend.controller;
 import by.fpmibsu.find_a_friend.data_access_layer.DaoException;
 import by.fpmibsu.find_a_friend.data_access_layer.PlaceDao;
 import by.fpmibsu.find_a_friend.entity.Place;
-import by.fpmibsu.find_a_friend.services.DIContainer;
 
 import java.io.FileReader;
 import java.io.IOException;

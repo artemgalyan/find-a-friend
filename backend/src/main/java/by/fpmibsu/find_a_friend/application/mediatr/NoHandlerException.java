@@ -1,4 +1,4 @@
-package by.fpmibsu.find_a_friend.utils;
+package by.fpmibsu.find_a_friend.application.mediatr;
 
 public class NoHandlerException extends RuntimeException {
     public NoHandlerException() {

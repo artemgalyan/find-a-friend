@@ -26,7 +26,7 @@ public interface Dao<K, T extends Entity> {
                 statement.close();
             }
         } catch (SQLException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -36,7 +36,7 @@ public interface Dao<K, T extends Entity> {
                 connection.close();
             }
         } catch (SQLException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 }

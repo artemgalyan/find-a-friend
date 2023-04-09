@@ -1,8 +1,10 @@
-package by.fpmibsu.find_a_friend.application;
+package by.fpmibsu.find_a_friend.application.endpoints;
 
-import by.fpmibsu.find_a_friend.utils.Mediatr;
-import by.fpmibsu.find_a_friend.utils.Request;
-import com.fasterxml.jackson.core.JsonParser;
+import by.fpmibsu.find_a_friend.application.ResponseCodes;
+import by.fpmibsu.find_a_friend.application.mediatr.Mediatr;
+import by.fpmibsu.find_a_friend.application.requestpipeline.RequestPipeLineHandler;
+import by.fpmibsu.find_a_friend.application.serviceproviders.ServiceProvider;
+import by.fpmibsu.find_a_friend.services.Request;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpExchange;
 
@@ -12,21 +14,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class EndpointsSender implements RequestPipeLineHandler {
-    private final List<Endpoint<?, ?>> endpoints;
-    private final Mediatr mediatr;
+    private final List<EndpointInfo<?, ?>> endpointInfos;
 
-    public EndpointsSender(List<Endpoint<?, ?>> endpoints, Mediatr mediatr) {
-        this.endpoints = endpoints;
-        this.mediatr = mediatr;
+    public EndpointsSender(List<EndpointInfo<?, ?>> endpointInfos) {
+        this.endpointInfos = endpointInfos;
     }
 
     @Override
-    public void handle(HttpExchange exchange, RequestPipeLineHandler next) throws IOException {
+    public void handle(HttpExchange exchange, ServiceProvider serviceProvider, RequestPipeLineHandler next) throws IOException {
         exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
         String method = exchange.getRequestMethod();
         URI uri = exchange.getRequestURI();
-        var endpoint = endpoints.stream()
-                .filter(e -> e.path().equals(uri.getPath()) && e.method().equals(method))
+        var endpoint = endpointInfos.stream()
+                .filter(e -> e.path().equals(uri.getPath()) && e.method().name().equals(method))
                 .findFirst();
         if (endpoint.isEmpty()) {
             exchange.sendResponseHeaders(ResponseCodes.NOT_FOUND, 0);
@@ -47,6 +47,7 @@ public class EndpointsSender implements RequestPipeLineHandler {
             exchange.close();
             return;
         }
+        var mediatr = serviceProvider.getRequiredService(Mediatr.class);
         Object response = mediatr.send(request);
         var responseAsString = mapper.writeValueAsString(response);
         var bytes = responseAsString.getBytes();

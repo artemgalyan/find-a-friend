@@ -1,7 +1,10 @@
 package by.fpmibsu.find_a_friend.application;
 
-import by.fpmibsu.find_a_friend.services.DIContainer;
-import by.fpmibsu.find_a_friend.utils.Mediatr;
+import by.fpmibsu.find_a_friend.application.endpoints.EndpointInfo;
+import by.fpmibsu.find_a_friend.application.mediatr.HandlersDataList;
+import by.fpmibsu.find_a_friend.application.requestpipeline.HttpRequestPipeLineHandler;
+import by.fpmibsu.find_a_friend.application.requestpipeline.RequestPipeLineHandler;
+import by.fpmibsu.find_a_friend.application.serviceproviders.GlobalServiceProvider;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
@@ -9,27 +12,23 @@ import java.net.InetSocketAddress;
 import java.util.List;
 
 public class Application {
-    private HttpServer httpServer;
-    private List<Endpoint<?, ?>> endpoints;
-    private DIContainer diContainer;
-    private Mediatr mediatr;
-    private List<RequestPipeLineHandler> pipeLineHandlers;
+    private final HttpServer httpServer;
+    private final GlobalServiceProvider globalServiceProvider;
+    private final List<RequestPipeLineHandler> pipeLineHandlers;
 
-    public Application(InetSocketAddress address, int backlog, List<Endpoint<?, ?>> endpoints, DIContainer diContainer, List<RequestPipeLineHandler> pipeLineHandlers) {
-        this.mediatr = new Mediatr(diContainer);
+    public Application(InetSocketAddress address, int backlog, List<EndpointInfo<?, ?>> endpointInfos, GlobalServiceProvider globalServiceProvider, List<RequestPipeLineHandler> pipeLineHandlers, HandlersDataList handlersDataList) {
         this.pipeLineHandlers = pipeLineHandlers;
         try {
             this.httpServer = HttpServer.create(address, backlog);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        this.endpoints = endpoints;
-        this.diContainer = diContainer;
-        endpoints.forEach(this::configureEndpoint);
+        this.globalServiceProvider = globalServiceProvider;
+        endpointInfos.forEach(this::configureEndpoint);
     }
 
-    private void configureEndpoint(Endpoint<?, ?> endpoint) {
-        httpServer.createContext(endpoint.path(), new HttpRequestPipeLineHandler(pipeLineHandlers));
+    private void configureEndpoint(EndpointInfo<?, ?> endpointInfo) {
+        httpServer.createContext(endpointInfo.path(), new HttpRequestPipeLineHandler(pipeLineHandlers, globalServiceProvider));
     }
 
     public void start() {

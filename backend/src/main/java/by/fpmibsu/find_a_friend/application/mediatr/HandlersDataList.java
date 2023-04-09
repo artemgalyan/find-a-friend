@@ -1,15 +1,13 @@
-package by.fpmibsu.find_a_friend.utils;
+package by.fpmibsu.find_a_friend.application.mediatr;
 
-import by.fpmibsu.find_a_friend.services.DIContainer;
+import by.fpmibsu.find_a_friend.services.Request;
+import by.fpmibsu.find_a_friend.services.RequestHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public class Mediatr {
-    public Mediatr(DIContainer diContainer) {
-        this.diContainer = diContainer;
-    }
-
+public class HandlersDataList {
     private static class RequestHandlerInfo<T, R extends Request<? super T>> {
         Class<? extends RequestHandler<T, R>> clazz;
         Class<?> requestType;
@@ -22,7 +20,6 @@ public class Mediatr {
         }
     }
 
-    private final DIContainer diContainer;
     private final List<RequestHandlerInfo<?, ?>> handlers = new ArrayList<>();
 
     public <T, R extends Request<? super T>> void registerHandler(Class<? extends RequestHandler<T, R>> clazz, Class<T> resultType, Class<R> requestType) {
@@ -33,16 +30,10 @@ public class Mediatr {
         handlers.add(new RequestHandlerInfo<>(clazz, resultType, requestType));
     }
 
-    public <T, R extends Request<? super T>> T send(R request) {
-        var clazz = request.getClass();
+    public Optional<Class<? extends RequestHandler<?, ?>>> findHandler(Class<?> requestClazz) {
         var handler = handlers.stream()
-                .filter(h -> h.requestType.equals(clazz))
+                .filter(h -> h.requestType.equals(requestClazz))
                 .findFirst();
-        if (handler.isEmpty()) {
-            throw new NoHandlerException("There is no handler for type " + clazz.getName());
-        }
-
-        RequestHandler<?, R> handlerInstance = (RequestHandler<?, R>) diContainer.createObject(handler.get().clazz);
-        return (T) handlerInstance.handle(request);
+        return handler.map(requestHandlerInfo -> requestHandlerInfo.clazz);
     }
 }
