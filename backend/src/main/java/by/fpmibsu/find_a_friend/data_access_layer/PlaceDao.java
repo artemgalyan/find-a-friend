@@ -1,6 +1,5 @@
 package by.fpmibsu.find_a_friend.data_access_layer;
 
-import by.fpmibsu.find_a_friend.entity.Entity;
 import by.fpmibsu.find_a_friend.entity.Place;
 
 import java.sql.*;
@@ -13,7 +12,7 @@ public class PlaceDao implements Dao<Integer, Place> {
     private static final String SQL_INSERT_PLACE = "INSERT INTO place VALUES(?,?,?,?)";
     private static final String SQL_DELETE_PLACE = "DELETE FROM place WHERE country=? AND region=? AND city=? AND district=?";
     public static final String SQL_DELETE_BY_ID = "DELETE FROM place WHERE place_id=?";
-    private Connection connection;
+    private final Connection connection;
 
     public PlaceDao(Connection connection) {
         this.connection = connection;
@@ -22,7 +21,7 @@ public class PlaceDao implements Dao<Integer, Place> {
     @Override
     public List<Place> getAll() throws DaoException {
         List<Place> places = new ArrayList<>();
-        Statement statement = null;
+        Statement statement;
         try {
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(SQL_SELECT_ALL_PLACES);
@@ -44,7 +43,7 @@ public class PlaceDao implements Dao<Integer, Place> {
     @Override
     public Place getEntityById(Integer id) throws DaoException {
         Place place = new Place();
-        PreparedStatement statement = null;
+        PreparedStatement statement;
         try {
             statement = connection.prepareStatement(SQL_SELECT_BY_ID);
             statement.setInt(1, id);
@@ -57,15 +56,13 @@ public class PlaceDao implements Dao<Integer, Place> {
             place.setDistrict(resultSet.getString("district"));
         } catch (SQLException e) {
             throw new DaoException("", e);
-        } finally {
-            close(statement);
         }
         return place;
     }
 
     @Override
     public boolean delete(Place instance) throws DaoException {
-        PreparedStatement statement = null;
+        PreparedStatement statement;
         try {
             statement = connection.prepareStatement(SQL_DELETE_PLACE);
             statement.setString(1, instance.getCountry());
@@ -75,8 +72,6 @@ public class PlaceDao implements Dao<Integer, Place> {
             int result = statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException("", e);
-        } finally {
-            close(statement);
         }
         return true;
     }
@@ -90,8 +85,6 @@ public class PlaceDao implements Dao<Integer, Place> {
             int result = statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException("", e);
-        } finally {
-            close(statement);
         }
         return true;
     }
@@ -108,8 +101,6 @@ public class PlaceDao implements Dao<Integer, Place> {
             int resultSet = statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException("", e);
-        } finally {
-            close(statement);
         }
         return true;
     }
