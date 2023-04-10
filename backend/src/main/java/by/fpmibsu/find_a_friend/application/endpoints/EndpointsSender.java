@@ -4,8 +4,7 @@ import by.fpmibsu.find_a_friend.application.ResponseCodes;
 import by.fpmibsu.find_a_friend.application.mediatr.Mediatr;
 import by.fpmibsu.find_a_friend.application.requestpipeline.RequestPipeLineHandler;
 import by.fpmibsu.find_a_friend.application.serviceproviders.ScopedServiceProvider;
-import by.fpmibsu.find_a_friend.application.serviceproviders.ServiceProvider;
-import by.fpmibsu.find_a_friend.services.Request;
+import by.fpmibsu.find_a_friend.application.mediatr.Request;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.HttpExchange;
 

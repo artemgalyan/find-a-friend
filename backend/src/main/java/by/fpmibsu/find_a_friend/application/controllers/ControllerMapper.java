@@ -2,7 +2,7 @@ package by.fpmibsu.find_a_friend.application.controllers;
 
 import by.fpmibsu.find_a_friend.application.endpoints.EndpointClassVerifier;
 import by.fpmibsu.find_a_friend.application.endpoints.EndpointInfo;
-import by.fpmibsu.find_a_friend.services.Request;
+import by.fpmibsu.find_a_friend.application.mediatr.Request;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

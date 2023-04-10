@@ -1,7 +1,7 @@
 package by.fpmibsu.find_a_friend.application.controllers;
 
 import by.fpmibsu.find_a_friend.application.HttpMethod;
-import by.fpmibsu.find_a_friend.services.RequestHandler;
+import by.fpmibsu.find_a_friend.application.mediatr.RequestHandler;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

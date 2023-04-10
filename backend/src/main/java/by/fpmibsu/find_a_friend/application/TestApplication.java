@@ -3,11 +3,14 @@ package by.fpmibsu.find_a_friend.application;
 import by.fpmibsu.find_a_friend.application.controllers.Controller;
 import by.fpmibsu.find_a_friend.application.controllers.ControllerRoute;
 import by.fpmibsu.find_a_friend.application.controllers.Endpoint;
+import by.fpmibsu.find_a_friend.data_access_layer.DaoException;
 import by.fpmibsu.find_a_friend.data_access_layer.PlaceDao;
 import by.fpmibsu.find_a_friend.entity.Place;
 import by.fpmibsu.find_a_friend.services.HttpExchangeAccessor;
-import by.fpmibsu.find_a_friend.services.Request;
-import by.fpmibsu.find_a_friend.services.RequestHandler;
+import by.fpmibsu.find_a_friend.application.mediatr.Request;
+import by.fpmibsu.find_a_friend.application.mediatr.RequestHandler;
+import by.fpmibsu.find_a_friend.services.PasswordHasher;
+import by.fpmibsu.find_a_friend.services.SimplePasswordHasher;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.FileReader;
@@ -52,10 +55,10 @@ public class TestApplication {
     public static class GetPlacesRequest extends Request<Place[]> {
     }
 
-    public static class GetPlacesHandler extends RequestHandler<Place[], GetPlacesRequest> {
+    public static class GetPlacesRequestHandler extends RequestHandler<Place[], GetPlacesRequest> {
         private final PlaceDao placeDao;
 
-        public GetPlacesHandler(PlaceDao placeDao) {
+        public GetPlacesRequestHandler(PlaceDao placeDao) {
             this.placeDao = placeDao;
         }
 
@@ -63,13 +66,15 @@ public class TestApplication {
         public Place[] handle(GetPlacesRequest request) {
             try {
                 return placeDao.getAll().toArray(Place[]::new);
-            } catch (Exception e) {
+            } catch (DaoException e) {
+                e.printStackTrace();
                 return null;
             }
         }
     }
 
-    public static class HttpExchangeAccessExampleRequest extends Request<String> {}
+    public static class HttpExchangeAccessExampleRequest extends Request<String> {
+    }
 
     public static class ExchangeHandler extends RequestHandler<String, HttpExchangeAccessExampleRequest> {
         private final HttpExchange exchange;
@@ -86,9 +91,9 @@ public class TestApplication {
 
     @ControllerRoute(route = "api")
     public interface TestController extends Controller {
-        @Endpoint(route = "places", method = HttpMethod.GET, requestHandler = GetPlacesHandler.class)
+        @Endpoint(route = "places", method = HttpMethod.GET, requestHandler = GetPlacesRequestHandler.class)
         public Place[] getPlaces(GetPlacesRequest request);
-
+        
         @Endpoint(route = "count", method = HttpMethod.GET, requestHandler = CountHandler.class)
         public String getCount(CountRequest request);
 
@@ -125,7 +130,8 @@ public class TestApplication {
         builder.services()
                 .addSingleton(Connection.class, () -> connection)
                 .addScoped(PlaceDao.class)
-                .addSingleton(CountHolder.class);
+                .addSingleton(CountHolder.class)
+                .addSingleton(PasswordHasher.class, SimplePasswordHasher::new);
         builder.mapController(TestController.class);
         builder.setPort(serverPort);
         builder.addPipeLineHandler(new HttpExchangeAccessor());

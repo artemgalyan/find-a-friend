@@ -1,8 +1,6 @@
 package by.fpmibsu.find_a_friend.application.mediatr;
 
 import by.fpmibsu.find_a_friend.application.serviceproviders.ServiceProvider;
-import by.fpmibsu.find_a_friend.services.Request;
-import by.fpmibsu.find_a_friend.services.RequestHandler;
 import by.fpmibsu.find_a_friend.utils.ObjectConstructor;
 
 public class Mediatr {

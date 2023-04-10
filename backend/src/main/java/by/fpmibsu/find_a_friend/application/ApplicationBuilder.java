@@ -10,15 +10,12 @@ import by.fpmibsu.find_a_friend.application.requestpipeline.ExceptionHandler;
 import by.fpmibsu.find_a_friend.application.requestpipeline.RequestPipeLineHandler;
 import by.fpmibsu.find_a_friend.application.serviceproviders.DefaultGlobalServiceProvider;
 import by.fpmibsu.find_a_friend.application.serviceproviders.GlobalServiceProvider;
-import by.fpmibsu.find_a_friend.application.serviceproviders.ServiceProvider;
-import by.fpmibsu.find_a_friend.services.Request;
-import by.fpmibsu.find_a_friend.services.RequestHandler;
+import by.fpmibsu.find_a_friend.application.mediatr.Request;
+import by.fpmibsu.find_a_friend.application.mediatr.RequestHandler;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class ApplicationBuilder {
     private final GlobalServiceProvider serviceProvider = new DefaultGlobalServiceProvider();

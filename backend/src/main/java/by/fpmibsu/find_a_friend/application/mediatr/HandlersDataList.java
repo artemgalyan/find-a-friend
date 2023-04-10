@@ -1,8 +1,5 @@
 package by.fpmibsu.find_a_friend.application.mediatr;
 
-import by.fpmibsu.find_a_friend.services.Request;
-import by.fpmibsu.find_a_friend.services.RequestHandler;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
