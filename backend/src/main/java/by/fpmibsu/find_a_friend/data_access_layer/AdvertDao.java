@@ -4,7 +4,7 @@ import by.fpmibsu.find_a_friend.entity.Advert;
 
 import java.util.List;
 
-public class AdvertDao implements Dao<Integer, Advert> {
+public class AdvertDao implements AdvertDaoInterface<Integer, Advert> {
     private static final String SQL_SELECT_ALL_ADVERTS = """
             SELECT advert_id, advert_type, title, description, creation_date," + " 
             place.place_id, place.country, place.region, place.city, place.district," + " 
@@ -65,5 +65,10 @@ public class AdvertDao implements Dao<Integer, Advert> {
     @Override
     public Advert update(Advert instance) throws DaoException {
         return null;
+    }
+
+    @Override
+    public boolean deleteByUserId(int id) {
+        return false;
     }
 }

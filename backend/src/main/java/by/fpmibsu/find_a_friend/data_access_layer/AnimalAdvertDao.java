@@ -4,7 +4,7 @@ import by.fpmibsu.find_a_friend.entity.AnimalAdvert;
 
 import java.util.List;
 
-public class AnimalAdvertDao implements AdvertDaoInterface<Integer, AnimalAdvert> {
+public class AnimalAdvertDao implements AnimalAdvertDaoInterface<Integer, AnimalAdvert> {
     private static final String SQL_SELECT_ALL_ANIMALADVERTS = """
             SELECT animal_advert_id, title, description, creation_date, birthday, sex, castrated," +
             " AnimalType.animal_type_id, AnimalType.name," +
