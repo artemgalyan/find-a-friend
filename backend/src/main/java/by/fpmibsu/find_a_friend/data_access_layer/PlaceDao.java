@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlaceDao implements Dao<Integer, Place> {
+public class PlaceDao implements PlaceDaoInterface<Integer, Place> {
     private static final String SQL_SELECT_ALL_PLACES = """
             SELECT place_id, country, region, city, district 
             FROM place""";
@@ -118,5 +118,10 @@ public class PlaceDao implements Dao<Integer, Place> {
     @Override
     public Place update(Place instance) throws DaoException {
         return null;
+    }
+
+    @Override
+    public boolean deleteByPlaceId(int id) {
+        return false;
     }
 }

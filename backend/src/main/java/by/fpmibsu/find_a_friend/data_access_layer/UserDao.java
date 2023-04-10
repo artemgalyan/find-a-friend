@@ -4,7 +4,7 @@ import by.fpmibsu.find_a_friend.entity.User;
 
 import java.util.List;
 
-public class UserDao implements Dao<Integer, User>{
+public class UserDao implements UserDaoInterface<Integer, User> {
     private static final String SQL_SELECT_ALL_USERS = """
             SELECT user_id, name, surname, email, phone_number, login, password, role.role_id, role.name" + "
             FROM user 
@@ -53,5 +53,10 @@ public class UserDao implements Dao<Integer, User>{
     @Override
     public User update(User instance) throws DaoException {
         return null;
+    }
+
+    @Override
+    public boolean deleteByUserId(int id) {
+        return false;
     }
 }
