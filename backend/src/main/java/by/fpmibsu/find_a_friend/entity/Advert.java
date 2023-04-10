@@ -3,7 +3,7 @@ package by.fpmibsu.find_a_friend.entity;
 import java.util.Date;
 import java.util.Objects;
 
-class Advert extends Entity {
+public class Advert extends Entity {
     public AdvertType getAdvertType() {
         return advertType;
     }
