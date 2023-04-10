@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-public interface Dao<K, T extends Entity> implements DaoInterface {
+public interface Dao<K, T extends Entity> {
     List<T> getAll() throws DaoException;
 
     T getEntityById(K id) throws DaoException;
