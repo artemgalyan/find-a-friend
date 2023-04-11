@@ -9,13 +9,18 @@ public class EntityProducer {
     public static Advert makeAdvert(ResultSet set) {
         return null;
     }
+
     public static AnimalAdvert makeAnimalAdvert(ResultSet set) {
         return null;
     }
 
-    public static Photo makePhoto(ResultSet set) {
-        return null;
+    public static Photo makePhoto(ResultSet set) throws SQLException {
+        Photo photo = new Photo();
+        photo.setId(set.getInt("photo_id"));
+        photo.setData(set.getBytes("data"));
+        return photo;
     }
+
 
     public static Place makePlace(ResultSet resultSet) throws SQLException {
         Place place = new Place();
