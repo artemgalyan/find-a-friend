@@ -33,10 +33,23 @@ public class EntityProducer {
     }
 
     public static Shelter makeShelter(ResultSet set) {
-        return null;
+       return null;
     }
 
-    public static User makeUser(ResultSet set) {
-        return null;
+    public static User makeUser(ResultSet set) throws SQLException {
+        User user = new User();
+        user.setId(set.getInt("user_id"));
+        Contacts contact = new Contacts();
+        contact.setId(user.getId());
+        contact.setName(set.getString("name"));
+        contact.setSurname(set.getString("surname"));
+        contact.setPhoneNumber(set.getString("phone_number"));
+        contact.setEmail(set.getString("email"));
+        user.setLogin(set.getString("login"));
+        user.setPassword(set.getString("password"));
+        user.setRole(User.Role.valueOf(set.getString("role.name")));
+        //list of adverts and administrators
+        return user;
     }
+
 }
