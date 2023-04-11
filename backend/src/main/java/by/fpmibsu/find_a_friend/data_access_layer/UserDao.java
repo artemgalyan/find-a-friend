@@ -115,7 +115,7 @@ public class UserDao implements UserDaoInterface {
 //        } finally {
 //            close(statement);
 //        }
-//        return true;
+        return true;
     }
 
     @Override
@@ -135,7 +135,7 @@ public class UserDao implements UserDaoInterface {
 //        } finally {
 //            close(statement);
 //        }
-//        return instance;
+        return instance;
     }
 
     @Override
