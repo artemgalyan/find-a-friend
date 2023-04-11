@@ -16,8 +16,17 @@ public class AnimalAdvert extends Entity {
     private boolean isCastrated;
 
     public enum Sex {
-        MALE,
-        FEMALE
+        MALE('M'),
+        FEMALE('F');
+        private final char c;
+
+        Sex(char c) {
+            this.c = c;
+        }
+
+        public char asChar() {
+            return c;
+        }
     }
 
     public AnimalAdvert(int id, String title, String description, String animalType,
