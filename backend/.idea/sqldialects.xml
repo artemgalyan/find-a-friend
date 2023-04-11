@@ -4,7 +4,9 @@
     <file url="file://$PROJECT_DIR$/database-scripts/create-database.sql" dialect="TSQL" />
     <file url="file://$PROJECT_DIR$/database-scripts/create-user.sql" dialect="TSQL" />
     <file url="file://$PROJECT_DIR$/database-scripts/grant-rights.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/database-scripts/procedures.sql" dialect="TSQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/by/fpmibsu/find_a_friend/data_access_layer/AdvertDao.java" dialect="TSQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/by/fpmibsu/find_a_friend/data_access_layer/PlaceDao.java" dialect="TSQL" />
+    <file url="PROJECT" dialect="TSQL" />
   </component>
 </project>

@@ -4,5 +4,5 @@ import by.fpmibsu.find_a_friend.entity.AnimalAdvert;
 import by.fpmibsu.find_a_friend.entity.Entity;
 
 public interface AnimalAdvertDaoInterface extends Dao<Integer, AnimalAdvert> {
-    boolean deleteByUserId(int id);
+    boolean deleteByUserId(int id) throws DaoException;
 }

@@ -13,8 +13,17 @@ public class Advert extends Entity {
     }
 
     public enum AdvertType {
-        VOLUNTEER,
-        SITTER
+        VOLUNTEER('V'),
+        SITTER('S');
+
+        private final char c;
+        AdvertType(char c) {
+            this.c = c;
+        }
+
+        public char getValue() {
+            return c;
+        }
     }
     private String title;
     private String description;

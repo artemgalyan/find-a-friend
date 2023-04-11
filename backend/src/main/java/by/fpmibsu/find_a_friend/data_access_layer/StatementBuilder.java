@@ -43,5 +43,7 @@ public class StatementBuilder {
             statement.setInt(index, b ? 1 : 0);
             return;
         }
+
+        throw new UnsupportedOperationException("No conversion for type " + o.getClass().getName());
     }
 }
