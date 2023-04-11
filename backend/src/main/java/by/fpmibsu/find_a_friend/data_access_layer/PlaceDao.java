@@ -42,13 +42,7 @@ public class PlaceDao implements PlaceDaoInterface {
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(SQL_SELECT_ALL_PLACES);
             while (resultSet.next()) {
-                Place place = new Place();
-                place.setId(resultSet.getInt("place_id"));
-                place.setCountry(resultSet.getString("country"));
-                place.setRegion(resultSet.getString("region"));
-                place.setCity(resultSet.getString("city"));
-                place.setDistrict(resultSet.getString("district"));
-                places.add(place);
+                places.add(EntityProducer.makePlace(resultSet));
             }
         } catch (SQLException e) {
             throw new DaoException("", e);
@@ -60,7 +54,6 @@ public class PlaceDao implements PlaceDaoInterface {
 
     @Override
     public Place getEntityById(Integer id) throws DaoException {
-        Place place = new Place();
         PreparedStatement statement = null;
         try {
             statement = statementBuilder
@@ -69,17 +62,12 @@ public class PlaceDao implements PlaceDaoInterface {
             if (!resultSet.next()) {
                 return null;
             }
-            place.setId(resultSet.getInt("place_id"));
-            place.setCountry(resultSet.getString("country"));
-            place.setRegion(resultSet.getString("region"));
-            place.setCity(resultSet.getString("city"));
-            place.setDistrict(resultSet.getString("district"));
+            return EntityProducer.makePlace(resultSet);
         } catch (SQLException e) {
             throw new DaoException("", e);
         } finally {
             close(statement);
         }
-        return place;
     }
 
     @Override
@@ -94,7 +82,7 @@ public class PlaceDao implements PlaceDaoInterface {
             statement = statementBuilder.prepareStatement(SQL_DELETE_BY_ID, value);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DaoException("", e);
+            throw new DaoException(e);
         } finally {
             close(statement);
         }
