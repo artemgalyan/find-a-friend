@@ -17,6 +17,9 @@ public class User extends Entity {
         SHELTER_ADMINISTRATOR
     }
 
+    public User() {
+    }
+
     public User(int id, Contacts contacts, List<AnimalAdvert> animalAdverts, List<Advert> adverts, Role role, String login, String password) {
         this.id = id;
         this.contacts = contacts;

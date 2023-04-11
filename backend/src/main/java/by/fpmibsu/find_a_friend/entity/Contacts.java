@@ -6,6 +6,9 @@ public class Contacts extends Entity {
     private String phoneNumber;
     private String email;
 
+    public Contacts() {
+    }
+
     public Contacts(String name, String surname, String phoneNumber, String email) {
         this.name = name;
         this.surname = surname;
