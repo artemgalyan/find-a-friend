@@ -35,13 +35,13 @@ public class EntityProducer {
 
 
     public static Place makePlace(ResultSet resultSet) throws SQLException {
-        Place place = new Place();
-        place.setId(resultSet.getInt("place_id"));
-        place.setCountry(resultSet.getString("country"));
-        place.setRegion(resultSet.getString("region"));
-        place.setCity(resultSet.getString("city"));
-        place.setDistrict(resultSet.getString("district"));
-        return place;
+        return new Place(
+                resultSet.getInt("place_id"),
+                resultSet.getString("country"),
+                resultSet.getString("region"),
+                resultSet.getString("city"),
+                resultSet.getString("district")
+        );
     }
 
     public static Shelter makeShelter(ResultSet set) throws SQLException {
