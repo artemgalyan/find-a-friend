@@ -18,6 +18,10 @@ public interface GlobalServiceProvider extends ServiceProvider {
 
     ScopedServiceProvider getRequestServiceProvider();
 
+    default <T> GlobalServiceProvider addService(Class<T> registeredClazz, ServiceType type, Class<? extends T> realClazz) {
+        return addService(registeredClazz, type, () -> ObjectConstructor.createInstance(realClazz, this));
+    }
+
     default <T> GlobalServiceProvider addService(Class<T> clazz, ServiceType type, Supplier<? extends T> supplier) {
         return addService(clazz, type, (d) -> supplier.get());
     }
@@ -38,6 +42,10 @@ public interface GlobalServiceProvider extends ServiceProvider {
         return addScoped(clazz, (d) -> ObjectConstructor.createInstance(clazz, this));
     }
 
+    default <T> GlobalServiceProvider addScoped(Class<T> registeredClass, Class<? extends T> actualClass) {
+        return addService(registeredClass, ServiceType.SCOPED, actualClass);
+    }
+
 
     default <T> GlobalServiceProvider addSingleton(Class<T> clazz, Function<ServiceProvider, ? extends T> supplier) {
         return addService(clazz, ServiceType.SINGLETON, supplier);
@@ -51,6 +59,10 @@ public interface GlobalServiceProvider extends ServiceProvider {
         return addSingleton(clazz, (d) -> ObjectConstructor.createInstance(clazz, this));
     }
 
+    default <T> GlobalServiceProvider addSingleton(Class<T> registeredClass, Class<? extends T> actualClass) {
+        return addService(registeredClass, ServiceType.SINGLETON, actualClass);
+    }
+
 
     default <T> GlobalServiceProvider addTransient(Class<T> clazz, Function<ServiceProvider, ? extends T> supplier) {
         return addService(clazz, ServiceType.TRANSIENT, supplier);
@@ -62,5 +74,9 @@ public interface GlobalServiceProvider extends ServiceProvider {
 
     default <T> GlobalServiceProvider addTransient(Class<T> clazz) {
         return addTransient(clazz, (d) -> ObjectConstructor.createInstance(clazz, this));
+    }
+
+    default <T> GlobalServiceProvider addTransient(Class<T> registeredClass, Class<? extends T> actualClass) {
+        return addService(registeredClass, ServiceType.TRANSIENT, actualClass);
     }
 }

@@ -5,6 +5,7 @@ import by.fpmibsu.find_a_friend.application.controllers.ControllerRoute;
 import by.fpmibsu.find_a_friend.application.controllers.Endpoint;
 import by.fpmibsu.find_a_friend.data_access_layer.DaoException;
 import by.fpmibsu.find_a_friend.data_access_layer.PlaceDao;
+import by.fpmibsu.find_a_friend.data_access_layer.PlaceDaoInterface;
 import by.fpmibsu.find_a_friend.entity.Place;
 import by.fpmibsu.find_a_friend.services.HttpExchangeAccessor;
 import by.fpmibsu.find_a_friend.application.mediatr.Request;
@@ -56,9 +57,9 @@ public class TestApplication {
     }
 
     public static class GetPlacesRequestHandler extends RequestHandler<Place[], GetPlacesRequest> {
-        private final PlaceDao placeDao;
+        private final PlaceDaoInterface placeDao;
 
-        public GetPlacesRequestHandler(PlaceDao placeDao) {
+        public GetPlacesRequestHandler(PlaceDaoInterface placeDao) {
             this.placeDao = placeDao;
         }
 
@@ -92,13 +93,13 @@ public class TestApplication {
     @ControllerRoute(route = "api")
     public interface TestController extends Controller {
         @Endpoint(route = "places", method = HttpMethod.GET, requestHandler = GetPlacesRequestHandler.class)
-        public Place[] getPlaces(GetPlacesRequest request);
+        Place[] getPlaces(GetPlacesRequest request);
         
         @Endpoint(route = "count", method = HttpMethod.GET, requestHandler = CountHandler.class)
-        public String getCount(CountRequest request);
+        String getCount(CountRequest request);
 
         @Endpoint(route = "http", method = HttpMethod.GET, requestHandler = ExchangeHandler.class)
-        public String httpExample(HttpExchangeAccessExampleRequest request);
+        String httpExample(HttpExchangeAccessExampleRequest request);
     }
 
     public static void main(String[] args) {
@@ -129,7 +130,7 @@ public class TestApplication {
         var builder = new ApplicationBuilder();
         builder.services()
                 .addSingleton(Connection.class, () -> connection)
-                .addScoped(PlaceDao.class)
+                .addScoped(PlaceDaoInterface.class, PlaceDao.class)
                 .addSingleton(CountHolder.class)
                 .addSingleton(PasswordHasher.class, SimplePasswordHasher::new);
         builder.mapController(TestController.class);
