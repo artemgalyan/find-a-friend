@@ -6,21 +6,21 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlaceDao implements PlaceDaoInterface<Integer, Place> {
+public class PlaceDao implements PlaceDaoInterface {
     private static final String SQL_SELECT_ALL_PLACES = """
-            SELECT place_id, country, region, city, district 
+            SELECT place_id, country, region, city, district
             FROM place""";
     private static final String SQL_SELECT_BY_ID = """
-            SELECT place_id, country, region, city, district 
+            SELECT place_id, country, region, city, district
             FROM place WHERE place_id=?""";
     private static final String SQL_INSERT_PLACE = """
             INSERT INTO place VALUES(?,?,?,?)""";
     private static final String SQL_DELETE_PLACE = """
-            DELETE 
-            FROM place 
+            DELETE
+            FROM place
             WHERE country=? AND region=? AND city=? AND district=?""";
     public static final String SQL_DELETE_BY_ID = """
-            DELETE FROM place 
+            DELETE FROM place
             WHERE place_id=?""";
     private final Connection connection;
 
