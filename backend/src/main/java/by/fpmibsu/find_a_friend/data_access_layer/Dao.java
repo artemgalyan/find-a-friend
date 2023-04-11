@@ -21,6 +21,9 @@ public interface Dao<K, T extends Entity> {
     T update(T instance) throws DaoException;
 
     default void close(Statement statement) {
+        if (statement == null) {
+            return;
+        }
         try {
             if (!statement.isClosed()) {
                 statement.close();
@@ -31,6 +34,9 @@ public interface Dao<K, T extends Entity> {
     }
 
     default void close(Connection connection) {
+        if (connection == null) {
+            return;
+        }
         try {
             if (!connection.isClosed()) {
                 connection.close();

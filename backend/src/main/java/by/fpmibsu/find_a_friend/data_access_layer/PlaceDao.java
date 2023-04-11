@@ -15,23 +15,29 @@ public class PlaceDao implements PlaceDaoInterface {
             FROM place WHERE place_id=?""";
     private static final String SQL_INSERT_PLACE = """
             INSERT INTO place VALUES(?,?,?,?)""";
-    private static final String SQL_DELETE_PLACE = """
-            DELETE
-            FROM place
-            WHERE country=? AND region=? AND city=? AND district=?""";
-    public static final String SQL_DELETE_BY_ID = """
+    private static final String SQL_DELETE_BY_ID = """
             DELETE FROM place
             WHERE place_id=?""";
+    private static final String SQL_UPDATE = """
+            UPDATE place
+            SET country=?,
+                region=?,
+                city=?,
+                district=?
+            WHERE place_id=?
+            """;
+    private final StatementBuilder statementBuilder;
     private final Connection connection;
 
     public PlaceDao(Connection connection) {
         this.connection = connection;
+        this.statementBuilder = new StatementBuilder(connection);
     }
 
     @Override
     public List<Place> getAll() throws DaoException {
         List<Place> places = new ArrayList<>();
-        Statement statement;
+        Statement statement = null;
         try {
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(SQL_SELECT_ALL_PLACES);
@@ -46,6 +52,8 @@ public class PlaceDao implements PlaceDaoInterface {
             }
         } catch (SQLException e) {
             throw new DaoException("", e);
+        } finally {
+            close(statement);
         }
         return places;
     }
@@ -53,12 +61,14 @@ public class PlaceDao implements PlaceDaoInterface {
     @Override
     public Place getEntityById(Integer id) throws DaoException {
         Place place = new Place();
-        PreparedStatement statement;
+        PreparedStatement statement = null;
         try {
-            statement = connection.prepareStatement(SQL_SELECT_BY_ID);
-            statement.setInt(1, id);
+            statement = statementBuilder
+                    .prepareStatement(SQL_SELECT_BY_ID, id);
             ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
+            if (!resultSet.next()) {
+                return null;
+            }
             place.setId(resultSet.getInt("place_id"));
             place.setCountry(resultSet.getString("country"));
             place.setRegion(resultSet.getString("region"));
@@ -66,35 +76,27 @@ public class PlaceDao implements PlaceDaoInterface {
             place.setDistrict(resultSet.getString("district"));
         } catch (SQLException e) {
             throw new DaoException("", e);
+        } finally {
+            close(statement);
         }
         return place;
     }
 
     @Override
     public boolean delete(Place instance) throws DaoException {
-        PreparedStatement statement;
-        try {
-            statement = connection.prepareStatement(SQL_DELETE_PLACE);
-            statement.setString(1, instance.getCountry());
-            statement.setString(2, instance.getRegion());
-            statement.setString(3, instance.getCity());
-            statement.setString(4, instance.getDistrict());
-            int result = statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new DaoException("", e);
-        }
-        return true;
+        return deleteByPlaceId(instance.getId());
     }
 
     @Override
     public boolean delete(Integer value) throws DaoException {
         PreparedStatement statement = null;
         try {
-            statement = connection.prepareStatement(SQL_DELETE_BY_ID);
-            statement.setInt(1, value);
+            statement = statementBuilder.prepareStatement(SQL_DELETE_BY_ID, value);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException("", e);
+        } finally {
+            close(statement);
         }
         return true;
     }
@@ -103,25 +105,50 @@ public class PlaceDao implements PlaceDaoInterface {
     public boolean create(Place instance) throws DaoException {
         PreparedStatement statement = null;
         try {
-            statement = connection.prepareStatement(SQL_INSERT_PLACE);
-            statement.setString(1, instance.getCountry());
-            statement.setString(2, instance.getRegion());
-            statement.setString(3, instance.getCity());
-            statement.setString(4, instance.getDistrict());
-            int resultSet = statement.executeUpdate();
+            statement = statementBuilder.prepareStatement(SQL_INSERT_PLACE,
+                    instance.getCountry(),
+                    instance.getRegion(),
+                    instance.getCity(),
+                    instance.getDistrict());
+            int result = statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException("", e);
+        } finally {
+            close(statement);
         }
         return true;
     }
 
     @Override
     public Place update(Place instance) throws DaoException {
-        return null;
+        PreparedStatement statement = null;
+        try {
+            statement = statementBuilder.prepareStatement(SQL_UPDATE,
+                    instance.getCountry(),
+                    instance.getRegion(),
+                    instance.getCity(),
+                    instance.getDistrict());
+            int result = statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            close(statement);
+        }
+        return instance;
     }
 
     @Override
-    public boolean deleteByPlaceId(int id) {
-        return false;
+    public boolean deleteByPlaceId(int id) throws DaoException {
+        PreparedStatement statement = null;
+        try {
+            statement = statementBuilder.prepareStatement(SQL_DELETE_BY_ID, id);
+            int result = statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+        finally {
+            close(statement);
+        }
+        return true;
     }
 }
