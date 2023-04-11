@@ -10,12 +10,24 @@ public class EntityProducer {
         return null;
     }
 
-    public static AnimalAdvert makeAnimalAdvert(ResultSet set) {
-        return null;
+    public static AnimalAdvert makeAnimalAdvert(ResultSet set) throws SQLException {
+        return new AnimalAdvert(
+                set.getInt("animal_advert_id"),
+                set.getString("title"),
+                set.getString("description"),
+                set.getString("name"),
+                null,
+                makeUser(set),
+                set.getDate("creation_date"),
+                makePlace(set),
+                set.getDate("birthday"),
+                "M".equals(set.getString("sex")) ? AnimalAdvert.Sex.MALE : AnimalAdvert.Sex.FEMALE,
+                "T".equals(set.getString("is_castrated"))
+        );
     }
 
     public static Photo makePhoto(ResultSet set) throws SQLException {
-        Photo photo = new Photo();
+        Photo photo = new Photo(null);
         photo.setId(set.getInt("photo_id"));
         photo.setData(set.getBytes("data"));
         return photo;
@@ -32,24 +44,30 @@ public class EntityProducer {
         return place;
     }
 
-    public static Shelter makeShelter(ResultSet set) {
-       return null;
+    public static Shelter makeShelter(ResultSet set) throws SQLException {
+        return new Shelter(
+                set.getInt("id"),
+                set.getString("name"),
+                null,
+                null,
+                makePlace(set)
+        );
     }
 
     public static User makeUser(ResultSet set) throws SQLException {
-        User user = new User();
-        user.setId(set.getInt("user_id"));
-        Contacts contact = new Contacts();
-        contact.setId(user.getId());
-        contact.setName(set.getString("name"));
-        contact.setSurname(set.getString("surname"));
-        contact.setPhoneNumber(set.getString("phone_number"));
-        contact.setEmail(set.getString("email"));
-        user.setLogin(set.getString("login"));
-        user.setPassword(set.getString("password"));
-        user.setRole(User.Role.valueOf(set.getString("role.name")));
-        //list of adverts and administrators
-        return user;
+        return new User(
+                set.getInt("user_id"),
+                new Contacts(
+                        set.getString("name"),
+                        set.getString("surname"),
+                        set.getString("phone_number"),
+                        set.getString("email")
+                ),
+                null,
+                null,
+                User.Role.USER,
+                set.getString("login"),
+                set.getString("password")
+        );
     }
-
 }
