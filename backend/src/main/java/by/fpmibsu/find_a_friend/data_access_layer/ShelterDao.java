@@ -8,11 +8,11 @@ public class ShelterDao implements ShelterDaoInterface {
     private static final String SQL_SELECT_ALL_SHELTERS = """
             SELECT shelter_id, name, place.place_id
             FROM user
-                LEFT JOIN place USING(place_id)""";
+                LEFT JOIN place ON user.place_id=place.place_id""";
     private static final String SQL_SELECT_BY_ID = """
             SELECT shelter_id, name, place.place_id
             FROM user
-                LEFT JOIN place USING(place_id)
+                LEFT JOIN place ON user.place_id=place.place_id
                 WHERE place_id=?""";
     private static final String SQL_INSERT_SHELTER = """
             INSERT INTO shelter VALUES(?,?,?)""";
