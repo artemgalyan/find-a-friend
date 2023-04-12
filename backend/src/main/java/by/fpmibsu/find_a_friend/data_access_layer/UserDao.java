@@ -8,16 +8,16 @@ import java.util.List;
 
 public class UserDao implements UserDaoInterface {
     private static final String SQL_SELECT_ALL_USERS = """
-            SELECT user_id, name, surname, email, phone_number, login, password, role.role_id, role.name
-            FROM user
-                LEFT JOIN role USING(role_id)""";
+            SELECT user_id, [user].name, surname, email, phone_number, login, password, role.role_id, role.name
+            FROM [user]
+                LEFT JOIN role ON [user].role_id = role.role_id""";
     private static final String SQL_SELECT_BY_ID = """
             SELECT user_id, name, surname, email, phone_number, login, password, role.role_id, role.name
             FROM user
                 LEFT JOIN role USING(role_id)
                 WHERE user_id=?""";
     private static final String SQL_INSERT_USER = """
-            INSERT INTO user VALUES(?,?,?,?,?,?,?)""";
+            INSERT INTO [user] VALUES(?,?,?,?,?,?,?)""";
     private static final String SQL_DELETE_USER = """
             DELETE
             FROM user
@@ -100,21 +100,23 @@ public class UserDao implements UserDaoInterface {
 
     @Override
     public boolean create(User instance) throws DaoException {
-//        PreparedStatement statement = null;
-//        try {
-//            statement = statementBuilder.prepareStatement(SQL_INSERT_USER,
-//                    instance.getContacts(),
-//                    instance.getAnimalAdverts(),
-//                    instance.getAdverts(),
-//                    instance.getRole());
-//                    instance.getLogin();
-//                    instance.getPassword();
-//            int result = statement.executeUpdate();
-//        } catch (SQLException e) {
-//            throw new DaoException("", e);
-//        } finally {
-//            close(statement);
-//        }
+        PreparedStatement statement = null;
+        try {
+            var contacts = instance.getContacts();
+            statement = statementBuilder.prepareStatement(SQL_INSERT_USER,
+                    contacts.getName(),
+                    contacts.getSurname(),
+                    contacts.getEmail(),
+                    contacts.getPhoneNumber(),
+                    instance.getLogin(),
+                    instance.getPassword(),
+                    1);
+            int result = statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException("", e);
+        } finally {
+            close(statement);
+        }
         return true;
     }
 
