@@ -11,11 +11,11 @@ public class PhotoDao implements PhotoDaoInterface {
     private static final String SQL_SELECT_ALL_PHOTO = """
             SELECT photo_id, data, animal_advert_id.place_id
             FROM photo
-                LEFT JOIN animal_advert USING(animal_advert_id)""";
+                LEFT JOIN animal_advert ON photo.animal_advert_id = animal_advert.animal_advert_id""";
     private static final String SQL_SELECT_BY_ID = """
             SELECT photo_id, data, animal_advert_id.place_id
             FROM photo
-                LEFT JOIN animal_advert USING(animal_advert_id)
+                LEFT JOIN animal_advert ON animal_advert.animal_advert_id = photo.animal_advert_id
                 WHERE animal_advert_id=?""";
     private static final String SQL_INSERT_PHOTO = """
             INSERT INTO shelter VALUES(?)""";
