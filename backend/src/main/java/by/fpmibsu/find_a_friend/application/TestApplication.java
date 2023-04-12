@@ -3,10 +3,9 @@ package by.fpmibsu.find_a_friend.application;
 import by.fpmibsu.find_a_friend.application.controllers.Controller;
 import by.fpmibsu.find_a_friend.application.controllers.ControllerRoute;
 import by.fpmibsu.find_a_friend.application.controllers.Endpoint;
-import by.fpmibsu.find_a_friend.data_access_layer.DaoException;
-import by.fpmibsu.find_a_friend.data_access_layer.PlaceDao;
-import by.fpmibsu.find_a_friend.data_access_layer.PlaceDaoInterface;
+import by.fpmibsu.find_a_friend.data_access_layer.*;
 import by.fpmibsu.find_a_friend.entity.Place;
+import by.fpmibsu.find_a_friend.entity.User;
 import by.fpmibsu.find_a_friend.services.HttpExchangeAccessor;
 import by.fpmibsu.find_a_friend.application.mediatr.Request;
 import by.fpmibsu.find_a_friend.application.mediatr.RequestHandler;
@@ -90,6 +89,25 @@ public class TestApplication {
         }
     }
 
+    public static class GetUsersRequest extends Request<User[]> {}
+    public static class GetUsersHandler extends RequestHandler<User[], GetUsersRequest> {
+        private final UserDaoInterface userDao;
+
+        public GetUsersHandler(UserDaoInterface userDao) {
+            this.userDao = userDao;
+        }
+
+        @Override
+        public User[] handle(GetUsersRequest request) {
+            try {
+                return userDao.getAll().toArray(User[]::new);
+            } catch (DaoException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+    }
+
     @ControllerRoute(route = "api")
     public interface TestController extends Controller {
         @Endpoint(route = "places", method = HttpMethod.GET, requestHandler = GetPlacesRequestHandler.class)
@@ -100,6 +118,9 @@ public class TestApplication {
 
         @Endpoint(route = "http", method = HttpMethod.GET, requestHandler = ExchangeHandler.class)
         String httpExample(HttpExchangeAccessExampleRequest request);
+
+        @Endpoint(route = "users", method = HttpMethod.GET, requestHandler = GetUsersHandler.class)
+        User[] getUsers(GetUsersRequest request);
     }
 
     public static void main(String[] args) {
@@ -132,7 +153,8 @@ public class TestApplication {
                 .addSingleton(Connection.class, () -> connection)
                 .addScoped(PlaceDaoInterface.class, PlaceDao.class)
                 .addSingleton(CountHolder.class)
-                .addSingleton(PasswordHasher.class, SimplePasswordHasher::new);
+                .addSingleton(PasswordHasher.class, SimplePasswordHasher::new)
+                .addScoped(UserDaoInterface.class, UserDao.class);
         builder.mapController(TestController.class);
         builder.setPort(serverPort);
         builder.addPipeLineHandler(new HttpExchangeAccessor());
