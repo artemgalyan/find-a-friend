@@ -8,18 +8,55 @@ import java.util.List;
 
 public class AnimalAdvertDao implements AnimalAdvertDaoInterface {
     private static final String SQL_SELECT_ALL_ANIMALADVERTS = """
-            EXECUTE SelectAllAnimalAdverts""";
+            SELECT *
+            FROM animal_advert
+            LEFT JOIN animal_type a on a.animal_type_id = animal_advert.animal_type_id
+            INNER JOIN place p on animal_advert.place_id = p.place_id""";
+
+    private static String SQL_SELECT_USERS_ADVERTS = """
+                SELECT *
+                    FROM animal_advert
+                    LEFT JOIN animal_type a on a.animal_type_id = animal_advert.animal_type_id
+                    INNER JOIN place p on animal_advert.place_id = p.place_id
+                WHERE user_id=?
+            """;
     private static final String SQL_SELECT_BY_ID = """
-            EXECUTE SelectAnimalAdvertById ?""";
+            SELECT *
+            FROM animal_advert
+            LEFT JOIN animal_type a on a.animal_type_id = animal_advert.animal_type_id
+            INNER JOIN place p on animal_advert.place_id = p.place_id
+            WHERE animal_advert_id=?""";
     private static final String SQL_INSERT_ANIMALADVERT = """
-            EXECUTE InsertAnimalAdvert ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?""";
+            DECLARE @type_id INT = (
+              SELECT animal_type_id FROM animal_type WHERE name=?
+            );
+            INSERT INTO animal_advert(title, description, creation_date, birthday,
+             sex, castrated, animal_type_id, user_id, place_id)
+            VALUES (?, ?, ?, ?, ?, ?, @type_id, ?, ?)""";
     private static final String SQL_DELETE_ANIMALADVERT = """
-            EXECUTE DeleteAnimalAdvertById ?""";
+            DELETE FROM animal_advert
+            WHERE animal_advert_id=?""";
     private static final String SQL_DELETE_BY_USER_ID = """
-            EXECUTE DeleteAnimalAdvertByUserId ?""";
+            DELETE FROM animal_advert
+            WHERE user_id=?""";
 
     private static final String SQL_UPDATE_ANIMALADVERT = """
-            EXECUTE UpdateAnimalAdvert ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?""";
+            DECLARE @adv_id INT = ?
+            DECLARE @type_id INT = (
+              SELECT animal_type_id FROM animal_type WHERE name=?
+            );
+            UPDATE animal_advert
+            SET title=?,
+                description=?,
+                creation_date=?,
+                birthday=?,
+                sex=?,
+                castrated=?,
+                animal_type_id=@type_id,
+                user_id=?,
+                place_id=?
+            WHERE animal_advert_id=?
+            """;
 
     private final Connection connection;
     private final StatementBuilder statementBuilder;
@@ -85,25 +122,16 @@ public class AnimalAdvertDao implements AnimalAdvertDaoInterface {
     public boolean create(AnimalAdvert instance) throws DaoException {
         PreparedStatement statement = null;
         try {
-            var place = instance.getPlace();
-            Integer ownerId = null;
-            if (instance.getOwner() != null) {
-                ownerId = instance.getOwner().getId();
-            }
             statement = statementBuilder.prepareStatement(SQL_INSERT_ANIMALADVERT,
+                    instance.getAnimalType(),
                     instance.getTitle(),
                     instance.getDescription(),
                     instance.getCreationDate(),
                     instance.getBirthdate(),
-                    instance.getSex().asChar(),
-                    instance.isCastrated() ? 'T' : 'F',
-                    instance.getAnimalType(),
+                    instance.getSex().getValue(),
+                    instance.isCastrated(),
                     instance.getOwner().getId(),
-                    ownerId,
-                    place.getCountry(),
-                    place.getRegion(),
-                    place.getCity(),
-                    place.getDistrict());
+                    instance.getPlace().getId());
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -117,19 +145,17 @@ public class AnimalAdvertDao implements AnimalAdvertDaoInterface {
     public AnimalAdvert update(AnimalAdvert instance) throws DaoException {
         PreparedStatement statement = null;
         try {
-            var place = instance.getPlace();
             statement = statementBuilder.prepareStatement(SQL_UPDATE_ANIMALADVERT,
                     instance.getId(),
+                    instance.getAnimalType(),
                     instance.getTitle(),
                     instance.getDescription(),
                     instance.getCreationDate(),
-                    instance.getSex().asChar(),
-                    instance.isCastrated() ? 'T' : 'F',
-                    instance.getAnimalType(),
-                    place.getCountry(),
-                    place.getRegion(),
-                    place.getCity(),
-                    place.getDistrict());
+                    instance.getBirthdate(),
+                    instance.getSex().getValue(),
+                    instance.isCastrated(),
+                    instance.getOwner().getId(),
+                    instance.getPlace().getId());
             statement.executeUpdate();
             return instance;
         } catch (SQLException e) {
@@ -151,5 +177,23 @@ public class AnimalAdvertDao implements AnimalAdvertDaoInterface {
             close(statement);
         }
         return true;
+    }
+
+    @Override
+    public List<AnimalAdvert> getUsersAdverts(int userId) throws DaoException {
+        List<AnimalAdvert> adverts = new ArrayList<>();
+        PreparedStatement statement = null;
+        try {
+            statement = statementBuilder.prepareStatement(SQL_SELECT_USERS_ADVERTS, userId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                adverts.add(EntityProducer.makeAnimalAdvert(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            close(statement);
+        }
+        return adverts;
     }
 }

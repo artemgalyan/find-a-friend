@@ -24,6 +24,13 @@ public class Advert extends Entity {
         public char getValue() {
             return c;
         }
+        public static AdvertType fromValue(String s) {
+            return switch (s) {
+                case "V" -> VOLUNTEER;
+                case "S" -> SITTER;
+                default -> throw new IllegalArgumentException("No advert type for " + s);
+            };
+        }
     }
     private String title;
     private String description;

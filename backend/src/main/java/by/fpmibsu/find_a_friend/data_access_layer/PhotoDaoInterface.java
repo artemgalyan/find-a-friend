@@ -2,6 +2,4 @@ package by.fpmibsu.find_a_friend.data_access_layer;
 
 import by.fpmibsu.find_a_friend.entity.Photo;
 
-public interface PhotoDaoInterface extends Dao<Integer, Photo> {
-    boolean deleteByAnimalAdvertId(int id) throws DaoException;
-}
+public interface PhotoDaoInterface extends Dao<Integer, Photo> {}

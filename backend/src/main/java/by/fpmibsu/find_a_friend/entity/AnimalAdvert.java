@@ -24,8 +24,15 @@ public class AnimalAdvert extends Entity {
             this.c = c;
         }
 
-        public char asChar() {
+        public char getValue() {
             return c;
+        }
+        public static Sex fromValue(String value) {
+            return switch (value) {
+                case "M" -> MALE;
+                case "F" -> FEMALE;
+                default -> throw new IllegalArgumentException("No sex for string " + value);
+            };
         }
     }
 

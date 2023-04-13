@@ -124,19 +124,4 @@ public class PlaceDao implements PlaceDaoInterface {
         }
         return instance;
     }
-
-    @Override
-    public boolean deleteByPlaceId(int id) throws DaoException {
-        PreparedStatement statement = null;
-        try {
-            statement = statementBuilder.prepareStatement(SQL_DELETE_BY_ID, id);
-            int result = statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        }
-        finally {
-            close(statement);
-        }
-        return true;
-    }
 }

@@ -81,7 +81,7 @@ public class UserDao implements UserDaoInterface {
 
     @Override
     public boolean delete(User instance) throws DaoException {
-        return deleteByUserId(instance.getId());
+        return deleteUserById(instance.getId());
     }
 
     @Override
@@ -141,7 +141,7 @@ public class UserDao implements UserDaoInterface {
     }
 
     @Override
-    public boolean deleteByUserId(int id) throws DaoException {
+    public boolean deleteUserById(int id) throws DaoException {
         PreparedStatement statement = null;
         try {
             statement = statementBuilder.prepareStatement(SQL_DELETE_BY_ID, id);

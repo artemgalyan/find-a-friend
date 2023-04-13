@@ -8,21 +8,39 @@ import java.util.List;
 
 public class AdvertDao implements AdvertDaoInterface {
     private static final String SQL_SELECT_ALL_ADVERTS = """
-            EXECUTE SelectAllAdverts
+            SELECT * FROM advert
+            INNER JOIN place p on p.place_id = advert.place_id;
+            """;
+    private static final String SQL_GET_USERS_ADVERTS = """
+            SELECT * FROM advert
+            INNER JOIN place p on p.place_id = advert.place_id
+            WHERE user_id=?
             """;
     private static final String SQL_SELECT_BY_ID = """
-            EXECUTE SelectAdvertById ?
+            SELECT * FROM ADVERT
+            INNER JOIN place p on p.place_id = advert.place_id
+            WHERE advert_id=?;
             """;
     private static final String SQL_INSERT_ADVERT = """
-            EXECUTE InsertAdvert ?, ?, ?, ?, ?, ?, ?, ?, ?;
+            INSERT INTO advert(advert_type, title, description, creation_date, place_id, user_id)
+            VALUES (?, ?, ?, ?, ?, ?);
              """;
     private static final String SQL_UPDATE_ADVERT = """
-            EXECUTE UpdateAdvert ?, ?, ?, ?, ?, ?, ?, ?
+            DECLARE @id INT = ?
+            UPDATE advert
+            SET title=?,
+                description=?,
+                creation_date=?,
+                place_id=?,
+                user_id=?
+            WHERE advert_id = @id;
             """;
     private static final String SQL_DELETE_ADVERT_BY_USER_ID = """
-            EXECUTE DeleteAdvertByUserId ?""";
+            DELETE FROM advert
+            WHERE user_id=?""";
     private static final String SQL_DELETE_BY_ID = """
-            EXECUTE DeleteAdvertById ?""";
+            DELETE FROM advert
+            WHERE advert_id=?""";
 
     private final Connection connection;
     private final StatementBuilder statementBuilder;
@@ -88,16 +106,12 @@ public class AdvertDao implements AdvertDaoInterface {
     public boolean create(Advert instance) throws DaoException {
         PreparedStatement statement = null;
         try {
-            var place = instance.getPlace();
             statement = statementBuilder.prepareStatement(SQL_INSERT_ADVERT,
                     instance.getAdvertType().getValue(),
                     instance.getTitle(),
                     instance.getDescription(),
                     instance.getCreationDate(),
-                    place.getCountry(),
-                    place.getRegion(),
-                    place.getCity(),
-                    place.getDistrict(),
+                    instance.getPlace().getId(),
                     instance.getOwner().getId());
             statement.executeUpdate();
             return true;
@@ -112,16 +126,13 @@ public class AdvertDao implements AdvertDaoInterface {
     public Advert update(Advert instance) throws DaoException {
         PreparedStatement statement = null;
         try {
-            var place = instance.getPlace();
-            statement = statementBuilder.prepareStatement(SQL_INSERT_ADVERT,
+            statement = statementBuilder.prepareStatement(SQL_UPDATE_ADVERT,
                     instance.getId(),
                     instance.getTitle(),
                     instance.getDescription(),
                     instance.getCreationDate(),
-                    place.getCountry(),
-                    place.getRegion(),
-                    place.getCity(),
-                    place.getDistrict());
+                    instance.getPlace().getId(),
+                    instance.getOwner().getId());
             statement.executeUpdate();
             return instance;
         } catch (SQLException e) {
@@ -143,5 +154,23 @@ public class AdvertDao implements AdvertDaoInterface {
             close(statement);
         }
         return true;
+    }
+
+    @Override
+    public List<Advert> getUsersAdverts(int userId) throws DaoException {
+        List<Advert> adverts = new ArrayList<>();
+        PreparedStatement statement = null;
+        try {
+            statement = statementBuilder.prepareStatement(SQL_GET_USERS_ADVERTS, userId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                adverts.add(EntityProducer.makeAdvert(resultSet));
+            }
+        } catch (SQLException e) {
+            throw new DaoException("", e);
+        } finally {
+            close(statement);
+        }
+        return adverts;
     }
 }

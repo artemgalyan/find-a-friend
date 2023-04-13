@@ -6,23 +6,35 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class EntityProducer {
-    public static Advert makeAdvert(ResultSet set) {
-        return null;
+    public static Advert makeAdvert(ResultSet set) throws SQLException {
+        var user = new User();
+        user.setId(set.getInt("user_id"));
+        return new Advert(
+                set.getInt("advert_id"),
+                set.getString("title"),
+                set.getString("description"),
+                set.getDate("creation_date"),
+                EntityProducer.makePlace(set),
+                user,
+                Advert.AdvertType.fromValue(set.getString("advert_type"))
+        );
     }
 
     public static AnimalAdvert makeAnimalAdvert(ResultSet set) throws SQLException {
+        var user = new User();
+        user.setId(set.getInt("user_id"));
         return new AnimalAdvert(
                 set.getInt("animal_advert_id"),
                 set.getString("title"),
                 set.getString("description"),
                 set.getString("name"),
                 null,
-                makeUser(set),
+                user,
                 set.getDate("creation_date"),
                 makePlace(set),
                 set.getDate("birthday"),
-                "M".equals(set.getString("sex")) ? AnimalAdvert.Sex.MALE : AnimalAdvert.Sex.FEMALE,
-                "T".equals(set.getString("is_castrated"))
+                AnimalAdvert.Sex.fromValue(set.getString("sex")),
+                booleanFromString(set.getString("is_castrated"))
         );
     }
 
@@ -69,5 +81,9 @@ public class EntityProducer {
                 set.getString("login"),
                 set.getString("password")
         );
+    }
+
+    private static boolean booleanFromString(String s) {
+        return "T".equals(s);
     }
 }

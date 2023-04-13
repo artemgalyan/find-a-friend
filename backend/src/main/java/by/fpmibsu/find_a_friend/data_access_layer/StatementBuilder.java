@@ -40,7 +40,7 @@ public class StatementBuilder {
             return;
         }
         if (o instanceof Boolean b) {
-            statement.setInt(index, b ? 1 : 0);
+            statement.setInt(index, b ? 'T' : 'F');
             return;
         }
 
