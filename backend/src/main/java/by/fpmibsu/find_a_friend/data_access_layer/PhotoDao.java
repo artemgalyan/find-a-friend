@@ -139,4 +139,9 @@ public class PhotoDao implements PhotoDaoInterface {
     public List<Photo> getAdvertPhotos(int advertId) throws DaoException {
         return null;
     }
+
+    @Override
+    public void create(List<Photo> photos) {
+
+    }
 }

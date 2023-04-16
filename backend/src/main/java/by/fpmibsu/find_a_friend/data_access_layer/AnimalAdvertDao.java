@@ -13,7 +13,7 @@ public class AnimalAdvertDao implements AnimalAdvertDaoInterface {
             LEFT JOIN animal_type a on a.animal_type_id = animal_advert.animal_type_id
             INNER JOIN place p on animal_advert.place_id = p.place_id""";
 
-    private static String SQL_SELECT_USERS_ADVERTS = """
+    private static final String SQL_SELECT_USERS_ADVERTS = """
                 SELECT *
                     FROM animal_advert
                     LEFT JOIN animal_type a on a.animal_type_id = animal_advert.animal_type_id
