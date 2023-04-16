@@ -39,7 +39,7 @@ public class EntityProducer {
     }
 
     public static Photo makePhoto(ResultSet set) throws SQLException {
-        Photo photo = new Photo(null);
+        Photo photo = new Photo(null, set.getInt("advert_id"));
         photo.setId(set.getInt("photo_id"));
         photo.setData(set.getBytes("data"));
         return photo;

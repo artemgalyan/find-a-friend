@@ -43,6 +43,10 @@ public class StatementBuilder {
             statement.setInt(index, b ? 'T' : 'F');
             return;
         }
+        if (o instanceof Character ch) {
+            statement.setString(index, Character.toString(ch));
+            return;
+        }
 
         throw new UnsupportedOperationException("No conversion for type " + o.getClass().getName());
     }

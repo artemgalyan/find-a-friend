@@ -9,7 +9,7 @@ import java.util.List;
 
 public class PhotoDao implements PhotoDaoInterface {
     private static final String SQL_SELECT_ALL_PHOTO = """
-            SELECT photo_id, data, animal_advert_id.place_id
+            SELECT photo_id, data, animal_advert.place_id
             FROM photo
                 LEFT JOIN animal_advert ON photo.animal_advert_id = animal_advert.animal_advert_id""";
     private static final String SQL_SELECT_BY_ID = """
@@ -133,5 +133,10 @@ public class PhotoDao implements PhotoDaoInterface {
             close(statement);
         }
         return true;
+    }
+
+    @Override
+    public List<Photo> getAdvertPhotos(int advertId) throws DaoException {
+        return null;
     }
 }

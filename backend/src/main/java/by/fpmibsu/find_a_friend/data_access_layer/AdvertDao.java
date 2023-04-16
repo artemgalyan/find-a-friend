@@ -17,7 +17,7 @@ public class AdvertDao implements AdvertDaoInterface {
             WHERE user_id=?
             """;
     private static final String SQL_SELECT_BY_ID = """
-            SELECT * FROM ADVERT
+            SELECT * FROM advert
             INNER JOIN place p on p.place_id = advert.place_id
             WHERE advert_id=?;
             """;
@@ -72,14 +72,16 @@ public class AdvertDao implements AdvertDaoInterface {
     public Advert getEntityById(Integer id) throws DaoException {
         PreparedStatement statement = null;
         try {
-            statement = statementBuilder
-                    .prepareStatement(SQL_SELECT_BY_ID, id);
+            statement = statementBuilder.prepareStatement(SQL_SELECT_BY_ID, id);
             var resultSet = statement.executeQuery();
-            return EntityProducer.makeAdvert(resultSet);
+            if (resultSet.next()) {
+                return EntityProducer.makeAdvert(resultSet);
+            }
+            return null;
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            close(connection);
+            close(statement);
         }
     }
 

@@ -72,7 +72,7 @@ public class PlaceDao implements PlaceDaoInterface {
 
     @Override
     public boolean delete(Place instance) throws DaoException {
-        return deleteByPlaceId(instance.getId());
+        return false;
     }
 
     @Override

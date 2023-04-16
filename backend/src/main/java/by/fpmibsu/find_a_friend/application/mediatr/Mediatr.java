@@ -1,7 +1,7 @@
 package by.fpmibsu.find_a_friend.application.mediatr;
 
 import by.fpmibsu.find_a_friend.application.serviceproviders.ServiceProvider;
-import by.fpmibsu.find_a_friend.utils.ObjectConstructor;
+import by.fpmibsu.find_a_friend.application.utils.ObjectConstructor;
 
 public class Mediatr {
     public Mediatr(ServiceProvider serviceProvider, HandlersDataList handlersDataList) {

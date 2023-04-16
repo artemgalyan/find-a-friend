@@ -1,4 +1,4 @@
-package by.fpmibsu.find_a_friend.utils;
+package by.fpmibsu.find_a_friend.application.utils;
 
 import by.fpmibsu.find_a_friend.application.serviceproviders.ServiceProvider;
 

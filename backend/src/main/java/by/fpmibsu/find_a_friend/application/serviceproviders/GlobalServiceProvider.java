@@ -1,8 +1,6 @@
 package by.fpmibsu.find_a_friend.application.serviceproviders;
 
-import by.fpmibsu.find_a_friend.utils.ObjectConstructor;
-
-import by.fpmibsu.find_a_friend.application.serviceproviders.ScopedServiceProvider;
+import by.fpmibsu.find_a_friend.application.utils.ObjectConstructor;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
