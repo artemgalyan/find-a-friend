@@ -18,6 +18,11 @@ public class UserShelterDao implements UserShelterDaoInterface {
             DELETE FROM user_shelter WHERE shelter_id = ?""";
     private static final String SQL_REMOVE_USER = """
             DELETE FROM user_shelter WHERE user_id = ?""";
+
+    private static final String SQL_SELECT_USER_ID_BY_SHELTER_ID = """
+            SELECT user_id
+            FROM user_shelter
+            WHERE shelter_id=?""";
     private final Connection connection;
     private final StatementBuilder builder;
 
@@ -89,6 +94,24 @@ public class UserShelterDao implements UserShelterDaoInterface {
         try {
             statement = builder.prepareStatement(SQL_REMOVE_USER, userId);
             statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            close(statement);
+        }
+    }
+
+    @Override
+    public List<Integer> getUsersId(int shelter_id) throws DaoException {
+        List<Integer> result = new ArrayList<>();
+        PreparedStatement statement = null;
+        try {
+            statement = builder.prepareStatement(SQL_SELECT_USER_ID_BY_SHELTER_ID);
+            var set = statement.executeQuery();
+            while (set.next()) {
+                result.add(set.getInt("user_id"));
+            }
+            return result;
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {

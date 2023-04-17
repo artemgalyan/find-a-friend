@@ -36,6 +36,8 @@ public interface UserShelterDaoInterface {
     void removeAll(int shelterId) throws DaoException;
     void removeUser(int userId) throws DaoException;
 
+    List<Integer> getUsersId(int shelter_id) throws DaoException;
+
     default void close(Statement statement) {
         if (statement == null) {
             return;
