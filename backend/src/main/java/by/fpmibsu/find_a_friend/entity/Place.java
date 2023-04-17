@@ -14,6 +14,13 @@ public class Place extends Entity {
         this.district = district;
     }
 
+    public Place( String country, String region, String city, String district) {
+        this.country = country;
+        this.region = region;
+        this.city = city;
+        this.district = district;
+    }
+
     public Place() {}
 
     public String getCountry() {

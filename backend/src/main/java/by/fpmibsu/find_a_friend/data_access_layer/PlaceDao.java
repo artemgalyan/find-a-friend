@@ -115,7 +115,8 @@ public class PlaceDao implements PlaceDaoInterface {
                     instance.getCountry(),
                     instance.getRegion(),
                     instance.getCity(),
-                    instance.getDistrict());
+                    instance.getDistrict(),
+                    instance.getId());
             int result = statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
