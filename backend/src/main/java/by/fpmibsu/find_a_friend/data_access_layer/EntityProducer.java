@@ -58,7 +58,7 @@ public class EntityProducer {
 
     public static Shelter makeShelter(ResultSet set) throws SQLException {
         return new Shelter(
-                set.getInt("id"),
+                set.getInt("shelter_id"),
                 set.getString("name"),
                 null,
                 null,
