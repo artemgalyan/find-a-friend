@@ -19,6 +19,13 @@ public class Shelter extends Entity {
         this.place = place;
     }
 
+    public Shelter(String name, List<User> administrators, List<AnimalAdvert> animalAdverts, Place place) {
+        this.name = name;
+        this.administrators = administrators;
+        this.animalAdverts = animalAdverts;
+        this.place = place;
+    }
+
     public String getName() {
         return name;
     }
@@ -49,5 +56,16 @@ public class Shelter extends Entity {
 
     public void setPlace(Place place) {
         this.place = place;
+    }
+
+    @Override
+    public String toString() {
+        return "Shelter{" +
+                "name='" + name + '\'' +
+                ", administrators=" + administrators +
+                ", animalAdverts=" + animalAdverts +
+                ", place=" + place.toString() +
+                ", id=" + id +
+                '}';
     }
 }
