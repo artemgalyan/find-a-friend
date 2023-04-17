@@ -45,7 +45,7 @@ public class PlaceDao implements PlaceDaoInterface {
                 places.add(EntityProducer.makePlace(resultSet));
             }
         } catch (SQLException e) {
-            throw new DaoException("", e);
+            throw new DaoException(e);
         } finally {
             close(statement);
         }
@@ -64,7 +64,7 @@ public class PlaceDao implements PlaceDaoInterface {
             }
             return EntityProducer.makePlace(resultSet);
         } catch (SQLException e) {
-            throw new DaoException("", e);
+            throw new DaoException(e);
         } finally {
             close(statement);
         }
@@ -72,7 +72,7 @@ public class PlaceDao implements PlaceDaoInterface {
 
     @Override
     public boolean delete(Place instance) throws DaoException {
-        return false;
+        return delete(instance.getId());
     }
 
     @Override
@@ -100,7 +100,7 @@ public class PlaceDao implements PlaceDaoInterface {
                     instance.getDistrict());
             int result = statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DaoException("", e);
+            throw new DaoException(e);
         } finally {
             close(statement);
         }
