@@ -142,7 +142,7 @@ public class AnimalAdvertDao implements AnimalAdvertDaoInterface {
     }
 
     @Override
-    public AnimalAdvert update(AnimalAdvert instance) throws DaoException {
+    public  AnimalAdvert update(AnimalAdvert instance) throws DaoException {
         PreparedStatement statement = null;
         try {
             statement = statementBuilder.prepareStatement(SQL_UPDATE_ANIMALADVERT,
