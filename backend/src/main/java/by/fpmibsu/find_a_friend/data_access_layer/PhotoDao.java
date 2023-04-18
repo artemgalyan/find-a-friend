@@ -1,6 +1,5 @@
 package by.fpmibsu.find_a_friend.data_access_layer;
 
-import by.fpmibsu.find_a_friend.entity.Advert;
 import by.fpmibsu.find_a_friend.entity.Photo;
 
 import java.sql.*;
@@ -9,24 +8,27 @@ import java.util.List;
 
 public class PhotoDao implements PhotoDaoInterface {
     private static final String SQL_SELECT_ALL_PHOTO = """
-            SELECT photo_id, data, animal_advert.place_id
+            SELECT photo_id, data, animal_advert_id
+            FROM photo""";
+    private static final String SQL_SELECT_BY_PHOTO_ID = """
+            SELECT photo_id, data, animal_advert_id
             FROM photo
-                LEFT JOIN animal_advert ON photo.animal_advert_id = animal_advert.animal_advert_id""";
-    private static final String SQL_SELECT_BY_ID = """
-            SELECT photo_id, data, animal_advert_id.place_id
-            FROM photo
-                LEFT JOIN animal_advert ON animal_advert.animal_advert_id = photo.animal_advert_id
-                WHERE animal_advert_id=?""";
+            WHERE photo_id=?""";
     private static final String SQL_INSERT_PHOTO = """
-            INSERT INTO shelter VALUES(?)""";
-    private static final String SQL_DELETE_PHOTO = """
+            INSERT INTO shelter VALUES(?, ?)""";
+    private static final String SQL_DELETE_PHOTO_BY_ID = """
             DELETE
             FROM photo
             WHERE photo_id=?""";
+
+    private static final String SQL_SELECT_PHOTO_BY_ANIMAL_ADVERT_ID = """
+            SELECT photo_id, data, animal_advert_id
+            FROM photo
+            WHERE animal_advert_id=?""";
     private static final String SQL_DELETE_PHOTO_BY_ANIMAL_ADVERT_ID = """
-            EXECUTE DeletePhotoByAnimalAdvertId ?""";
-    private static final String SQL_DELETE_BY_ID = """
-            EXECUTE DeletePhotoById ?""";
+            DELETE 
+            FROM photo
+            WHERE animal_advert_id=?""";
     private static final String SQL_UPDATE = """
             UPDATE photo
             SET data=?,
@@ -62,7 +64,7 @@ public class PhotoDao implements PhotoDaoInterface {
         PreparedStatement statement = null;
         try {
             statement = statementBuilder
-                    .prepareStatement(SQL_SELECT_BY_ID, id);
+                    .prepareStatement(SQL_SELECT_BY_PHOTO_ID, id);
             var resultSet = statement.executeQuery();
             return EntityProducer.makePhoto(resultSet);
         } catch (SQLException e) {
@@ -81,7 +83,7 @@ public class PhotoDao implements PhotoDaoInterface {
     public boolean delete(Integer value) throws DaoException {
         PreparedStatement statement = null;
         try {
-            statement = statementBuilder.prepareStatement(SQL_DELETE_BY_ID, value);
+            statement = statementBuilder.prepareStatement(SQL_DELETE_PHOTO_BY_ID, value);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -96,10 +98,10 @@ public class PhotoDao implements PhotoDaoInterface {
         PreparedStatement statement = null;
         try {
             statement = statementBuilder.prepareStatement(SQL_INSERT_PHOTO,
-                    instance.getData());
+                    instance.getData(), instance.getAdvertId());
             int result = statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DaoException("", e);
+            throw new DaoException(e);
         } finally {
             close(statement);
         }
@@ -111,7 +113,7 @@ public class PhotoDao implements PhotoDaoInterface {
         PreparedStatement statement = null;
         try {
             statement = statementBuilder.prepareStatement(SQL_UPDATE,
-                    instance.getData());
+                    instance.getData(), instance.getId());
             int result = statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -137,11 +139,27 @@ public class PhotoDao implements PhotoDaoInterface {
 
     @Override
     public List<Photo> getAdvertPhotos(int advertId) throws DaoException {
-        return null;
+        PreparedStatement statement = null;
+        try {
+            List<Photo> photos = new ArrayList<>();
+            statement = statementBuilder
+                    .prepareStatement(SQL_SELECT_PHOTO_BY_ANIMAL_ADVERT_ID, advertId);
+            var resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                photos.add(EntityProducer.makePhoto(resultSet));
+            }
+            return photos;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            close(connection);
+        }
     }
 
     @Override
-    public void create(List<Photo> photos) {
-
+    public void create(List<Photo> photos) throws DaoException {
+        for(int i = 0; i < photos.size(); i++){
+            create(photos.get(i));
+        }
     }
 }
