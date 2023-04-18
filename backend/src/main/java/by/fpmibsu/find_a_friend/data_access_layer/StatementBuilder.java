@@ -47,6 +47,10 @@ public class StatementBuilder {
             statement.setString(index, Character.toString(ch));
             return;
         }
+        if (o instanceof byte[] bytes) {
+            statement.setBytes(index, bytes);
+            return;
+        }
 
         throw new UnsupportedOperationException("No conversion for type " + o.getClass().getName());
     }
