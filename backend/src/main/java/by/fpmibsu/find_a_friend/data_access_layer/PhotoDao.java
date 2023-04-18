@@ -15,7 +15,7 @@ public class PhotoDao implements PhotoDaoInterface {
             FROM photo
             WHERE photo_id=?""";
     private static final String SQL_INSERT_PHOTO = """
-            INSERT INTO shelter VALUES(?, ?)""";
+            INSERT INTO photo VALUES(?, ?)""";
     private static final String SQL_DELETE_PHOTO_BY_ID = """
             DELETE
             FROM photo
@@ -31,7 +31,7 @@ public class PhotoDao implements PhotoDaoInterface {
             WHERE animal_advert_id=?""";
     private static final String SQL_UPDATE = """
             UPDATE photo
-            SET data=?,
+            SET data=?
             WHERE photo_id=?
             """;
     private final Connection connection;
@@ -41,6 +41,7 @@ public class PhotoDao implements PhotoDaoInterface {
         this.connection = connection;
         this.statementBuilder = new StatementBuilder(connection);
     }
+
     @Override
     public List<Photo> getAll() throws DaoException {
         List<Photo> photo = new ArrayList<>();
@@ -145,7 +146,7 @@ public class PhotoDao implements PhotoDaoInterface {
             statement = statementBuilder
                     .prepareStatement(SQL_SELECT_PHOTO_BY_ANIMAL_ADVERT_ID, advertId);
             var resultSet = statement.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 photos.add(EntityProducer.makePhoto(resultSet));
             }
             return photos;
@@ -158,7 +159,7 @@ public class PhotoDao implements PhotoDaoInterface {
 
     @Override
     public void create(List<Photo> photos) throws DaoException {
-        for(int i = 0; i < photos.size(); i++){
+        for (int i = 0; i < photos.size(); i++) {
             create(photos.get(i));
         }
     }
