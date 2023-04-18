@@ -51,24 +51,11 @@ public class ShelterDao implements ShelterDaoInterface {
         try {
             statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(SQL_SELECT_ALL_SHELTERS);
-            UserShelterDao userShelterDao = new UserShelterDao(connection);
             while (resultSet.next()) {
-                Shelter shelter = EntityProducer.makeShelter(resultSet);
-                List<Integer> user_ides = userShelterDao.getUsersId(shelter.getId());
-                List<User> administrators = new ArrayList<>();
-                List<AnimalAdvert> animalAdverts = new ArrayList<>();
-                UserDao userDao = new UserDao(connection);
-                AnimalAdvertDao animalAdvertDao = new AnimalAdvertDao(connection);
-                for (int i = 0; i < user_ides.size(); i++) {
-                    administrators.add(userDao.getEntityById(user_ides.get(i)));
-                    animalAdverts.addAll(animalAdvertDao.getUsersAdverts(user_ides.get(i)));
-                }
-                shelter.setAdministrators(administrators);
-                shelter.setAnimalAdverts(animalAdverts);
-                shelters.add(shelter);
+                shelters.add(EntityProducer.makeShelter(resultSet));
             }
         } catch (SQLException e) {
-            throw new DaoException("", e);
+            throw new DaoException(e);
         } finally {
             close(statement);
         }
@@ -85,22 +72,9 @@ public class ShelterDao implements ShelterDaoInterface {
             if (!resultSet.next()) {
                 return null;
             }
-            UserShelterDao userShelterDao = new UserShelterDao(connection);
-            Shelter shelter = EntityProducer.makeShelter(resultSet);
-            List<Integer> user_ides = userShelterDao.getUsersId(shelter.getId());
-            List<User> administrators = new ArrayList<>();
-            List<AnimalAdvert> animalAdverts = new ArrayList<>();
-            UserDao userDao = new UserDao(connection);
-            AnimalAdvertDao animalAdvertDao = new AnimalAdvertDao(connection);
-            for (int i = 0; i < user_ides.size(); i++) {
-                administrators.add(userDao.getEntityById(user_ides.get(i)));
-                animalAdverts.addAll(animalAdvertDao.getUsersAdverts(user_ides.get(i)));
-            }
-            shelter.setAdministrators(administrators);
-            shelter.setAnimalAdverts(animalAdverts);
-            return shelter;
+            return EntityProducer.makeShelter(resultSet);
         } catch (SQLException e) {
-            throw new DaoException("", e);
+            throw new DaoException(e);
         } finally {
             close(statement);
         }
@@ -108,7 +82,7 @@ public class ShelterDao implements ShelterDaoInterface {
 
     @Override
     public boolean delete(Shelter instance) throws DaoException {
-        return false;
+        return delete(instance.getId());
     }
 
     @Override
@@ -126,27 +100,15 @@ public class ShelterDao implements ShelterDaoInterface {
     }
 
     @Override
-    public boolean create(Shelter instance) throws DaoException {///еще адверты и юзеров отправить
+    public boolean create(Shelter instance) throws DaoException {
         PreparedStatement statement = null;
         try {
             statement = statementBuilder.prepareStatement(SQL_INSERT_SHELTER,
                     instance.getPlace().getId(),
                     instance.getName());
             int result = statement.executeUpdate();
-            List<User> administrators = instance.getAdministrators();
-            List<AnimalAdvert> animalAdverts = instance.getAnimalAdverts();
-            UserDao userDao = new UserDao(connection);
-            AnimalAdvertDao animalAdvertDao = new AnimalAdvertDao(connection);
-            UserShelterDao userShelterDao = new UserShelterDao(connection);
-            for (int i = 0; i < administrators.size(); i++) {/////
-                userDao.create(administrators.get(i));///id смещается
-                userShelterDao.add(instance.getId(), administrators.get(i).getId());
-            }
-            for (int i = 0; i < animalAdverts.size(); i++) {
-                animalAdvertDao.create(animalAdverts.get(i));
-            }
         } catch (SQLException e) {
-            throw new DaoException("", e);
+            throw new DaoException(e);
         } finally {
             close(statement);
         }

@@ -1,5 +1,8 @@
 package by.fpmibsu.find_a_friend.entity;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.List;
 
 public class Shelter extends Entity {
@@ -60,12 +63,10 @@ public class Shelter extends Entity {
 
     @Override
     public String toString() {
-        return "Shelter{" +
-                "name='" + name + '\'' +
-                ", administrators=" + administrators +
-                ", animalAdverts=" + animalAdverts +
-                ", place=" + place.toString() +
-                ", id=" + id +
-                '}';
+        try {
+            return new ObjectMapper().writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

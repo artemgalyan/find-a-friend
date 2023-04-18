@@ -102,11 +102,11 @@ public class UserShelterDao implements UserShelterDaoInterface {
     }
 
     @Override
-    public List<Integer> getUsersId(int shelter_id) throws DaoException {
+    public List<Integer> getUsersId(int shelterId) throws DaoException {
         List<Integer> result = new ArrayList<>();
         PreparedStatement statement = null;
         try {
-            statement = builder.prepareStatement(SQL_SELECT_USER_ID_BY_SHELTER_ID);
+            statement = builder.prepareStatement(SQL_SELECT_USER_ID_BY_SHELTER_ID, shelterId);
             var set = statement.executeQuery();
             while (set.next()) {
                 result.add(set.getInt("user_id"));
