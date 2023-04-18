@@ -7,22 +7,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserShelterDao implements UserShelterDaoInterface {
-    private static final String SQL_ADD_CONNECTION = """
-            INSERT INTO user_shelter(user_id, shelter_id) VALUES (?, ?)
+    private static final String SQL_INSERT_SHELTER = """
+            INSERT INTO user_shelter(user_id, shelter_id) 
+            VALUES (?, ?)
             """;
     private static final String SQL_SELECT_ALL = """
-            SELECT * FROM user_shelter""";
+            SELECT * FROM user_shelter
+            """;
     private static final String SQL_REMOVE_BY_TWO = """
-            DELETE FROM user_shelter WHERE shelter_id = ? AND user_id = ?""";
+            DELETE FROM user_shelter 
+            WHERE shelter_id=? AND user_id=?
+            """;
     private static final String SQL_REMOVE_SHELTER = """
-            DELETE FROM user_shelter WHERE shelter_id = ?""";
+            DELETE FROM user_shelter 
+            WHERE shelter_id=?
+            """;
     private static final String SQL_REMOVE_USER = """
-            DELETE FROM user_shelter WHERE user_id = ?""";
+            DELETE FROM user_shelter 
+            WHERE user_id=?
+            """;
 
-    private static final String SQL_SELECT_USER_ID_BY_SHELTER_ID = """
+    private static final String SQL_SELECT_USER_ID = """
             SELECT user_id
             FROM user_shelter
-            WHERE shelter_id=?""";
+            WHERE shelter_id=?
+            """;
     private final Connection connection;
     private final StatementBuilder builder;
 
@@ -53,7 +62,7 @@ public class UserShelterDao implements UserShelterDaoInterface {
     public void add(int shelterId, int userId) throws DaoException {
         PreparedStatement statement = null;
         try {
-            statement = builder.prepareStatement(SQL_ADD_CONNECTION, userId, shelterId);
+            statement = builder.prepareStatement(SQL_INSERT_SHELTER, userId, shelterId);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -106,7 +115,7 @@ public class UserShelterDao implements UserShelterDaoInterface {
         List<Integer> result = new ArrayList<>();
         PreparedStatement statement = null;
         try {
-            statement = builder.prepareStatement(SQL_SELECT_USER_ID_BY_SHELTER_ID, shelterId);
+            statement = builder.prepareStatement(SQL_SELECT_USER_ID, shelterId);
             var set = statement.executeQuery();
             while (set.next()) {
                 result.add(set.getInt("user_id"));
