@@ -87,3 +87,15 @@ CREATE TABLE photo
     animal_advert_id INT,
     FOREIGN KEY (animal_advert_id) REFERENCES animal_advert (animal_advert_id) ON DELETE CASCADE
 );
+
+/*INSERT INTO photo(animal_advert_id, data)
+SELECT 6, CONVERT(varbinary(MAX), 'D:\Subsidiary\sun.jpg');
+
+INSERT INTO photo(animal_advert_id, data)
+SELECT 6, CONVERT(varbinary(MAX), 'D:\Subsidiary\sun.jpg');
+
+INSERT INTO photo(animal_advert_id, data)
+SELECT 7, CONVERT(varbinary(MAX), 'D:\Subsidiary\sun.jpg');
+
+INSERT INTO photo(animal_advert_id, data)
+SELECT 8, CONVERT(varbinary(MAX), 'D:\Subsidiary\sun.jpg');*/
