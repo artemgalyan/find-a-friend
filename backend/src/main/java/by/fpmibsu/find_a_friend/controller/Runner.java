@@ -1,13 +1,7 @@
 package by.fpmibsu.find_a_friend.controller;
 
-import by.fpmibsu.find_a_friend.data_access_layer.AdvertDao;
-import by.fpmibsu.find_a_friend.data_access_layer.DaoException;
-import by.fpmibsu.find_a_friend.data_access_layer.PlaceDao;
-import by.fpmibsu.find_a_friend.data_access_layer.UserDao;
-import by.fpmibsu.find_a_friend.entity.Advert;
-import by.fpmibsu.find_a_friend.entity.Contacts;
-import by.fpmibsu.find_a_friend.entity.Place;
-import by.fpmibsu.find_a_friend.entity.User;
+import by.fpmibsu.find_a_friend.data_access_layer.*;
+import by.fpmibsu.find_a_friend.entity.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.FileReader;
@@ -16,6 +10,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -34,15 +29,16 @@ public class Runner {
         Connection connection;
         try {
             connection = DriverManager.getConnection(dbPath);
-            var usersDao = new UserDao(connection);
-            var user = usersDao.getAll().get(0);
-            var placeDao = new PlaceDao(connection);
-            var place = placeDao.getAll().get(0);
-            var advert = new Advert(1, "New Title", "description", Date.from(Instant.now()), place, user, Advert.AdvertType.VOLUNTEER);
-            var obj = new AdvertDao(connection).create(advert);
-            System.out.println(new ObjectMapper().writeValueAsString(obj));
+            var user = new UserDao(connection).getAll().get(0);
+            var place = new PlaceDao(connection).getAll().get(0);
+            var advert = new AnimalAdvert(1, "title", "descr", "cat", new ArrayList<>(), user, Date.from(Instant.now()), place, Date.from(Instant.now()), AnimalAdvert.Sex.MALE, false);
+            new AnimalAdvertDao(connection).create(advert);
+            var photo = new Photo("what a cool text".getBytes(), 2);
+            new PhotoDao(connection).create(photo);
+
         } catch (Exception e) {
             System.err.println("Failed to connect to the database.");
+            e.printStackTrace();
             return;
         }
         try {

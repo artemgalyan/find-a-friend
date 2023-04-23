@@ -80,4 +80,8 @@ public class ApplicationBuilder {
     public void setBacklog(int backlog) {
         this.backlog = backlog;
     }
+
+    public GlobalServiceProvider getServiceProvider() {
+        return serviceProvider;
+    }
 }

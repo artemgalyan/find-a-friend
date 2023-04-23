@@ -16,7 +16,9 @@ public class Application {
     private final GlobalServiceProvider globalServiceProvider;
     private final List<RequestPipeLineHandler> pipeLineHandlers;
 
-    public Application(InetSocketAddress address, int backlog, List<EndpointInfo<?, ?>> endpointInfos, GlobalServiceProvider globalServiceProvider, List<RequestPipeLineHandler> pipeLineHandlers, HandlersDataList handlersDataList) {
+    public Application(InetSocketAddress address, int backlog, List<EndpointInfo<?, ?>> endpointInfos,
+                       GlobalServiceProvider globalServiceProvider, List<RequestPipeLineHandler> pipeLineHandlers,
+                       HandlersDataList handlersDataList) {
         this.pipeLineHandlers = pipeLineHandlers;
         try {
             this.httpServer = HttpServer.create(address, backlog);

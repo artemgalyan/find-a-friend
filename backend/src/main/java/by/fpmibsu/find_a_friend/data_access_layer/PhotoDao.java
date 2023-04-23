@@ -26,7 +26,7 @@ public class PhotoDao implements PhotoDaoInterface {
             FROM photo
             WHERE animal_advert_id=?""";
     private static final String SQL_DELETE_PHOTO_BY_ANIMAL_ADVERT_ID = """
-            DELETE 
+            DELETE
             FROM photo
             WHERE animal_advert_id=?""";
     private static final String SQL_UPDATE = """
@@ -67,6 +67,7 @@ public class PhotoDao implements PhotoDaoInterface {
             statement = statementBuilder
                     .prepareStatement(SQL_SELECT_BY_PHOTO_ID, id);
             var resultSet = statement.executeQuery();
+            resultSet.next();
             return EntityProducer.makePhoto(resultSet);
         } catch (SQLException e) {
             throw new DaoException(e);

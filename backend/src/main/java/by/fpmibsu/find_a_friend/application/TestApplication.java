@@ -89,7 +89,9 @@ public class TestApplication {
         }
     }
 
-    public static class GetUsersRequest extends Request<User[]> {}
+    public static class GetUsersRequest extends Request<User[]> {
+    }
+
     public static class GetUsersHandler extends RequestHandler<User[], GetUsersRequest> {
         private final UserDaoInterface userDao;
 
@@ -112,7 +114,7 @@ public class TestApplication {
     public interface TestController extends Controller {
         @Endpoint(route = "places", method = HttpMethod.GET, requestHandler = GetPlacesRequestHandler.class)
         Place[] getPlaces(GetPlacesRequest request);
-        
+
         @Endpoint(route = "count", method = HttpMethod.GET, requestHandler = CountHandler.class)
         String getCount(CountRequest request);
 
@@ -149,12 +151,11 @@ public class TestApplication {
         }
 
         var builder = new ApplicationBuilder();
+        DaoRegisterer.register(builder.getServiceProvider());
         builder.services()
                 .addSingleton(Connection.class, () -> connection)
-                .addScoped(PlaceDaoInterface.class, PlaceDao.class)
                 .addSingleton(CountHolder.class)
-                .addSingleton(PasswordHasher.class, SimplePasswordHasher::new)
-                .addScoped(UserDaoInterface.class, UserDao.class);
+                .addSingleton(PasswordHasher.class, SimplePasswordHasher::new);
         builder.mapController(TestController.class);
         builder.setPort(serverPort);
         builder.addPipeLineHandler(new HttpExchangeAccessor());
