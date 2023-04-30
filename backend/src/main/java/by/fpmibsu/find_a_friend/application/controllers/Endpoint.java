@@ -1,6 +1,7 @@
 package by.fpmibsu.find_a_friend.application.controllers;
 
 import by.fpmibsu.find_a_friend.application.HttpMethod;
+import by.fpmibsu.find_a_friend.application.endpoints.RequestData;
 import by.fpmibsu.find_a_friend.application.mediatr.RequestHandler;
 
 import java.lang.annotation.ElementType;
@@ -14,4 +15,5 @@ public @interface Endpoint {
     String route();
     HttpMethod method() default HttpMethod.GET;
     Class<? extends RequestHandler<?, ?>> requestHandler();
+    RequestData requestData() default RequestData.FROM_BODY;
 }

@@ -6,9 +6,9 @@ import by.fpmibsu.find_a_friend.application.controllers.Endpoint;
 import by.fpmibsu.find_a_friend.data_access_layer.*;
 import by.fpmibsu.find_a_friend.entity.Place;
 import by.fpmibsu.find_a_friend.entity.User;
-import by.fpmibsu.find_a_friend.services.HttpExchangeAccessor;
 import by.fpmibsu.find_a_friend.application.mediatr.Request;
 import by.fpmibsu.find_a_friend.application.mediatr.RequestHandler;
+import by.fpmibsu.find_a_friend.services.HttpExchangeAccessor;
 import by.fpmibsu.find_a_friend.services.PasswordHasher;
 import by.fpmibsu.find_a_friend.services.SimplePasswordHasher;
 import com.sun.net.httpserver.HttpExchange;
@@ -56,9 +56,9 @@ public class TestApplication {
     }
 
     public static class GetPlacesRequestHandler extends RequestHandler<Place[], GetPlacesRequest> {
-        private final PlaceDaoInterface placeDao;
+        private final PlaceDao placeDao;
 
-        public GetPlacesRequestHandler(PlaceDaoInterface placeDao) {
+        public GetPlacesRequestHandler(PlaceDao placeDao) {
             this.placeDao = placeDao;
         }
 
@@ -93,9 +93,9 @@ public class TestApplication {
     }
 
     public static class GetUsersHandler extends RequestHandler<User[], GetUsersRequest> {
-        private final UserDaoInterface userDao;
+        private final UserDao userDao;
 
-        public GetUsersHandler(UserDaoInterface userDao) {
+        public GetUsersHandler(UserDao userDao) {
             this.userDao = userDao;
         }
 
