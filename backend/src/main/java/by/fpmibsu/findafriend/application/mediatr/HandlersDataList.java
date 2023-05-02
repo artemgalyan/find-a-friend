@@ -8,23 +8,21 @@ public class HandlersDataList {
     private static class RequestHandlerInfo<T, R extends Request<? super T>> {
         Class<? extends RequestHandler<T, R>> clazz;
         Class<?> requestType;
-        Class<?> resultType;
 
-        public RequestHandlerInfo(Class<? extends RequestHandler<T, R>> clazz, Class<T> resultType, Class<R> requestType) {
+        public RequestHandlerInfo(Class<? extends RequestHandler<T, R>> clazz, Class<R> requestType) {
             this.clazz = clazz;
             this.requestType = requestType;
-            this.resultType = resultType;
         }
     }
 
     private final List<RequestHandlerInfo<?, ?>> handlers = new ArrayList<>();
 
-    public <T, R extends Request<? super T>> void registerHandler(Class<? extends RequestHandler<T, R>> clazz, Class<T> resultType, Class<R> requestType) {
+    public <T, R extends Request<? super T>> void registerHandler(Class<? extends RequestHandler<T, R>> clazz, Class<R> requestType) {
         if (handlers.stream().anyMatch(h -> h.clazz.equals(clazz) || h.requestType.equals(requestType))) {
             throw new IllegalArgumentException("A handler of this type/for this request is already registered");
         }
 
-        handlers.add(new RequestHandlerInfo<>(clazz, resultType, requestType));
+        handlers.add(new RequestHandlerInfo<>(clazz, requestType));
     }
 
     public Optional<Class<? extends RequestHandler<?, ?>>> findHandler(Class<?> requestClazz) {

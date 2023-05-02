@@ -2,6 +2,9 @@ package by.fpmibsu.findafriend.application.mediatr;
 
 import by.fpmibsu.findafriend.application.serviceproviders.ServiceProvider;
 import by.fpmibsu.findafriend.application.utils.ObjectConstructor;
+import by.fpmibsu.findafriend.dataaccesslayer.DaoException;
+
+import java.sql.SQLException;
 
 public class Mediatr {
     public Mediatr(ServiceProvider serviceProvider, HandlersDataList handlersDataList) {

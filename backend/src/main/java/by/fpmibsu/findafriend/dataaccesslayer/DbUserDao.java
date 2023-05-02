@@ -8,26 +8,24 @@ import java.util.List;
 
 public class DbUserDao implements UserDao {
     private static final String SQL_SELECT_ALL_USERS = """
-            SELECT * FROM [user]
-            LEFT JOIN role ON [user].role_id = role.role_id
-            """;
+            SELECT user_id, [user].name, surname, email, phone_number, login, password, role.role_id, role.name
+            FROM [user]
+                LEFT JOIN role ON [user].role_id = role.role_id""";
     private static final String SQL_SELECT_BY_ID = """
-            SELECT * FROM [user]
-            LEFT JOIN role USING(role_id)
-            WHERE user_id=?
-            """;
+            SELECT user_id, [user].name, surname, email, phone_number, login, password, role.role_id, role.name
+            FROM [user]
+                LEFT JOIN role ON role.role_id = [user].role_id
+                WHERE user_id=?""";
     private static final String SQL_INSERT_USER = """
-            INSERT INTO [user]
-            VALUES(?, ?, ?, ?, ?, ?, ?)
-            """;
+            INSERT INTO [user] VALUES(?,?,?,?,?,?,?)""";
     private static final String SQL_DELETE_USER = """
-            DELETE FROM [user]
-            WHERE user_id=?
-            """;
+            DELETE
+            FROM [user]
+            WHERE user_id=?""";
     public static final String SQL_DELETE_BY_ID = """
-            DELETE FROM advert
-            WHERE user_id=?
-            """;
+            DELETE
+            FROM advert
+            WHERE user_id=?""";
 
     private static final String SQL_UPDATE = """
             UPDATE [user]
@@ -115,7 +113,7 @@ public class DbUserDao implements UserDao {
                     1);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DaoException("", e);
+            throw new DaoException(e);
         } finally {
             close(statement);
         }
@@ -124,21 +122,21 @@ public class DbUserDao implements UserDao {
 
     @Override
     public User update(User instance) throws DaoException {
-        PreparedStatement statement = null;
-        try {
-            statement = statementBuilder.prepareStatement(SQL_UPDATE,
-                    instance.getContacts(),
-                    instance.getAnimalAdverts(),
-                    instance.getAdverts(),
-                    instance.getRole());
-                    instance.getLogin();
-                    instance.getPassword();
-            int result = statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new DaoException(e);
-        } finally {
-            close(statement);
-        }
+//        PreparedStatement statement = null;
+//        try {
+//            statement = statementBuilder.prepareStatement(SQL_UPDATE,
+//                    instance.getContacts(),
+//                    instance.getAnimalAdverts(),
+//                    instance.getAdverts(),
+//                    instance.getRole());
+//                    instance.getLogin();
+//                    instance.getPassword();
+//            int result = statement.executeUpdate();
+//        } catch (SQLException e) {
+//            throw new DaoException(e);
+//        } finally {
+//            close(statement);
+//        }
         return instance;
     }
 
