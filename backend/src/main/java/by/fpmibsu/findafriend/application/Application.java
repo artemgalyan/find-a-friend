@@ -25,7 +25,7 @@ public class Application {
     private static Application setupApplication() {
         var properties = new Properties();
         try {
-            properties.load(new FileReader("D:\\Programming\\4th-semester\\programming-technologies\\find-a-friend\\backend\\config\\config.properties"));
+            properties.load(new FileReader("../conf/config.properties"));
         } catch (IOException exception) {
             System.err.println("Failed to start the app, cannot read config");
             exception.printStackTrace();
