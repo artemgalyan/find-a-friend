@@ -20,4 +20,5 @@ public class TestServlet extends HttpServlet {
         out.write(new ObjectMapper().writeValueAsString(result).getBytes());
         out.flush();
     }
+
 }
