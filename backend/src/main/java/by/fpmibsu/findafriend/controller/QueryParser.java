@@ -14,10 +14,7 @@ public class QueryParser {
         for (String param : params) {
             String[] nameValue = param.split("=");
             String name = nameValue[0];
-            String value;
-            if (nameValue.length == 1) {
-                value = "";
-            } else value = nameValue[1];
+            String value = nameValue.length == 1 ? "" : nameValue[1];
             map.put(name, value);
         }
         return map;
