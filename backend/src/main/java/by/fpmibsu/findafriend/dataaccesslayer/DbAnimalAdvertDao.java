@@ -77,7 +77,7 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
                 adverts.add(EntityProducer.makeAnimalAdvert(resultSet));
             }
         } catch (SQLException e) {
-            throw new DaoException("", e);
+            throw new DaoException(e);
         } finally {
             close(statement);
         }
@@ -86,7 +86,7 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
 
     @Override
     public AnimalAdvert getEntityById(Integer id) throws DaoException {
-        PreparedStatement statement;
+        PreparedStatement statement = null;
         try {
             statement = statementBuilder
                     .prepareStatement(SQL_SELECT_BY_ID, id);
@@ -95,7 +95,7 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            close(connection);
+            close(statement);
         }
     }
 
@@ -142,7 +142,7 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
     }
 
     @Override
-    public  AnimalAdvert update(AnimalAdvert instance) throws DaoException {
+    public AnimalAdvert update(AnimalAdvert instance) throws DaoException {
         PreparedStatement statement = null;
         try {
             statement = statementBuilder.prepareStatement(SQL_UPDATE_ANIMALADVERT,

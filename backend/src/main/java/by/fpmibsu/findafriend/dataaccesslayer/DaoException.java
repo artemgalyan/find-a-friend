@@ -1,6 +1,6 @@
 package by.fpmibsu.findafriend.dataaccesslayer;
 
-public class DaoException extends Exception{
+public class DaoException extends RuntimeException {
     public DaoException(){
     }
     public DaoException(String message){

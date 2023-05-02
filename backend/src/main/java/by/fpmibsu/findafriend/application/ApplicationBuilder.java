@@ -22,8 +22,8 @@ public class ApplicationBuilder {
         return serviceProvider;
     }
 
-    public  <T, R extends Request<? super T>> ApplicationBuilder registerHandler(Class<? extends RequestHandler<T, R>> clazz, Class<T> resultType, Class<R> requestType) {
-        handlersDataList.registerHandler(clazz, resultType, requestType);
+    public  <T, R extends Request<? super T>> ApplicationBuilder registerHandler(Class<? extends RequestHandler<T, R>> clazz, Class<R> requestType) {
+        handlersDataList.registerHandler(clazz, requestType);
         return this;
     }
 

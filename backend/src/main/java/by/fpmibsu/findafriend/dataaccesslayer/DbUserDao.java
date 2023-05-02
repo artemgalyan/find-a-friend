@@ -12,15 +12,15 @@ public class DbUserDao implements UserDao {
             FROM [user]
                 LEFT JOIN role ON [user].role_id = role.role_id""";
     private static final String SQL_SELECT_BY_ID = """
-            SELECT user_id, name, surname, email, phone_number, login, password, role.role_id, role.name
-            FROM user
-                LEFT JOIN role USING(role_id)
+            SELECT user_id, [user].name, surname, email, phone_number, login, password, role.role_id, role.name
+            FROM [user]
+                LEFT JOIN role ON role.role_id = [user].role_id
                 WHERE user_id=?""";
     private static final String SQL_INSERT_USER = """
             INSERT INTO [user] VALUES(?,?,?,?,?,?,?)""";
     private static final String SQL_DELETE_USER = """
             DELETE
-            FROM user
+            FROM [user]
             WHERE user_id=?""";
     public static final String SQL_DELETE_BY_ID = """
             DELETE
@@ -28,7 +28,7 @@ public class DbUserDao implements UserDao {
             WHERE user_id=?""";
 
     private static final String SQL_UPDATE = """
-            UPDATE user
+            UPDATE [user]
             SET contacts=?,
                 region=?,
                 city=?,
@@ -113,7 +113,7 @@ public class DbUserDao implements UserDao {
                     1);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DaoException("", e);
+            throw new DaoException(e);
         } finally {
             close(statement);
         }
