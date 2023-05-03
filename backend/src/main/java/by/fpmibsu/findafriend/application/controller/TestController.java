@@ -1,5 +1,6 @@
 package by.fpmibsu.findafriend.application.controller;
 
+import by.fpmibsu.findafriend.application.HandleResult;
 import by.fpmibsu.findafriend.application.mediatr.Mediatr;
 import by.fpmibsu.findafriend.controller.queries.users.GetUserByIdQuery;
 

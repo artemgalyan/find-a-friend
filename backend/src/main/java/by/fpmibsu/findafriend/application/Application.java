@@ -22,7 +22,7 @@ public class Application {
     public void send(HttpServletRequest request, HttpServletResponse response) {
         // TODO
         EndpointInfo endpoint = null; // найти эндпоинт по запросу
-        var result = ControllerMethodInvoker.invoke(request, response, endpoint, globalServiceProvider.getRequestServiceProvider());
+        HandleResult result = ControllerMethodInvoker.invoke(request, response, endpoint, globalServiceProvider.getRequestServiceProvider());
         /// записать в response
     }
 }

@@ -1,5 +1,7 @@
 package by.fpmibsu.findafriend.application.controller;
 
+import by.fpmibsu.findafriend.application.HandleResult;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 

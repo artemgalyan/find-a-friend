@@ -1,4 +1,4 @@
-package by.fpmibsu.findafriend.application.controller;
+package by.fpmibsu.findafriend.application;
 
 import java.util.Optional;
 
