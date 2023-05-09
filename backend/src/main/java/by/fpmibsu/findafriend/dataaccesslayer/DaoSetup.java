@@ -3,6 +3,7 @@ package by.fpmibsu.findafriend.dataaccesslayer;
 import by.fpmibsu.findafriend.application.ApplicationBuilder;
 import by.fpmibsu.findafriend.application.Setup;
 import by.fpmibsu.findafriend.application.serviceproviders.GlobalServiceProvider;
+import by.fpmibsu.findafriend.application.serviceproviders.ServiceProvider;
 
 public class DaoSetup extends Setup {
     public static final GlobalServiceProvider.ServiceType SERVICE_LIFETIME = GlobalServiceProvider.ServiceType.SCOPED;

@@ -2,6 +2,7 @@ package by.fpmibsu.findafriend.application;
 
 import by.fpmibsu.findafriend.application.controller.Controller;
 import by.fpmibsu.findafriend.application.controller.ControllerMapper;
+import by.fpmibsu.findafriend.application.controller.EndpointInfo;
 import by.fpmibsu.findafriend.application.mediatr.HandlersDataList;
 import by.fpmibsu.findafriend.application.mediatr.Mediatr;
 import by.fpmibsu.findafriend.application.mediatr.Request;
@@ -9,9 +10,13 @@ import by.fpmibsu.findafriend.application.mediatr.RequestHandler;
 import by.fpmibsu.findafriend.application.serviceproviders.DefaultGlobalServiceProvider;
 import by.fpmibsu.findafriend.application.serviceproviders.GlobalServiceProvider;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ApplicationBuilder {
     private final GlobalServiceProvider serviceProvider = new DefaultGlobalServiceProvider();
     private final HandlersDataList handlersDataList = new HandlersDataList();
+    private final List<EndpointInfo> endpointInfos = new ArrayList<>();
 
     public ApplicationBuilder() {
         serviceProvider.addService(HandlersDataList.class, GlobalServiceProvider.ServiceType.SINGLETON, () -> handlersDataList);
@@ -19,8 +24,7 @@ public class ApplicationBuilder {
     }
 
     public Application build() {
-        /// TODO: Передать туда список
-        return new Application(serviceProvider, null);
+        return new Application(serviceProvider, endpointInfos);
     }
 
     public GlobalServiceProvider services() {
@@ -37,9 +41,8 @@ public class ApplicationBuilder {
     }
 
     public ApplicationBuilder mapController(Class<? extends Controller> controller) {
-        /// TODO:
-        var data = ControllerMapper.mapController(controller);
-        /// добавить дату в список, потом передать его объекту приложения
+        List<EndpointInfo> data = ControllerMapper.mapController(controller);
+        endpointInfos.addAll(data);
         return this;
     }
 }

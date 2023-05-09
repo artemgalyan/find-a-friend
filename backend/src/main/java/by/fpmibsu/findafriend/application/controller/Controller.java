@@ -9,20 +9,21 @@ public abstract class Controller {
     protected HttpServletRequest request;
     protected HttpServletResponse response;
 
-    void setRequest(HttpServletRequest request) {
+    public void setRequest(HttpServletRequest request) {
         this.request = request;
     }
 
-    void setResponse(HttpServletResponse response) {
+    public void setResponse(HttpServletResponse response) {
         this.response = response;
     }
 
     protected HandleResult Ok(Object value) {
-        return new HandleResult(200, value);
+        return new HandleResult(HttpServletResponse.SC_OK, value);
     }
 
-    protected HandleResult Ok() {
-        return new HandleResult(200);
+    protected static HandleResult Ok() {
+        return new HandleResult(HttpServletResponse.SC_OK);
     }
     // TODO: Добавить подобные
+    protected static HandleResult NotAuthorized() { return new HandleResult(HttpServletResponse.SC_FORBIDDEN); }
 }

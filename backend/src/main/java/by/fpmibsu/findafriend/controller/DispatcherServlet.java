@@ -3,12 +3,18 @@ package by.fpmibsu.findafriend.controller;
 import by.fpmibsu.findafriend.application.Application;
 import by.fpmibsu.findafriend.application.ApplicationBuilder;
 import by.fpmibsu.findafriend.application.Setup;
+import by.fpmibsu.findafriend.application.controller.HttpMethod;
+import by.fpmibsu.findafriend.application.controller.TestController;
+import by.fpmibsu.findafriend.application.serviceproviders.GlobalServiceProvider;
+import by.fpmibsu.findafriend.controller.controllers.UserController;
 import by.fpmibsu.findafriend.controller.setups.UsersSetup;
 import by.fpmibsu.findafriend.dataaccesslayer.DaoSetup;
+import by.fpmibsu.findafriend.dataaccesslayer.DbUserDao;
 import by.fpmibsu.findafriend.services.PasswordHasher;
 import by.fpmibsu.findafriend.services.SimplePasswordHasher;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +26,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 
+@WebServlet("/*")
 public class DispatcherServlet extends HttpServlet {
     private Application application;
     private static final List<Setup> setups = List.of(new DaoSetup(), new UsersSetup());
@@ -45,6 +52,7 @@ public class DispatcherServlet extends HttpServlet {
         }
         var builder = new ApplicationBuilder();
         setups.forEach(s -> s.applyTo(builder));
+        builder.mapController(DemoController.class);
         builder.services()
                 .addSingleton(Connection.class, () -> connection)
                 .addSingleton(PasswordHasher.class, SimplePasswordHasher.class);

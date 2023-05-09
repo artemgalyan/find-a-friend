@@ -13,12 +13,14 @@ public class TestController extends Controller {
     }
 
     @Endpoint(path = "/hello", method = HttpMethod.GET)
-    public HandleResult handleGet(@FromBody int x, @FromQuery int y) {
+    public HandleResult handleGet(@FromQuery(parameterName = "x") int x,
+                                  @FromQuery(parameterName = "y") int y) {
         return Ok(String.format("%d + %d", x, y));
     }
 
     @Endpoint(path = "/test2", method = HttpMethod.POST)
-    public HandleResult coolMethod(@FromBody GetUserByIdQuery query, @FromQuery String pattern) {
+    public HandleResult coolMethod(@FromBody GetUserByIdQuery query,
+                                   @FromQuery(parameterName = "pattern") String pattern) {
         return Ok(mediatr.send(query));
     }
 }
