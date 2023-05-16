@@ -2,7 +2,7 @@ package by.fpmibsu.findafriend.controller.queries.adverts;
 
 import by.fpmibsu.findafriend.application.mediatr.RequestHandler;
 import by.fpmibsu.findafriend.controller.models.AdvertModel;
-import by.fpmibsu.findafriend.dataaccesslayer.AdvertDao;
+import by.fpmibsu.findafriend.dataaccesslayer.advert.AdvertDao;
 
 public class GetAdvertByIdHandler extends RequestHandler<AdvertModel, GetAdvertByIdQuery> {
     private final AdvertDao advertDao;

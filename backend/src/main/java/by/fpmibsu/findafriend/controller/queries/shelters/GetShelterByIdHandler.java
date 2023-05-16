@@ -2,7 +2,7 @@ package by.fpmibsu.findafriend.controller.queries.shelters;
 
 import by.fpmibsu.findafriend.application.mediatr.RequestHandler;
 import by.fpmibsu.findafriend.controller.models.ShelterModel;
-import by.fpmibsu.findafriend.dataaccesslayer.ShelterDao;
+import by.fpmibsu.findafriend.dataaccesslayer.shelter.ShelterDao;
 
 public class GetShelterByIdHandler extends RequestHandler<ShelterModel, GetShelterByIdQuery> {
     private final ShelterDao shelterDao;

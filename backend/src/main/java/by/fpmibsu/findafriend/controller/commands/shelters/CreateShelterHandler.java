@@ -1,7 +1,7 @@
 package by.fpmibsu.findafriend.controller.commands.shelters;
 
 import by.fpmibsu.findafriend.application.mediatr.RequestHandler;
-import by.fpmibsu.findafriend.dataaccesslayer.ShelterDao;
+import by.fpmibsu.findafriend.dataaccesslayer.shelter.ShelterDao;
 import by.fpmibsu.findafriend.entity.Shelter;
 
 import java.util.ArrayList;

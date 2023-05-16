@@ -3,7 +3,7 @@ package by.fpmibsu.findafriend.controller.queries.users;
 import by.fpmibsu.findafriend.application.mediatr.RequestHandler;
 import by.fpmibsu.findafriend.controller.models.UserModel;
 import by.fpmibsu.findafriend.dataaccesslayer.DaoException;
-import by.fpmibsu.findafriend.dataaccesslayer.UserDao;
+import by.fpmibsu.findafriend.dataaccesslayer.user.UserDao;
 
 public class GetUsersHandler extends RequestHandler<UserModel[], GetUsersQuery> {
     private final UserDao userDao;

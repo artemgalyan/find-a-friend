@@ -1,5 +1,8 @@
-package by.fpmibsu.findafriend.dataaccesslayer;
+package by.fpmibsu.findafriend.dataaccesslayer.shelter;
 
+import by.fpmibsu.findafriend.dataaccesslayer.DaoException;
+import by.fpmibsu.findafriend.dataaccesslayer.EntityProducer;
+import by.fpmibsu.findafriend.dataaccesslayer.StatementBuilder;
 import by.fpmibsu.findafriend.entity.*;
 
 import java.sql.*;

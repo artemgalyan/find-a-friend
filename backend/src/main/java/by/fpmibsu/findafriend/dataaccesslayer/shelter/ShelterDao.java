@@ -1,5 +1,7 @@
-package by.fpmibsu.findafriend.dataaccesslayer;
+package by.fpmibsu.findafriend.dataaccesslayer.shelter;
 
+import by.fpmibsu.findafriend.dataaccesslayer.Dao;
+import by.fpmibsu.findafriend.dataaccesslayer.DaoException;
 import by.fpmibsu.findafriend.entity.Shelter;
 
 public interface ShelterDao extends Dao<Integer, Shelter> {
