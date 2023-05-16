@@ -7,6 +7,7 @@ import by.fpmibsu.findafriend.application.controller.HttpMethod;
 import by.fpmibsu.findafriend.application.controller.TestController;
 import by.fpmibsu.findafriend.application.serviceproviders.GlobalServiceProvider;
 import by.fpmibsu.findafriend.controller.controllers.UserController;
+import by.fpmibsu.findafriend.controller.setups.PlacesSetup;
 import by.fpmibsu.findafriend.controller.setups.UsersSetup;
 import by.fpmibsu.findafriend.dataaccesslayer.DaoSetup;
 import by.fpmibsu.findafriend.dataaccesslayer.DbUserDao;
@@ -29,7 +30,7 @@ import java.util.Properties;
 @WebServlet("/*")
 public class DispatcherServlet extends HttpServlet {
     private Application application;
-    private static final List<Setup> setups = List.of(new DaoSetup(), new UsersSetup());
+    private static final List<Setup> setups = List.of(new DaoSetup(), new UsersSetup(), new PlacesSetup());
 
     @Override
     public void init() throws ServletException {
