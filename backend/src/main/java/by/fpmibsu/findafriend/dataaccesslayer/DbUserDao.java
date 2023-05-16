@@ -24,7 +24,7 @@ public class DbUserDao implements UserDao {
             WHERE user_id=?""";
     public static final String SQL_DELETE_BY_ID = """
             DELETE
-            FROM advert
+            FROM [user]
             WHERE user_id=?""";
 
     private static final String SQL_UPDATE = """
