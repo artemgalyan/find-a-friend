@@ -14,15 +14,13 @@ public class UpdateAdvertCommand extends Request<Boolean> {
     public String description;
     public Date creationDate;
     public Place place;
-    public User owner;
 
-    public UpdateAdvertCommand(int advertId, Advert.AdvertType advertType, String title, String description, Date creationDate, Place place, User owner) {
+    public UpdateAdvertCommand(int advertId, Advert.AdvertType advertType, String title, String description, Date creationDate, Place place) {
         this.advertId = advertId;
         this.advertType = advertType;
         this.title = title;
         this.description = description;
         this.creationDate = creationDate;
         this.place = place;
-        this.owner = owner;
     }
 }

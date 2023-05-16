@@ -18,7 +18,7 @@ public class CreateAdvertHandler extends RequestHandler<Boolean, CreateAdvertCom
 
     @Override
     public Boolean handle(CreateAdvertCommand request) {
-        var advert = new Advert(0, "dog", "very friendly", new Date(), new Place(), new User(), Advert.AdvertType.VOLUNTEER);
+        var advert = new Advert(0, request.title, request.description, request.creationDate, request.place, request.owner, request.advertType);
         try {
             advertDao.create(advert);
             return true;

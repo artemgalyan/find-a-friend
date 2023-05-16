@@ -15,6 +15,9 @@ public class GetAdvertsHandler extends RequestHandler<AdvertModel[], GetAdvertsQ
 
     @Override
     public AdvertModel[] handle(GetAdvertsQuery request) throws DaoException {
-        return advertDaoDao.getAll().stream().map(AdvertModel::of).toArray(AdvertModel[]::new);
+        return advertDaoDao.getAll()
+                .stream()
+                .map(AdvertModel::of)
+                .toArray(AdvertModel[]::new);
     }
 }

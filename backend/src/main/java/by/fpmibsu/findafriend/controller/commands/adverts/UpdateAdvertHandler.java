@@ -31,9 +31,6 @@ public class UpdateAdvertHandler extends RequestHandler<Boolean, UpdateAdvertCom
         if (request.place != null) {
             advert.setPlace(request.place);
         }
-        if (request.owner != null) {
-            advert.setOwner(request.owner);
-        }
 
         advertDao.update(advert);
         return true;
