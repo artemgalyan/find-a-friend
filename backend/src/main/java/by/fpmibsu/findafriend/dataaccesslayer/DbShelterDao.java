@@ -18,7 +18,7 @@ public class DbShelterDao implements ShelterDao {
                 WHERE shelter_id=?""";
     private static final String SQL_INSERT_SHELTER = """
             INSERT INTO shelter VALUES(?,?)""";
-    private static final String SQL_DELETE_SHELTER = """
+    private static final String SQL_DELETE_BY_ID = """
             DELETE
             FROM shelter
             WHERE shelter_id=?""";
@@ -89,7 +89,7 @@ public class DbShelterDao implements ShelterDao {
     public boolean delete(Integer value) throws DaoException {
         PreparedStatement statement = null;
         try {
-            statement = statementBuilder.prepareStatement(SQL_DELETE_SHELTER, value);
+            statement = statementBuilder.prepareStatement(SQL_DELETE_BY_ID, value);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -137,6 +137,20 @@ public class DbShelterDao implements ShelterDao {
         PreparedStatement statement = null;
         try {
             statement = statementBuilder.prepareStatement(SQL_DELETE_BY_PLACE_SHELTER, id);
+            int result = statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            close(statement);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean deleteShelterById(int id) throws DaoException {
+        PreparedStatement statement = null;
+        try {
+            statement = statementBuilder.prepareStatement(SQL_DELETE_BY_ID, id);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
