@@ -8,10 +8,13 @@ import java.util.function.Supplier;
 public interface GlobalServiceProvider extends ServiceProvider {
     enum ServiceType {
         SCOPED,
-        SINGLETON
+        SINGLETON,
+        TRANSIENT
     }
 
     <T> GlobalServiceProvider addService(Class<T> clazz, ServiceType type, Function<ServiceProvider, ? extends T> supplier);
+
+    ScopedServiceProvider getRequestServiceProvider();
 
     default <T> GlobalServiceProvider addService(Class<T> registeredClazz, ServiceType type, Class<? extends T> realClazz) {
         return addService(registeredClazz, type, () -> ObjectConstructor.createInstance(realClazz, this));
@@ -58,4 +61,20 @@ public interface GlobalServiceProvider extends ServiceProvider {
         return addService(registeredClass, ServiceType.SINGLETON, actualClass);
     }
 
+
+    default <T> GlobalServiceProvider addTransient(Class<T> clazz, Function<ServiceProvider, ? extends T> supplier) {
+        return addService(clazz, ServiceType.TRANSIENT, supplier);
+    }
+
+    default <T> GlobalServiceProvider addTransient(Class<T> clazz, Supplier<? extends T> supplier) {
+        return addTransient(clazz, (d) -> supplier.get());
+    }
+
+    default <T> GlobalServiceProvider addTransient(Class<T> clazz) {
+        return addTransient(clazz, (d) -> ObjectConstructor.createInstance(clazz, this));
+    }
+
+    default <T> GlobalServiceProvider addTransient(Class<T> registeredClass, Class<? extends T> actualClass) {
+        return addService(registeredClass, ServiceType.TRANSIENT, actualClass);
+    }
 }

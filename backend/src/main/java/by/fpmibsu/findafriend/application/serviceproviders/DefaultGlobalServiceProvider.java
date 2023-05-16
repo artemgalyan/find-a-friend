@@ -65,7 +65,57 @@ public class DefaultGlobalServiceProvider implements GlobalServiceProvider {
         return this;
     }
 
+    @Override
+    public ScopedServiceProvider getRequestServiceProvider() {
+        return new RequestServiceProvider();
+    }
+
     private Optional<ClassEntry<?>> findClassEntry(Class<?> clazz) {
         return entries.stream().filter(o -> clazz.equals(o.clazz)).findFirst();
     }
+
+    public class RequestServiceProvider implements ScopedServiceProvider {
+        private final List<ConstructedObject<?>> scoped = new ArrayList<>();
+
+        public RequestServiceProvider() {
+            addScoped(ScopedServiceProvider.class, this);
+            addScoped(ServiceProvider.class, this);
+            addScoped(Mediatr.class, new Mediatr(this, getRequiredService(HandlersDataList.class)));
+        }
+
+        @Override
+        public <T> T getRequiredService(Class<T> clazz) {
+            var contained = scoped.stream()
+                    .filter(o -> o.registeredClass.equals(clazz))
+                    .findFirst();
+            if (contained.isPresent()) {
+                return (T) contained.get().instance;
+            }
+
+            var entry = findClassEntry(clazz);
+            if (entry.isEmpty()) {
+                throw new ServiceNotFoundException("Can't find service of type " + clazz.getName());
+            }
+
+            var e = entry.get();
+            var result = DefaultGlobalServiceProvider.this.getRequiredService(clazz);
+            if (e.type == ServiceType.SCOPED) {
+                scoped.add(new ConstructedObject<>(clazz, result));
+            }
+            return result;
+        }
+
+        @Override
+        public <T> ScopedServiceProvider addScoped(Class<T> clazz, T instance) {
+            var contained = scoped.stream()
+                    .filter(o -> o.registeredClass.equals(clazz))
+                    .findFirst();
+            if (contained.isPresent()) {
+                throw new ServiceAlreadyRegisteredException("Service of type " + clazz.getName() + " is already registered");
+            }
+            scoped.add(new ConstructedObject<>(clazz, instance));
+            return this;
+        }
+    }
+
 }

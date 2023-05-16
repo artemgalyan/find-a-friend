@@ -1,33 +1,48 @@
 package by.fpmibsu.findafriend.application;
 
+import by.fpmibsu.findafriend.application.controller.Controller;
+import by.fpmibsu.findafriend.application.controller.ControllerMapper;
+import by.fpmibsu.findafriend.application.controller.EndpointInfo;
 import by.fpmibsu.findafriend.application.mediatr.HandlersDataList;
+import by.fpmibsu.findafriend.application.mediatr.Mediatr;
 import by.fpmibsu.findafriend.application.mediatr.Request;
 import by.fpmibsu.findafriend.application.mediatr.RequestHandler;
 import by.fpmibsu.findafriend.application.serviceproviders.DefaultGlobalServiceProvider;
 import by.fpmibsu.findafriend.application.serviceproviders.GlobalServiceProvider;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ApplicationBuilder {
     private final GlobalServiceProvider serviceProvider = new DefaultGlobalServiceProvider();
     private final HandlersDataList handlersDataList = new HandlersDataList();
+    private final List<EndpointInfo> endpointInfos = new ArrayList<>();
 
     public ApplicationBuilder() {
         serviceProvider.addService(HandlersDataList.class, GlobalServiceProvider.ServiceType.SINGLETON, () -> handlersDataList);
+        serviceProvider.addScoped(Mediatr.class);
     }
 
     public Application build() {
-        return new Application(serviceProvider, handlersDataList);
+        return new Application(serviceProvider, endpointInfos);
     }
 
     public GlobalServiceProvider services() {
         return serviceProvider;
     }
 
-    public  <T, R extends Request<? super T>> ApplicationBuilder registerHandler(Class<? extends RequestHandler<T, R>> clazz, Class<R> requestType) {
+    public <T, R extends Request<? super T>> ApplicationBuilder registerHandler(Class<? extends RequestHandler<T, R>> clazz, Class<R> requestType) {
         handlersDataList.registerHandler(clazz, requestType);
         return this;
     }
 
     public GlobalServiceProvider getServiceProvider() {
         return serviceProvider;
+    }
+
+    public ApplicationBuilder mapController(Class<? extends Controller> controller) {
+        List<EndpointInfo> data = ControllerMapper.mapController(controller);
+        endpointInfos.addAll(data);
+        return this;
     }
 }
