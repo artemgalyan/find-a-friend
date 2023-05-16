@@ -145,6 +145,20 @@ public class DbAdvertDao implements AdvertDao {
     }
 
     @Override
+    public boolean deleteAdvertById(int id) throws DaoException {
+        PreparedStatement statement = null;
+        try {
+            statement = statementBuilder.prepareStatement(SQL_DELETE_BY_ID, id);
+            int result = statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            close(statement);
+        }
+        return true;
+    }
+
+    @Override
     public boolean deleteByUserId(int id) throws DaoException {
         PreparedStatement statement = null;
         try {
