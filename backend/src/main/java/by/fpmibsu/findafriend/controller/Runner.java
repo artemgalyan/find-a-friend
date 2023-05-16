@@ -27,11 +27,11 @@ public class Runner {
         Connection connection;
         try {
             connection = DriverManager.getConnection(dbPath);
-            var user = new DbUserDao(connection).getAll().get(3);
+            var user = new DbUserDao(connection).getAll().get(0);
             var place = new DbPlaceDao(connection).getAll().get(0);
-            var advert = new AnimalAdvert(1,  "title", "descr", "cat", new ArrayList<>(), user, Date.from(Instant.now()), place, Date.from(Instant.now()), AnimalAdvert.Sex.MALE, false);
+            var advert = new AnimalAdvert(1, "title", "descr", "cat", new ArrayList<>(), user, Date.from(Instant.now()), place, Date.from(Instant.now()), AnimalAdvert.Sex.MALE, false);
             new DbAnimalAdvertDao(connection).create(advert);
-            var photo = new Photo("what a cool text".getBytes(), 16);
+            var photo = new Photo("what a cool text".getBytes(), 2);
             new DbPhotoDao(connection).create(photo);
 
         } catch (Exception e) {
