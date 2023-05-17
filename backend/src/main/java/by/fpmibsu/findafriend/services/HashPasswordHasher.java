@@ -25,6 +25,16 @@ public class HashPasswordHasher extends PasswordHasher {
         var random = new SecureRandom();
         var salt = new byte[saltSize];
         random.nextBytes(salt);
+        byte[] hash = hash(password, salt);
+        byte[] finalPassword = new byte[bytePasswordPrefix.length + hash.length + salt.length];
+        System.arraycopy(bytePasswordPrefix, 0, finalPassword, 0, bytePasswordPrefix.length);
+        System.arraycopy(salt, 0, finalPassword, bytePasswordPrefix.length, salt.length);
+        System.arraycopy(hash, 0, finalPassword, bytePasswordPrefix.length + salt.length, hash.length);
+        var encoder = Base64.getEncoder().withoutPadding();
+        return encoder.encodeToString(finalPassword);
+    }
+
+    private byte[] hash(String password, byte[] salt) {
         var spec = new PBEKeySpec(password.toCharArray(), salt, iterationCount, passwordSize);
         SecretKeyFactory factory;
         try {
@@ -38,13 +48,7 @@ public class HashPasswordHasher extends PasswordHasher {
         } catch (InvalidKeySpecException e) {
             throw new RuntimeException(e);
         }
-
-        byte[] finalPassword = new byte[bytePasswordPrefix.length + hash.length + salt.length];
-        System.arraycopy(bytePasswordPrefix, 0, finalPassword, 0, bytePasswordPrefix.length);
-        System.arraycopy(salt, 0, finalPassword, bytePasswordPrefix.length, salt.length);
-        System.arraycopy(hash, 0, finalPassword, bytePasswordPrefix.length + salt.length, hash.length);
-        var encoder = Base64.getEncoder().withoutPadding();
-        return encoder.encodeToString(finalPassword);
+        return hash;
     }
 
     @Override
@@ -58,25 +62,9 @@ public class HashPasswordHasher extends PasswordHasher {
         }
         var salt = Arrays.copyOfRange(decodedUserPassword, bytePasswordPrefix.length, bytePasswordPrefix.length + saltSize);
         var hash = Arrays.copyOfRange(decodedUserPassword, bytePasswordPrefix.length + saltSize, decodedUserPassword.length);
-        var spec = new PBEKeySpec(providedPassword.toCharArray(), salt, iterationCount, passwordSize);
-        SecretKeyFactory factory;
-        try {
-            factory = SecretKeyFactory.getInstance(algorithm);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-        byte[] passwordHash;
-        try {
-            passwordHash = factory.generateSecret(spec).getEncoded();
-        } catch (InvalidKeySpecException e) {
-            throw new RuntimeException(e);
-        }
+        byte[] passwordHash = hash(providedPassword, salt);
         return Arrays.equals(passwordHash, hash)
                 ? PasswordVerificationResult.SUCCESS
                 : PasswordVerificationResult.FAILED;
-    }
-
-    private char[] charArrayFromByteArray(byte[] array) {
-        return new String(array).toCharArray();
     }
 }
