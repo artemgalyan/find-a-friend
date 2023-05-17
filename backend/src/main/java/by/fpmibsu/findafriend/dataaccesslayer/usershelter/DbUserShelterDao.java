@@ -1,4 +1,7 @@
-package by.fpmibsu.findafriend.dataaccesslayer;
+package by.fpmibsu.findafriend.dataaccesslayer.usershelter;
+
+import by.fpmibsu.findafriend.dataaccesslayer.DaoException;
+import by.fpmibsu.findafriend.dataaccesslayer.StatementBuilder;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

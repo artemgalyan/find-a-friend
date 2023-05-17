@@ -1,5 +1,7 @@
-package by.fpmibsu.findafriend.dataaccesslayer;
+package by.fpmibsu.findafriend.dataaccesslayer.advert;
 
+import by.fpmibsu.findafriend.dataaccesslayer.Dao;
+import by.fpmibsu.findafriend.dataaccesslayer.DaoException;
 import by.fpmibsu.findafriend.entity.Advert;
 
 import java.util.List;

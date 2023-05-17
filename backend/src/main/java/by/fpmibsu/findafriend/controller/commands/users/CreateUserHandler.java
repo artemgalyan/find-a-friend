@@ -1,7 +1,7 @@
 package by.fpmibsu.findafriend.controller.commands.users;
 
 import by.fpmibsu.findafriend.application.mediatr.RequestHandler;
-import by.fpmibsu.findafriend.dataaccesslayer.UserDao;
+import by.fpmibsu.findafriend.dataaccesslayer.user.UserDao;
 import by.fpmibsu.findafriend.entity.Contacts;
 import by.fpmibsu.findafriend.entity.User;
 import by.fpmibsu.findafriend.services.PasswordHasher;

@@ -1,7 +1,7 @@
 package by.fpmibsu.findafriend.controller.commands.places;
 
 import by.fpmibsu.findafriend.application.mediatr.RequestHandler;
-import by.fpmibsu.findafriend.dataaccesslayer.PlaceDao;
+import by.fpmibsu.findafriend.dataaccesslayer.place.PlaceDao;
 
 public class DeletePlaceHandler extends RequestHandler<Boolean, DeletePlaceCommand> {
     private final PlaceDao placeDao;
