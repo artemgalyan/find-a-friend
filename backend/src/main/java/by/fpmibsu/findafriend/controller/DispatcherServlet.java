@@ -3,6 +3,7 @@ package by.fpmibsu.findafriend.controller;
 import by.fpmibsu.findafriend.application.Application;
 import by.fpmibsu.findafriend.application.ApplicationBuilder;
 import by.fpmibsu.findafriend.application.Setup;
+import by.fpmibsu.findafriend.controller.controllers.ExampleController;
 import by.fpmibsu.findafriend.controller.setups.*;
 import by.fpmibsu.findafriend.dataaccesslayer.DaoSetup;
 import by.fpmibsu.findafriend.services.HashPasswordHasher;
@@ -53,6 +54,7 @@ public class DispatcherServlet extends HttpServlet {
                 ? SimplePasswordHasher.class
                 : HashPasswordHasher.class;
         var builder = new ApplicationBuilder();
+        builder.mapController(ExampleController.class);
         builder.readKeys("../conf/");
         setups.forEach(s -> s.applyTo(builder));
         builder.services()

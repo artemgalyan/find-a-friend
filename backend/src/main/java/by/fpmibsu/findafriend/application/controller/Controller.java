@@ -24,6 +24,13 @@ public abstract class Controller {
     protected static HandleResult ok() {
         return new HandleResult(HttpServletResponse.SC_OK);
     }
+
     // TODO: Добавить подобные
-    protected static HandleResult notAuthorized() { return new HandleResult(HttpServletResponse.SC_FORBIDDEN); }
+    protected static HandleResult notAuthorized() {
+        return new HandleResult(HttpServletResponse.SC_FORBIDDEN);
+    }
+
+    protected static HandleResult notAuthorized(Object value) {
+        return new HandleResult(HttpServletResponse.SC_FORBIDDEN, value);
+    }
 }
