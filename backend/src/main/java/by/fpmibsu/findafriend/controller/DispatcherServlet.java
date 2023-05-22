@@ -3,10 +3,7 @@ package by.fpmibsu.findafriend.controller;
 import by.fpmibsu.findafriend.application.Application;
 import by.fpmibsu.findafriend.application.ApplicationBuilder;
 import by.fpmibsu.findafriend.application.Setup;
-import by.fpmibsu.findafriend.controller.setups.AdvertsSetup;
-import by.fpmibsu.findafriend.controller.setups.PlacesSetup;
-import by.fpmibsu.findafriend.controller.setups.SheltersSetup;
-import by.fpmibsu.findafriend.controller.setups.UsersSetup;
+import by.fpmibsu.findafriend.controller.setups.*;
 import by.fpmibsu.findafriend.dataaccesslayer.DaoSetup;
 import by.fpmibsu.findafriend.services.HashPasswordHasher;
 import by.fpmibsu.findafriend.services.PasswordHasher;
@@ -29,7 +26,7 @@ public class DispatcherServlet extends HttpServlet {
     private Application application;
     private static final List<Setup> setups = List.of(
             new DaoSetup(), new UsersSetup(), new PlacesSetup(),
-            new AdvertsSetup(), new SheltersSetup()
+            new AdvertsSetup(), new SheltersSetup(), new AuthSetup()
     );
 
     @Override
@@ -56,6 +53,7 @@ public class DispatcherServlet extends HttpServlet {
                 ? SimplePasswordHasher.class
                 : HashPasswordHasher.class;
         var builder = new ApplicationBuilder();
+        builder.readKeys("../conf/");
         setups.forEach(s -> s.applyTo(builder));
         builder.services()
                 .addSingleton(Connection.class, () -> connection)

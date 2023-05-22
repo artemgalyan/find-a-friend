@@ -19,32 +19,32 @@ public class PlaceController extends Controller {
 
     @Endpoint(path = "/getAllPlaces", method = HttpMethod.GET)
     public HandleResult getAll() {
-        return Ok(mediatr.send(new GetPlacesQuery()));
+        return ok(mediatr.send(new GetPlacesQuery()));
     }
 
     @Endpoint(path = "/getPlace", method = HttpMethod.GET)
     public HandleResult getById(@FromQuery(parameterName = "id") int id) {
-        return Ok(mediatr.send(new GetPlaceByIdQuery(id)));
+        return ok(mediatr.send(new GetPlaceByIdQuery(id)));
     }
 
     @Endpoint(path = "/createPlace", method = HttpMethod.POST)
     public HandleResult createPlace(@FromBody CreatePlaceCommand request) {
-        return Ok(mediatr.send(request));
+        return ok(mediatr.send(request));
     }
 
     @Endpoint(path = "/updatePlace", method = HttpMethod.PUT)
     public HandleResult updatePlace(@FromBody UpdatePlaceCommand request) {
-        return Ok(mediatr.send(request));
+        return ok(mediatr.send(request));
     }
 
     @Endpoint(path = "/deletePlace", method = HttpMethod.DELETE)
     public HandleResult deletePlaceById(@FromQuery(parameterName = "id") int id) {
-        return Ok(mediatr.send(new DeletePlaceCommand(id)));
+        return ok(mediatr.send(new DeletePlaceCommand(id)));
     }
 
     @Endpoint(path = "/readPlace", method = HttpMethod.POST)
     public HandleResult handlePostReadObject(@FromBody CreatePlaceCommand request) {
-        return Ok(request);
+        return ok(request);
     }
 }
 

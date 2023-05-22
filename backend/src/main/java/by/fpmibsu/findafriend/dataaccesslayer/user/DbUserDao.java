@@ -38,6 +38,13 @@ public class DbUserDao implements UserDao {
                 district=?
             WHERE place_id=?
             """;
+
+    private static final String SQL_FIND_BY_USERNAME = """
+            SELECT user_id, [user].name, surname, email, phone_number, login, password, role.role_id, role.name
+            FROM [user]
+                LEFT JOIN role ON role.role_id = [user].role_id
+                WHERE [user].login=?
+    """;
     private final StatementBuilder statementBuilder;
     private final Connection connection;
 
@@ -113,7 +120,7 @@ public class DbUserDao implements UserDao {
                     contacts.getPhoneNumber(),
                     instance.getLogin(),
                     instance.getPassword(),
-                    1);
+                    instance.getRole().toInt());
             int result = statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
@@ -155,5 +162,22 @@ public class DbUserDao implements UserDao {
             close(statement);
         }
         return true;
+    }
+
+    @Override
+    public User findByLogin(String username) {
+        PreparedStatement statement = null;
+        try {
+            statement = statementBuilder.prepareStatement(SQL_FIND_BY_USERNAME, username);
+            var resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                return null;
+            }
+            return EntityProducer.makeUser(resultSet);
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            close(statement);
+        }
     }
 }

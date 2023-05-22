@@ -17,13 +17,13 @@ public abstract class Controller {
         this.response = response;
     }
 
-    protected HandleResult Ok(Object value) {
+    protected HandleResult ok(Object value) {
         return new HandleResult(HttpServletResponse.SC_OK, value);
     }
 
-    protected static HandleResult Ok() {
+    protected static HandleResult ok() {
         return new HandleResult(HttpServletResponse.SC_OK);
     }
     // TODO: Добавить подобные
-    protected static HandleResult NotAuthorized() { return new HandleResult(HttpServletResponse.SC_FORBIDDEN); }
+    protected static HandleResult notAuthorized() { return new HandleResult(HttpServletResponse.SC_FORBIDDEN); }
 }

@@ -23,6 +23,10 @@ public class Mediatr {
         }
 
         RequestHandler<?, R> handlerInstance = (RequestHandler<?, R>) ObjectConstructor.createInstance(handler.get(), serviceProvider);
-        return (T) handlerInstance.handle(request);
+        try {
+            return (T) handlerInstance.handle(request);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

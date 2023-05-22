@@ -78,7 +78,7 @@ public class EntityProducer {
                 ),
                 null,
                 null,
-                User.Role.USER,
+                User.Role.fromInt(set.getInt("role_id")),
                 set.getString("login"),
                 set.getString("password")
         );

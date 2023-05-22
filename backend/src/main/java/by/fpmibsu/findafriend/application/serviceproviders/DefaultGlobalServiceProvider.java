@@ -3,9 +3,7 @@ package by.fpmibsu.findafriend.application.serviceproviders;
 import by.fpmibsu.findafriend.application.mediatr.HandlersDataList;
 import by.fpmibsu.findafriend.application.mediatr.Mediatr;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 
 public class DefaultGlobalServiceProvider implements GlobalServiceProvider {
@@ -32,36 +30,34 @@ public class DefaultGlobalServiceProvider implements GlobalServiceProvider {
         }
     }
 
-    private final List<ClassEntry<?>> entries = new ArrayList<>();
-    private final List<ConstructedObject<?>> singletons = new ArrayList<>();
+    private final Map<Class<?>, ClassEntry<?>> entries = new HashMap<>();
+    private final Map<Class<?>, ConstructedObject<?>> singletons = new HashMap<>();
 
     @Override
     public <T> T getRequiredService(Class<T> clazz) {
-        var singleton = singletons.stream().filter(o -> clazz.equals(o.registeredClass)).findFirst();
-        if (singleton.isPresent()) {
-            return (T) singleton.get().instance;
-        }
-        var item = entries.stream().filter(o -> clazz.equals(o.clazz)).findFirst();
-        if (item.isEmpty()) {
+        var entry = tryGetObject(clazz);
+        if (entry.isEmpty()) {
             throw new ServiceNotFoundException("Can't find service of type " + clazz.getName());
         }
-
-        if (item.get().type == ServiceType.SINGLETON) {
-            var object = (T) item.get().producer.apply(this);
-            singletons.add(new ConstructedObject<>(clazz, object));
-            return object;
+        var type = entries.get(clazz).type;
+        if (type == ServiceType.SINGLETON) {
+            singletons.put(clazz, new ConstructedObject<>(clazz, entry.get()));
         }
+        return entry.get();
+    }
 
-        return (T) item.get().producer.apply(this);
+    @Override
+    public <T> boolean hasService(Class<T> clazz) {
+        return false;
     }
 
     @Override
     public <T> DefaultGlobalServiceProvider addService(Class<T> clazz, ServiceType type, Function<ServiceProvider, ? extends T> producer) {
-        if (entries.stream().anyMatch(o -> clazz.equals(o.clazz))) {
+        if (entries.containsKey(clazz)) {
             throw new ServiceAlreadyRegisteredException("Service of type " + clazz.getName() + " is already registered");
         }
 
-        entries.add(new ClassEntry<>(clazz, producer, type));
+        entries.put(clazz, new ClassEntry<>(clazz, producer, type));
         return this;
     }
 
@@ -71,11 +67,23 @@ public class DefaultGlobalServiceProvider implements GlobalServiceProvider {
     }
 
     private Optional<ClassEntry<?>> findClassEntry(Class<?> clazz) {
-        return entries.stream().filter(o -> clazz.equals(o.clazz)).findFirst();
+        return Optional.ofNullable(entries.get(clazz));
+    }
+
+    private <T> Optional<T> tryGetObject(Class<T> clazz) {
+        if (singletons.containsKey(clazz)) {
+            return Optional.of((T) singletons.get(clazz).instance);
+        }
+        if (entries.containsKey(clazz)) {
+            return Optional.of(
+                    (T) entries.get(clazz).producer.apply(this)
+            );
+        }
+        return Optional.empty();
     }
 
     public class RequestServiceProvider implements ScopedServiceProvider {
-        private final List<ConstructedObject<?>> scoped = new ArrayList<>();
+        private final Map<Class<?>, ConstructedObject<?>> scoped = new HashMap<>();
 
         public RequestServiceProvider() {
             addScoped(ScopedServiceProvider.class, this);
@@ -85,11 +93,8 @@ public class DefaultGlobalServiceProvider implements GlobalServiceProvider {
 
         @Override
         public <T> T getRequiredService(Class<T> clazz) {
-            var contained = scoped.stream()
-                    .filter(o -> o.registeredClass.equals(clazz))
-                    .findFirst();
-            if (contained.isPresent()) {
-                return (T) contained.get().instance;
+            if (scoped.containsKey(clazz)) {
+                return (T) scoped.get(clazz).instance;
             }
 
             var entry = findClassEntry(clazz);
@@ -100,20 +105,22 @@ public class DefaultGlobalServiceProvider implements GlobalServiceProvider {
             var e = entry.get();
             var result = DefaultGlobalServiceProvider.this.getRequiredService(clazz);
             if (e.type == ServiceType.SCOPED) {
-                scoped.add(new ConstructedObject<>(clazz, result));
+                scoped.put(clazz, new ConstructedObject<>(clazz, result));
             }
             return result;
         }
 
         @Override
+        public <T> boolean hasService(Class<T> clazz) {
+            return false;
+        }
+
+        @Override
         public <T> ScopedServiceProvider addScoped(Class<T> clazz, T instance) {
-            var contained = scoped.stream()
-                    .filter(o -> o.registeredClass.equals(clazz))
-                    .findFirst();
-            if (contained.isPresent()) {
+            if (scoped.containsKey(clazz)) {
                 throw new ServiceAlreadyRegisteredException("Service of type " + clazz.getName() + " is already registered");
             }
-            scoped.add(new ConstructedObject<>(clazz, instance));
+            scoped.put(clazz, new ConstructedObject<>(clazz, instance));
             return this;
         }
     }

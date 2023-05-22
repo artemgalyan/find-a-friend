@@ -19,31 +19,31 @@ public class ShelterController extends Controller {
 
     @Endpoint(path = "/getAllShelters", method = HttpMethod.GET)
     public HandleResult getAll() {
-        return Ok(mediatr.send(new GetSheltersQuery()));
+        return ok(mediatr.send(new GetSheltersQuery()));
     }
 
     @Endpoint(path = "/getShelter", method = HttpMethod.GET)
     public HandleResult getById(@FromQuery(parameterName = "id") int id) {
-        return Ok(mediatr.send(new GetShelterByIdQuery(id)));
+        return ok(mediatr.send(new GetShelterByIdQuery(id)));
     }
 
     @Endpoint(path = "/createShelter", method = HttpMethod.POST)
     public HandleResult createShelter(@FromBody CreateShelterCommand request) {
-        return Ok(mediatr.send(request));
+        return ok(mediatr.send(request));
     }
 
     @Endpoint(path = "/updateShelter", method = HttpMethod.PUT)
     public HandleResult updateShelter(@FromBody UpdateShelterCommand request) {
-        return Ok(mediatr.send(request));
+        return ok(mediatr.send(request));
     }
 
     @Endpoint(path = "/deleteShelter", method = HttpMethod.DELETE)
     public HandleResult deleteShelterById(@FromQuery(parameterName = "id") int id) {
-        return Ok(mediatr.send(new DeleteShelterCommand(id)));
+        return ok(mediatr.send(new DeleteShelterCommand(id)));
     }
 
     @Endpoint(path = "/readShelter", method = HttpMethod.POST)
     public HandleResult handlePostReadObject(@FromBody CreateShelterCommand request) {
-        return Ok(request);
+        return ok(request);
     }
 }

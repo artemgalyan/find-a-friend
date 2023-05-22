@@ -1,12 +1,13 @@
 package by.fpmibsu.findafriend.application;
 
-import by.fpmibsu.findafriend.application.controller.EndpointInfo;
-import by.fpmibsu.findafriend.application.controller.FromQuery;
+import by.fpmibsu.findafriend.application.controller.*;
 import by.fpmibsu.findafriend.application.serviceproviders.ScopedServiceProvider;
 import by.fpmibsu.findafriend.application.utils.ObjectConstructor;
 import by.fpmibsu.findafriend.controller.ServletUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.jose4j.jwt.JwtClaims;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,11 +15,16 @@ import java.io.IOException;
 
 public class ControllerMethodInvoker {
     public static HandleResult invoke(HttpServletRequest request, HttpServletResponse response,
-                                      EndpointInfo endpointInfo, ScopedServiceProvider scopedServiceProvider) {
-        var controller = ObjectConstructor.createInstance(endpointInfo.controller(), scopedServiceProvider);
+                                      EndpointInfo endpointInfo, ScopedServiceProvider sp) {
+        var controller = ObjectConstructor.createInstance(endpointInfo.controller(), sp);
         controller.setRequest(request);
         controller.setResponse(response);
         var method = endpointInfo.method();
+        if (method.isAnnotationPresent(RequireAuthentication.class) &&
+                !sp.getRequiredService(Application.AuthenticationData.class).isTokenValid()) {
+            return new HandleResult(HttpServletResponse.SC_FORBIDDEN);
+        }
+        var claims = sp.getRequiredService(Application.AuthenticationData.class).claims();
         var parameters = method.getParameters();
         var methodParams = new Object[parameters.length];
         for (int i = 0; i < parameters.length; ++i) {
@@ -27,8 +33,14 @@ public class ControllerMethodInvoker {
                 if (parameter.isAnnotationPresent(FromQuery.class)) {
                     var annotation = parameter.getAnnotation(FromQuery.class);
                     methodParams[i] = readFromQuery(annotation.parameterName(), request, parameter.getType());
-                } else {
+                } else if (parameter.isAnnotationPresent(FromBody.class)) {
                     methodParams[i] = readFromBody(request, parameter.getType());
+                } else if (parameter.isAnnotationPresent(WebToken.class)) {
+                    var annotation = parameter.getAnnotation(WebToken.class);
+                    methodParams[i] = tryParseObject(claims.getClaimValueAsString(annotation.parameterName()),
+                                parameter.getType());
+                } else {
+                    return new HandleResult(HttpServletResponse.SC_BAD_REQUEST);
                 }
             } catch (Exception e) {
                 return new HandleResult(HttpServletResponse.SC_BAD_REQUEST);

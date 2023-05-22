@@ -19,27 +19,26 @@ public class UserController extends Controller {
 
     @Endpoint(path = "/getAll", method = HttpMethod.GET)
     public HandleResult getAll() {
-        return Ok(mediatr.send(new GetUsersQuery()));
+        return ok(mediatr.send(new GetUsersQuery()));
     }
 
     @Endpoint(path = "/getUser", method = HttpMethod.GET)
     public HandleResult getById(@FromQuery(parameterName = "id") int id) {
-//        return new HandleResult(200, mediatr.send(new GetUserByIdQuery(id)));
-        return Ok(mediatr.send(new GetUserByIdQuery(id)));
+        return ok(mediatr.send(new GetUserByIdQuery(id)));
     }
 
     @Endpoint(path = "/createUser", method = HttpMethod.POST)
     public HandleResult createPlace(@FromBody CreateUserCommand request) {
-        return Ok(mediatr.send(request));
+        return ok(mediatr.send(request));
     }
 
     @Endpoint(path = "/updateUser", method = HttpMethod.PUT)
     public HandleResult updateUser(@FromBody UpdateUserCommand request) {
-        return Ok(mediatr.send(request));
+        return ok(mediatr.send(request));
     }
 
     @Endpoint(path = "/deleteUser", method = HttpMethod.DELETE)
     public HandleResult deleteUserById(@FromQuery(parameterName = "id") int id) {
-        return Ok(mediatr.send(new DeleteUserCommand(id)));
+        return ok(mediatr.send(new DeleteUserCommand(id)));
     }
 }

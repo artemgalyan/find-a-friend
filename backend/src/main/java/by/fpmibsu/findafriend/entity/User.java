@@ -14,7 +14,25 @@ public class User extends Entity {
         USER,
         MODERATOR,
         ADMINISTRATOR,
-        SHELTER_ADMINISTRATOR
+        SHELTER_ADMINISTRATOR;
+        public int toInt() {
+            return switch (this) {
+                case USER -> 1;
+                case MODERATOR -> 2;
+                case ADMINISTRATOR -> 3;
+                case SHELTER_ADMINISTRATOR -> 4;
+            };
+        }
+
+        public static Role fromInt(int value) {
+            return switch (value) {
+                case 1 -> USER;
+                case 2 -> MODERATOR;
+                case 3 -> ADMINISTRATOR;
+                case 4 -> SHELTER_ADMINISTRATOR;
+                default -> throw new IllegalArgumentException("No role for value " + value);
+            };
+        }
     }
 
     public User() {
