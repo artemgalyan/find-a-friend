@@ -9,8 +9,6 @@ public class ExampleController extends Controller {
     @Endpoint(path = "/protected", method = HttpMethod.GET)
     public HandleResult example(@WebToken(parameterName = "id") int id,
                                 @WebToken(parameterName = "role") String role) {
-        return id == 5
-                ? ok(role)
-                : notAuthorized("You have bad id, sorry");
+        return ok(role);
     }
 }

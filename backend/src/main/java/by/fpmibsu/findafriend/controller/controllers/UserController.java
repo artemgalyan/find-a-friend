@@ -17,28 +17,35 @@ public class UserController extends Controller {
         this.mediatr = mediatr;
     }
 
+    @RequireAuthentication
     @Endpoint(path = "/getAll", method = HttpMethod.GET)
     public HandleResult getAll() {
         return ok(mediatr.send(new GetUsersQuery()));
     }
 
+    @RequireAuthentication
     @Endpoint(path = "/getUser", method = HttpMethod.GET)
     public HandleResult getById(@FromQuery(parameterName = "id") int id) {
         return ok(mediatr.send(new GetUserByIdQuery(id)));
     }
 
     @Endpoint(path = "/createUser", method = HttpMethod.POST)
-    public HandleResult createPlace(@FromBody CreateUserCommand request) {
+    public HandleResult createUser(@FromBody CreateUserCommand request) {
         return ok(mediatr.send(request));
     }
 
+    @RequireAuthentication
     @Endpoint(path = "/updateUser", method = HttpMethod.PUT)
-    public HandleResult updateUser(@FromBody UpdateUserCommand request) {
+    public HandleResult updateUser(@FromBody UpdateUserCommand request, @WebToken(parameterName = "id") int userId) {
+        if (userId != request.userId) {
+            return notAuthorized();
+        }
         return ok(mediatr.send(request));
     }
 
+    @RequireAuthentication
     @Endpoint(path = "/deleteUser", method = HttpMethod.DELETE)
-    public HandleResult deleteUserById(@FromQuery(parameterName = "id") int id) {
+    public HandleResult deleteUserById(@WebToken(parameterName = "id") int id) {
         return ok(mediatr.send(new DeleteUserCommand(id)));
     }
 }

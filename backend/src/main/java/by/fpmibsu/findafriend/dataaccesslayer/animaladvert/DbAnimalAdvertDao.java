@@ -35,6 +35,7 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
             );
             INSERT INTO animal_advert(title, description, creation_date, birthday,
              sex, castrated, animal_type_id, user_id, place_id)
+             OUTPUT animal_advert_id
             VALUES (?, ?, ?, ?, ?, ?, @type_id, ?, ?)""";
     private static final String SQL_DELETE_ANIMALADVERT = """
             DELETE FROM animal_advert
@@ -135,7 +136,8 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
                     instance.isCastrated(),
                     instance.getOwner().getId(),
                     instance.getPlace().getId());
-            statement.executeUpdate();
+            ResultSet resultSet = statement.executeQuery();
+            instance.setId(Integer.parseInt(resultSet.getString(1)));
             return true;
         } catch (SQLException e) {
             throw new DaoException(e);
