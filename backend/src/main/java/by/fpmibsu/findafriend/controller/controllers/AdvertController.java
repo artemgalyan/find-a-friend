@@ -26,11 +26,14 @@ public class AdvertController extends Controller {
     public HandleResult getById(@FromQuery(parameterName = "id") int id) {
         return ok(mediatr.send(new GetUserByIdQuery(id)));
     }
+
+    @RequireAuthentication
     @Endpoint(path = "/createAdvert", method = HttpMethod.POST)
     public HandleResult createAdvert(@FromBody CreateAdvertCommand request) {
         return ok(mediatr.send(request));
     }
 
+    @RequireAuthentication
     @Endpoint(path = "/updateAdvert", method = HttpMethod.PUT)
     public HandleResult updateAdvert(@FromBody UpdateAdvertCommand request) {
         return ok(mediatr.send(request));
@@ -39,10 +42,5 @@ public class AdvertController extends Controller {
     @Endpoint(path = "/deleteAdvert", method = HttpMethod.DELETE)
     public HandleResult deleteAdvertById(@FromQuery(parameterName = "id") int id) {
         return ok(mediatr.send(new DeleteAdvertCommand(id)));
-    }
-
-    @Endpoint(path = "/readAdvert", method = HttpMethod.POST)
-    public HandleResult handlePostReadObject(@FromBody CreateAdvertCommand request) {
-        return ok(request);
     }
 }
