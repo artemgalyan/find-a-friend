@@ -9,6 +9,8 @@ import by.fpmibsu.findafriend.controller.commands.users.UpdateUserCommand;
 import by.fpmibsu.findafriend.controller.queries.users.GetUserByIdQuery;
 import by.fpmibsu.findafriend.controller.queries.users.GetUsersQuery;
 
+import java.util.Arrays;
+
 @ControllerRoute(route = "/users")
 public class UserController extends Controller {
     private final Mediatr mediatr;
@@ -17,7 +19,7 @@ public class UserController extends Controller {
         this.mediatr = mediatr;
     }
 
-    @RequireAuthentication
+//    @RequireAuthentication
     @Endpoint(path = "/getAll", method = HttpMethod.GET)
     public HandleResult getAll() {
         return ok(mediatr.send(new GetUsersQuery()));
@@ -31,6 +33,9 @@ public class UserController extends Controller {
 
     @Endpoint(path = "/createUser", method = HttpMethod.POST)
     public HandleResult createUser(@FromBody CreateUserCommand request) {
+        if (isAnyEmpty(request.name, request.surname, request.login, request.password, request.email, request.phoneNumber)) {
+            return badRequest();
+        }
         return ok(mediatr.send(request));
     }
 
@@ -47,5 +52,16 @@ public class UserController extends Controller {
     @Endpoint(path = "/deleteUser", method = HttpMethod.DELETE)
     public HandleResult deleteUserById(@WebToken(parameterName = "id") int id) {
         return ok(mediatr.send(new DeleteUserCommand(id)));
+    }
+
+    @RequireAuthentication
+    @Endpoint(path = "/getSelfInfo", method = HttpMethod.GET)
+    public HandleResult getSelfInfo(@WebToken(parameterName = "id") int userId) {
+        return getById(userId);
+    }
+
+    private static boolean isAnyEmpty(String... strings) {
+        return Arrays.stream(strings)
+                .anyMatch(s -> s == null || "".equals(s));
     }
 }

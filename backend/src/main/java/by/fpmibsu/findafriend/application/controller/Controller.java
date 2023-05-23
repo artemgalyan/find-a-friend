@@ -33,4 +33,8 @@ public abstract class Controller {
     protected static HandleResult notAuthorized(Object value) {
         return new HandleResult(HttpServletResponse.SC_FORBIDDEN, value);
     }
+
+    protected static HandleResult badRequest() {
+        return new HandleResult(HttpServletResponse.SC_BAD_REQUEST);
+    }
 }

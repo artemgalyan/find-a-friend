@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class ServletUtils {
     public static void writeResponse(Object response, ServletOutputStream outputStream) throws IOException {
         try {
-            var str = new ObjectMapper().writeValueAsString(response);
+            String str = new ObjectMapper().writeValueAsString(response);
             outputStream.write(str.getBytes());
             outputStream.flush();
         } catch (JsonProcessingException e) {

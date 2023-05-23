@@ -1,0 +1,31 @@
+<div class="h-100 d-flex border justify-content-center" style="width: auto">
+  <div class="forms">
+    <div class="mb-3">
+      <label for="nameInput" class="form-label">Имя</label>
+      <input type="text" [(ngModel)]="name" class="form-control" id="nameInput" placeholder="Иван">
+    </div>
+    <div class="mb-3">
+      <label for="surnameInput" class="form-label">Фамилия</label>
+      <input type="text" [(ngModel)]="surname" class="form-control" id="surnameInput" placeholder="Иванов">
+    </div>
+    <div class="mb-3">
+      <label for="loginInput" class="form-label">Логин</label>
+      <input type="text" [(ngModel)]="login" class="form-control" id="loginInput">
+    </div>
+
+    <div class="mb-3">
+      <label for="passwordInput" class="form-label">Пароль</label>
+      <input type="password" [(ngModel)]="password" class="form-control" id="passwordInput">
+    </div>
+    <div class="mb-3">
+      <label for="emailInput" class="form-label">Электронная почта</label>
+      <input type="email" [(ngModel)]="email" class="form-control" id="emailInput">
+    </div>
+
+    <div class="mb-3">
+      <label for="phoneInput" class="form-label">Номер телефона</label>
+      <input type="text" [(ngModel)]="phoneNumber" class="form-control" id="phoneInput">
+    </div>
+    <button type="submit" class="btn btn-primary mb-3 w-100" (click)="onButtonClicked()">Зарегистрироваться</button>
+  </div>
+</div>
