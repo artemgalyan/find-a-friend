@@ -82,6 +82,7 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
         return adverts;
     }
@@ -98,6 +99,7 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
     }
 
@@ -116,6 +118,7 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
         return true;
     }
@@ -139,8 +142,7 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     instance.setId(generatedKeys.getInt(1));
-                }
-                else {
+                } else {
                     throw new SQLException("Creating user failed, no ID obtained.");
                 }
             }
@@ -149,6 +151,7 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
     }
 
@@ -173,6 +176,7 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
     }
 
@@ -186,6 +190,7 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
         return true;
     }
@@ -204,6 +209,7 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
         return adverts;
     }

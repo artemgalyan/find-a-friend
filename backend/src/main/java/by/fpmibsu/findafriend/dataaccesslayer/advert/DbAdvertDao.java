@@ -67,6 +67,8 @@ public class DbAdvertDao implements AdvertDao {
             throw new DaoException("", e);
         } finally {
             close(statement);
+            close(connection);
+            close(connection);
         }
         return adverts;
     }
@@ -85,6 +87,8 @@ public class DbAdvertDao implements AdvertDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
+            close(connection);
         }
     }
 
@@ -103,6 +107,7 @@ public class DbAdvertDao implements AdvertDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
         return true;
     }
@@ -124,6 +129,7 @@ public class DbAdvertDao implements AdvertDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
     }
 
@@ -144,6 +150,7 @@ public class DbAdvertDao implements AdvertDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
     }
 
@@ -157,6 +164,7 @@ public class DbAdvertDao implements AdvertDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
         return true;
     }
@@ -171,6 +179,7 @@ public class DbAdvertDao implements AdvertDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
         return true;
     }
@@ -189,6 +198,7 @@ public class DbAdvertDao implements AdvertDao {
             throw new DaoException("", e);
         } finally {
             close(statement);
+            close(connection);
         }
         return adverts;
     }

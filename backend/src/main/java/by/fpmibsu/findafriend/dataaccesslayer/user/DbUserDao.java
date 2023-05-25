@@ -40,11 +40,11 @@ public class DbUserDao implements UserDao {
             """;
 
     private static final String SQL_FIND_BY_USERNAME = """
-            SELECT user_id, [user].name, surname, email, phone_number, login, password, role.role_id, role.name
-            FROM [user]
-                LEFT JOIN role ON role.role_id = [user].role_id
-                WHERE [user].login=?
-    """;
+                    SELECT user_id, [user].name, surname, email, phone_number, login, password, role.role_id, role.name
+                    FROM [user]
+                        LEFT JOIN role ON role.role_id = [user].role_id
+                        WHERE [user].login=?
+            """;
     private final StatementBuilder statementBuilder;
     private final Connection connection;
 
@@ -67,6 +67,7 @@ public class DbUserDao implements UserDao {
             throw new DaoException("", e);
         } finally {
             close(statement);
+            close(connection);
         }
         return users;
     }
@@ -86,6 +87,7 @@ public class DbUserDao implements UserDao {
             throw new DaoException("", e);
         } finally {
             close(statement);
+            close(connection);
         }
     }
 
@@ -104,6 +106,7 @@ public class DbUserDao implements UserDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
         return true;
     }
@@ -126,6 +129,7 @@ public class DbUserDao implements UserDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
         return true;
     }
@@ -145,7 +149,7 @@ public class DbUserDao implements UserDao {
 //        } catch (SQLException e) {
 //            throw new DaoException(e);
 //        } finally {
-//            close(statement);
+//            close(statement); close(connection);
 //        }
         return instance;
     }
@@ -160,6 +164,7 @@ public class DbUserDao implements UserDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
         return true;
     }
@@ -178,6 +183,7 @@ public class DbUserDao implements UserDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
     }
 }

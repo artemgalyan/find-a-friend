@@ -37,6 +37,9 @@ public class DbPhotoDao implements PhotoDao {
             SET data=?
             WHERE photo_id=?
             """;
+    private static final String SQL_INSERT_MULTIPLE = """
+                INSERT INTO photo VALUES         
+            """;
     private final Connection connection;
     private final StatementBuilder statementBuilder;
 
@@ -59,6 +62,7 @@ public class DbPhotoDao implements PhotoDao {
             throw new DaoException("", e);
         } finally {
             close(statement);
+            close(connection);
         }
         return photo;
     }
@@ -76,6 +80,7 @@ public class DbPhotoDao implements PhotoDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
     }
 
@@ -94,6 +99,7 @@ public class DbPhotoDao implements PhotoDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
         return true;
     }
@@ -109,6 +115,7 @@ public class DbPhotoDao implements PhotoDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
         return true;
     }
@@ -124,6 +131,7 @@ public class DbPhotoDao implements PhotoDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
         return instance;
     }
@@ -138,6 +146,7 @@ public class DbPhotoDao implements PhotoDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
         return true;
     }
@@ -158,13 +167,31 @@ public class DbPhotoDao implements PhotoDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
     }
 
     @Override
     public void create(List<Photo> photos) throws DaoException {
-        for (int i = 0; i < photos.size(); i++) {
-            create(photos.get(i));
+        PreparedStatement statement = null;
+        try {
+            connection.setAutoCommit(false);
+            statement = connection.prepareStatement(SQL_INSERT_PHOTO);
+            for (var p : photos) {
+                statement.setBytes(1, p.getData());
+                statement.setInt(2, p.getAdvertId());
+                statement.addBatch();
+            }
+            statement.executeBatch();
+            connection.commit();
+        } catch (Exception e) {
+            throw new DaoException(e);
+        } finally {
+            close(statement);
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {}
+            close(connection);
         }
     }
 }

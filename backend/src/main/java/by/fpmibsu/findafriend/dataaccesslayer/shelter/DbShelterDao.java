@@ -61,6 +61,7 @@ public class DbShelterDao implements ShelterDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
         return shelters;
     }
@@ -80,6 +81,7 @@ public class DbShelterDao implements ShelterDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
     }
 
@@ -98,6 +100,7 @@ public class DbShelterDao implements ShelterDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
         return true;
     }
@@ -114,6 +117,7 @@ public class DbShelterDao implements ShelterDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
         return true;
     }
@@ -131,6 +135,7 @@ public class DbShelterDao implements ShelterDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
         return instance;
     }
@@ -145,6 +150,7 @@ public class DbShelterDao implements ShelterDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
         return true;
     }
@@ -159,6 +165,7 @@ public class DbShelterDao implements ShelterDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
         return true;
     }

@@ -2,6 +2,7 @@ package by.fpmibsu.findafriend.dataaccesslayer.usershelter;
 
 import by.fpmibsu.findafriend.dataaccesslayer.DaoException;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -38,7 +39,7 @@ public interface UserShelterDao {
     void removeAll(int shelterId) throws DaoException;
     void removeUser(int userId) throws DaoException;
 
-    List<Integer> getUsersId(int shelter_id) throws DaoException;
+    List<Integer> getUsersId(int shelterId) throws DaoException;
 
     default void close(Statement statement) {
         if (statement == null) {
@@ -47,6 +48,19 @@ public interface UserShelterDao {
         try {
             if (!statement.isClosed()) {
                 statement.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    default void close(Connection connection) {
+        if (connection == null) {
+            return;
+        }
+        try {
+            if (!connection.isClosed()) {
+                connection.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();

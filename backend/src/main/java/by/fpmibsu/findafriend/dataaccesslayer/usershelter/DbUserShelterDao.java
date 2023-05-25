@@ -49,6 +49,7 @@ public class DbUserShelterDao implements UserShelterDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
     }
 
@@ -62,6 +63,7 @@ public class DbUserShelterDao implements UserShelterDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
     }
 
@@ -75,6 +77,7 @@ public class DbUserShelterDao implements UserShelterDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
     }
 
@@ -88,6 +91,7 @@ public class DbUserShelterDao implements UserShelterDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
     }
 
@@ -101,6 +105,7 @@ public class DbUserShelterDao implements UserShelterDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
     }
 
@@ -119,6 +124,7 @@ public class DbUserShelterDao implements UserShelterDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
     }
 }

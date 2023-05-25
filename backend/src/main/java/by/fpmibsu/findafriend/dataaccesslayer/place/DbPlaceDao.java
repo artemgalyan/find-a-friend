@@ -51,6 +51,7 @@ public class DbPlaceDao implements PlaceDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
         return places;
     }
@@ -70,6 +71,7 @@ public class DbPlaceDao implements PlaceDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
     }
 
@@ -88,6 +90,7 @@ public class DbPlaceDao implements PlaceDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
         return true;
     }
@@ -106,6 +109,7 @@ public class DbPlaceDao implements PlaceDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
         return true;
     }
@@ -125,6 +129,7 @@ public class DbPlaceDao implements PlaceDao {
             throw new DaoException(e);
         } finally {
             close(statement);
+            close(connection);
         }
         return instance;
     }
