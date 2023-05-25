@@ -33,10 +33,8 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
             DECLARE @type_id INT = (
               SELECT animal_type_id FROM animal_type WHERE name=?
             );
-            INSERT INTO animal_advert(title, description, creation_date, birthday,
-             sex, castrated, animal_type_id, user_id, place_id)
-             OUTPUT animal_advert_id
-            VALUES (?, ?, ?, ?, ?, ?, @type_id, ?, ?)""";
+            INSERT INTO animal_advert(animal_type_id, title, description, user_id, creation_date, place_id, birthday, sex, castrated)
+            VALUES (@type_id, ?, ?, ?, ?, ?, ?, ?, ?)""";
     private static final String SQL_DELETE_ANIMALADVERT = """
             DELETE FROM animal_advert
             WHERE animal_advert_id=?""";
@@ -126,18 +124,26 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
     public boolean create(AnimalAdvert instance) throws DaoException {
         PreparedStatement statement = null;
         try {
-            statement = statementBuilder.prepareStatement(SQL_INSERT_ANIMALADVERT,
+            statement = statementBuilder.prepareStatement(
+                    SQL_INSERT_ANIMALADVERT,
                     instance.getAnimalType(),
                     instance.getTitle(),
                     instance.getDescription(),
+                    instance.getOwner().getId(),
                     instance.getCreationDate(),
+                    instance.getPlace().getId(),
                     instance.getBirthdate(),
                     instance.getSex().getValue(),
-                    instance.isCastrated(),
-                    instance.getOwner().getId(),
-                    instance.getPlace().getId());
-            ResultSet resultSet = statement.executeQuery();
-            instance.setId(Integer.parseInt(resultSet.getString(1)));
+                    instance.isCastrated());
+            statement.executeUpdate();
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    instance.setId(generatedKeys.getInt(1));
+                }
+                else {
+                    throw new SQLException("Creating user failed, no ID obtained.");
+                }
+            }
             return true;
         } catch (SQLException e) {
             throw new DaoException(e);

@@ -5,12 +5,13 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 
-@WebFilter(asyncSupported = true, urlPatterns = { "/*" })
+@WebFilter(asyncSupported = true, urlPatterns = {"/*"})
 public class CORSInterceptor implements Filter {
 
     private static final String[] allowedOrigins = {
-            "http://localhost:4200"
+            "http://localhost:4200", "http://127.0.0.1:4200"
     };
 
     @Override
@@ -21,8 +22,7 @@ public class CORSInterceptor implements Filter {
         }
 
         String requestOrigin = request.getHeader("Origin");
-        if(isAllowedOrigin(requestOrigin)) {
-            // Authorize the origin, all headers, and all methods
+        if (isAllowedOrigin(requestOrigin)) {
             response.addHeader("Access-Control-Allow-Origin", requestOrigin);
             response.addHeader("Access-Control-Allow-Headers", "*");
             response.addHeader("Access-Control-Allow-Methods",
@@ -41,15 +41,11 @@ public class CORSInterceptor implements Filter {
 
     }
 
-    private boolean isAllowedOrigin(String origin){
-        for (String allowedOrigin : allowedOrigins) {
-            if(allowedOrigin.equals(origin)) return true;
-        }
-        return false;
+    private boolean isAllowedOrigin(String origin) {
+        return Arrays.asList(allowedOrigins).contains(origin);
     }
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-
+    public void init(FilterConfig filterConfig) {
     }
 }

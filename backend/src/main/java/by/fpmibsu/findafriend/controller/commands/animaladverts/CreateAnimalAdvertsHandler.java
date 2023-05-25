@@ -8,11 +8,11 @@ import by.fpmibsu.findafriend.entity.AnimalAdvert;
 import by.fpmibsu.findafriend.entity.Photo;
 import by.fpmibsu.findafriend.entity.Place;
 import by.fpmibsu.findafriend.entity.User;
+import java.util.Base64;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 public class CreateAnimalAdvertsHandler extends RequestHandler<Boolean, CreateAnimalAdvertCommand> {
     private final AnimalAdvertDao animalAdvertDao;
@@ -27,7 +27,7 @@ public class CreateAnimalAdvertsHandler extends RequestHandler<Boolean, CreateAn
 
     @Override
     public Boolean handle(CreateAnimalAdvertCommand command) throws Exception {
-        int userId = authenticationData.claims().getClaimValue("id", int.class);
+        int userId = Integer.parseInt(authenticationData.claims().getClaimValueAsString("id"));
         var place = new Place();
         place.setId(command.placeId);
         var u = new User();
@@ -39,9 +39,9 @@ public class CreateAnimalAdvertsHandler extends RequestHandler<Boolean, CreateAn
             return false;
         }
         var photos = command.photos.stream()
-                .map(p -> new Photo(p, advert.getId()))
+                .map(p -> new Photo(Base64.getEncoder().encode(p.getBytes()), advert.getId()))
                 .toList();
         photoDao.create(photos);
-        return result;
+        return true;
     }
 }

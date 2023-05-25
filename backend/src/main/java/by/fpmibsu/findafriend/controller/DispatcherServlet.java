@@ -28,7 +28,7 @@ public class DispatcherServlet extends HttpServlet {
     private static final List<Setup> setups = List.of(
             new DaoSetup(), new UsersSetup(), new PlacesSetup(),
             new AdvertsSetup(), new SheltersSetup(), new AuthSetup(),
-            new AnimalAdvertSetup(), new UserShelterSetup()
+            new AnimalAdvertSetup(), new UserShelterSetup(), new PhotoSetup()
     );
 
     @Override

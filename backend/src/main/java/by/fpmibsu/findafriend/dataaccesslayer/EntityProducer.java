@@ -34,7 +34,7 @@ public class EntityProducer {
                 makePlace(set),
                 set.getDate("birthday"),
                 AnimalAdvert.Sex.fromValue(set.getString("sex")),
-                booleanFromString(set.getString("is_castrated"))
+                booleanFromString(set.getString("castrated"))
         );
     }
 

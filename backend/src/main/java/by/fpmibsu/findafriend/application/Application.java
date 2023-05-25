@@ -20,10 +20,13 @@ import java.util.Optional;
 
 public class Application {
     public record AuthenticationData(JwtClaims claims, boolean isTokenValid) {}
+
     public record Keys(RSAPublicKey publicKey, RSAPrivateKey privateKey) {}
+
     private final GlobalServiceProvider globalServiceProvider;
     private final List<EndpointInfo> endpointInfos;
     private final JwtConsumer consumer;
+
 
     public Application(GlobalServiceProvider globalServiceProvider, List<EndpointInfo> endpointInfos, Keys keys) {
         this.globalServiceProvider = globalServiceProvider;
@@ -51,12 +54,8 @@ public class Application {
         }
 
         var sp = globalServiceProvider.getRequestServiceProvider();
-        if ("Bearer".equals(request.getHeader("Authentication"))) {
-            var claims = parseToken(request.getParameter("token"));
-            sp.addScoped(AuthenticationData.class, claims);
-        } else {
-            sp.addScoped(AuthenticationData.class, new AuthenticationData(new JwtClaims(), false));
-        }
+        var claims = parseToken(request.getParameter("token"));
+        sp.addScoped(AuthenticationData.class, claims);
         HandleResult result = ControllerMethodInvoker.invoke(
                 request, response, endpoint.get(), sp
         );

@@ -7,7 +7,7 @@ import {Constants} from "../constants";
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.css']
 })
-export class RegistrationComponent implements OnInit {
+export class RegistrationComponent {
 
   name: string = '';
   surname: string = '';
@@ -16,9 +16,7 @@ export class RegistrationComponent implements OnInit {
   email: string = '';
   phoneNumber: string = '';
 
-  constructor(private httpClient: HttpClient) { }
-
-  ngOnInit(): void {}
+  constructor(private httpClient: HttpClient) {}
 
   onButtonClicked() {
     this.httpClient.post<HttpResponse<any>>(Constants.api + '/users/createUser', {

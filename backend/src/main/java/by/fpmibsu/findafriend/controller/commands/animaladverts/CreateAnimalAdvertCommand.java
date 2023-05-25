@@ -14,5 +14,5 @@ public class CreateAnimalAdvertCommand extends Request<Boolean> {
     public Date birthdate;
     public String sex;
     public boolean isCastrated;
-    public List<byte[]> photos;
+    public List<String> photos; // base64 strings
 }

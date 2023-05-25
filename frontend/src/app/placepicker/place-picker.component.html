@@ -1,0 +1,6 @@
+<select class="form-control" id="place-selector" [(ngModel)]="selectedPlace" (ngModelChange)="updateSelected($event)">
+  <option *ngFor="let place of places" [ngValue]="place">{{place.region}}, {{place.city}}, {{place.district}}</option>
+</select>
+<div class="alert alert-warning" role="alert" *ngIf="state === LoadingState.Error">
+  Не удалось загрузить. Перезагрузите страницу.
+</div>

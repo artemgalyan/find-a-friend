@@ -19,7 +19,8 @@ public class AnimalAdvertsController extends Controller {
 
     @Endpoint(path = "/getAll", method = HttpMethod.GET)
     public HandleResult getAll() {
-        return ok(animalAdvertDao.getAll()
+        return ok(
+                animalAdvertDao.getAll()
                 .stream()
                 .map(AnimalAdvertModel::of)
                 .toList()
@@ -57,5 +58,11 @@ public class AnimalAdvertsController extends Controller {
                         .stream().map(AnimalAdvertModel::of)
                         .toList()
         );
+    }
+
+    @RequireAuthentication
+    @Endpoint(path = "/getMine", method = HttpMethod.GET)
+    public HandleResult getMy(@WebToken(parameterName = "id") int id) {
+        return getByUserId(id);
     }
 }

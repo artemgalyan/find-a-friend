@@ -1,6 +1,6 @@
-import {PlaceholderMapper} from "@angular/compiler/src/i18n/serializers/serializer";
+import {SafeResourceUrl} from "@angular/platform-browser";
 
-interface User {
+export interface User {
   id: number
   name: string
   surname: string
@@ -8,7 +8,7 @@ interface User {
   email: string
 }
 
-interface Place {
+export interface Place {
   id: number,
   country: string
   region: string
@@ -16,13 +16,13 @@ interface Place {
   district: string
 }
 
-interface Shelter {
+export interface Shelter {
   id: number
   name: string
   place: Place
 }
 
-interface AnimalAdvert {
+export interface AnimalAdvert {
   advertId: number
   userId: number
   title: string
@@ -35,9 +35,18 @@ interface AnimalAdvert {
   isCastrated: boolean
 }
 
-interface Advert {
+export interface Advert {
   id: number
   title: string,
   description: string,
   ownerId: number
+}
+
+export interface Photo {
+  base64content: string;
+}
+
+export class AnimalAdvertWithPhoto {
+  constructor(public advert: AnimalAdvert, public photo: SafeResourceUrl) {
+  }
 }

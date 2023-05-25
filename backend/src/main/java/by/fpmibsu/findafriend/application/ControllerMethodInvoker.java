@@ -5,9 +5,7 @@ import by.fpmibsu.findafriend.application.serviceproviders.ScopedServiceProvider
 import by.fpmibsu.findafriend.application.utils.ObjectConstructor;
 import by.fpmibsu.findafriend.controller.ServletUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.jose4j.jwt.JwtClaims;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -71,7 +69,6 @@ public class ControllerMethodInvoker {
         if (!type.isPrimitive()) {
             return new ObjectMapper().readValue(s, type);
         }
-
         if (int.class.equals(type)) {
             return Integer.parseInt(s);
         }

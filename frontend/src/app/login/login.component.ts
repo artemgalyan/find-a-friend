@@ -11,11 +11,9 @@ export class LoginComponent implements OnInit {
   login: string = '';
   password: string = '';
 
-  constructor(private httpClient: HttpClient) {
-  }
+  constructor(private httpClient: HttpClient) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   onButtonClicked() {
     this.httpClient.get<string>(Constants.api + 'auth/signin?login=' + this.login + '&password=' + this.password, {

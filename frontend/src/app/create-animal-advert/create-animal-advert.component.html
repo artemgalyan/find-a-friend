@@ -1,0 +1,51 @@
+<h1 class="m-4" style="text-align: center">Создание объявление о животном</h1>
+<div style="padding: 10px" class="m-4">
+  <div class="mb-3">
+    <label for="titleInput" class="form-label">Название</label>
+    <input type="text" [(ngModel)]="title" class="form-control" id="titleInput" placeholder="Название">
+  </div>
+  <div class="mb-3">
+    <label for="descriptionInput" class="form-label">Описание</label>
+    <textarea [(ngModel)]="description" class="form-control" id="descriptionInput" placeholder="Описание"></textarea>
+  </div>
+  <div class="mb-3"><label for="type-selector">Тип животного</label>
+    <select class="form-control" id="type-selector" [(ngModel)]="animalType"
+            (ngModelChange)="this.animalType = $event">
+      <option *ngFor="let t of animalTypes">{{ t.toString() }}</option>
+    </select>
+  </div>
+  <div class="mb-3"><label for="sex-selector">Пол животного</label>
+    <select class="form-control" id="sex-selector" [(ngModel)]="sex"
+            (ngModelChange)="this.sex = $event">
+      <option *ngFor="let t of sexes" [ngValue]="t">{{ getSex(t) }}</option>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label for="startDate">Дата рождения животного</label>
+    <input id="startDate" class="form-control" type="date" [(ngModel)]="birthdate"/>
+  </div>
+  <div class="mb-3">
+    <label for="birthdate-picker">Где вы?</label>
+    <app-placepicker id="birthdate-picker"></app-placepicker>
+  </div>
+  <div class="mb-3">
+    <input type="checkbox" class="form-check-input" id="isCastrated" [(ngModel)]="isCastrated">
+    <label class="form-check-label" style="margin-left: 5px" for="isCastrated">Кастрирован</label>
+  </div>
+  <div class="mb-3">
+    <label for="file-input">Изображения</label><br>
+    <input multiple type="file" id="file-input"
+           (change)="onImageUploadClicked($event)" hidden>
+    <div class="images d-flex flex-row flex-wrap" id="image-input" style="gap: 10px;">
+      <button class="btn image-upload-button mb-3" (click)="uploadImage()">Добавить изображение</button>
+      <div *ngFor="let image of images; let i = index" class="image-wrap d-flex flex-column mb-3">
+        <img [src]="image" class="image-upload">
+        <!--        <button class="btn btn-primary mb-3 remove-image-button border rounded-5" (click)="removeImage(i)">Удалить</button>-->
+      </div>
+    </div>
+  </div>
+  <div style="font-size: 20px; text-align: center">
+    <button class="btn btn-primary mb-3 w-50" (click)="createAdvert()">Создать</button>
+  </div>
+
+</div>

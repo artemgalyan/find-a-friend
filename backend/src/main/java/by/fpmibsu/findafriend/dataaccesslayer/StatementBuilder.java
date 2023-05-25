@@ -3,6 +3,7 @@ package by.fpmibsu.findafriend.dataaccesslayer;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
 
 public class StatementBuilder {
@@ -14,7 +15,7 @@ public class StatementBuilder {
 
 
     public PreparedStatement prepareStatement(String query, Object... params) throws SQLException {
-        var statement = connection.prepareStatement(query);
+        var statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         for (int i = 0; i < params.length; ++i) {
             set(statement, i + 1, params[i]);
         }

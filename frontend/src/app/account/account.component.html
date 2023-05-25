@@ -1,0 +1,32 @@
+<div class="d-flex col-2 justify w-100">
+  <div class="m-4 flex-column p-4 align-items-center" style="width: 40%">
+    <h1 style="text-align: center">Ваш аккаунт</h1>
+    <h5>Имя и фамилия</h5>
+    <p>{{self.name}} {{self.surname}}</p>
+    <h5>Электронная почта</h5>
+    <p>{{self.email}}</p>
+    <h5>Номер телефона</h5>
+    <p>{{self.phoneNumber}}</p>
+  </div>
+  <div class="m-4 flex-column align-items-center w-100 border-start p-4">
+    <h1 style="text-align: center">Ваши объявления</h1>
+    <div *ngIf="adverts.length === 0" class="d-flex flex-column align-items-center">
+      <p>У вас ещё нет объявлений</p>
+      <button type="submit" class="btn btn-primary mb-3">Разместить объявление</button>
+    </div>
+    <div *ngIf="adverts.length !== 0" class="d-flex flex-row flex-wrap">
+      <div *ngFor="let advert of adverts" class="mb-3">
+        <div class="d-flex flex-column border rounded p-1 m-3"
+             style="height: 300px; width: 200px; justify-content: space-between;">
+          <img [src]="advert.photo" style="max-height: 200px; height: 100%; border-radius: 5px">
+          <div class="w-100">
+            <h5 style="text-align: center; margin-bottom: 0">{{ advert.advert.title }}</h5>
+            <div style="text-align: center; font-size: 12px; margin-bottom: 2px">{{placeToString(advert.advert.place)}}</div>
+            <button class="btn btn-primary w-100" (click)="showAdvert(advert.advert.advertId)">
+              Подробнее
+            </button>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>

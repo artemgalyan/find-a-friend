@@ -75,7 +75,7 @@ public class DbPhotoDao implements PhotoDao {
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            close(connection);
+            close(statement);
         }
     }
 
@@ -157,7 +157,7 @@ public class DbPhotoDao implements PhotoDao {
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
-            close(connection);
+            close(statement);
         }
     }
 
