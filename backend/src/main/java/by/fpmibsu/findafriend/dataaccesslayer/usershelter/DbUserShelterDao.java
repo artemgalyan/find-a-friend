@@ -2,6 +2,8 @@ package by.fpmibsu.findafriend.dataaccesslayer.usershelter;
 
 import by.fpmibsu.findafriend.dataaccesslayer.DaoException;
 import by.fpmibsu.findafriend.dataaccesslayer.StatementBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DbUserShelterDao implements UserShelterDao {
+    private final Logger logger = LogManager.getLogger();
     private static final String SQL_ADD_CONNECTION = """
             INSERT INTO user_shelter(user_id, shelter_id) VALUES (?, ?)
             """;
@@ -51,6 +54,7 @@ public class DbUserShelterDao implements UserShelterDao {
             }
             return result;
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -65,6 +69,7 @@ public class DbUserShelterDao implements UserShelterDao {
             statement = builder.prepareStatement(SQL_ADD_CONNECTION, userId, shelterId);
             statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -79,6 +84,7 @@ public class DbUserShelterDao implements UserShelterDao {
             statement = builder.prepareStatement(SQL_REMOVE_BY_TWO, shelterId, userId);
             statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -93,6 +99,7 @@ public class DbUserShelterDao implements UserShelterDao {
             statement = builder.prepareStatement(SQL_REMOVE_SHELTER, shelterId);
             statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -107,6 +114,7 @@ public class DbUserShelterDao implements UserShelterDao {
             statement = builder.prepareStatement(SQL_REMOVE_USER, userId);
             statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -126,6 +134,7 @@ public class DbUserShelterDao implements UserShelterDao {
             }
             return result;
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -144,6 +153,7 @@ public class DbUserShelterDao implements UserShelterDao {
             }
             return -1;
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);

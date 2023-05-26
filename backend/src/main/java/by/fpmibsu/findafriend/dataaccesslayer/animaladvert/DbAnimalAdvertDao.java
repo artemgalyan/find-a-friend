@@ -4,12 +4,15 @@ import by.fpmibsu.findafriend.dataaccesslayer.DaoException;
 import by.fpmibsu.findafriend.dataaccesslayer.EntityProducer;
 import by.fpmibsu.findafriend.dataaccesslayer.StatementBuilder;
 import by.fpmibsu.findafriend.entity.AnimalAdvert;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DbAnimalAdvertDao implements AnimalAdvertDao {
+    private final Logger logger = LogManager.getLogger();
     private static final String SQL_SELECT_ALL_ANIMALADVERTS = """
             SELECT *
             FROM animal_advert
@@ -79,6 +82,7 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
                 adverts.add(EntityProducer.makeAnimalAdvert(resultSet));
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -103,6 +107,7 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
                 return null;
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -122,6 +127,7 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
             statement = statementBuilder.prepareStatement(SQL_DELETE_ANIMALADVERT, value);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -150,11 +156,13 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
                 if (generatedKeys.next()) {
                     instance.setId(generatedKeys.getInt(1));
                 } else {
+                    logger.error("Creating user failed, no ID obtained.");
                     throw new SQLException("Creating user failed, no ID obtained.");
                 }
             }
             return true;
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -180,6 +188,7 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
             statement.executeUpdate();
             return instance;
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -194,6 +203,7 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
             statement = statementBuilder.prepareStatement(SQL_DELETE_BY_USER_ID, id);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -213,6 +223,7 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
                 adverts.add(EntityProducer.makeAnimalAdvert(resultSet));
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);

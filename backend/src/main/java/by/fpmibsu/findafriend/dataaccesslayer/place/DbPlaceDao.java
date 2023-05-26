@@ -4,12 +4,15 @@ import by.fpmibsu.findafriend.dataaccesslayer.DaoException;
 import by.fpmibsu.findafriend.dataaccesslayer.EntityProducer;
 import by.fpmibsu.findafriend.dataaccesslayer.StatementBuilder;
 import by.fpmibsu.findafriend.entity.Place;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DbPlaceDao implements PlaceDao {
+    private final Logger logger = LogManager.getLogger();
     private static final String SQL_SELECT_ALL_PLACES = """
             SELECT place_id, country, region, city, district
             FROM place""";
@@ -48,6 +51,7 @@ public class DbPlaceDao implements PlaceDao {
                 places.add(EntityProducer.makePlace(resultSet));
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -68,6 +72,7 @@ public class DbPlaceDao implements PlaceDao {
             }
             return EntityProducer.makePlace(resultSet);
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -87,6 +92,7 @@ public class DbPlaceDao implements PlaceDao {
             statement = statementBuilder.prepareStatement(SQL_DELETE_BY_ID, value);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -106,6 +112,7 @@ public class DbPlaceDao implements PlaceDao {
                     instance.getDistrict());
             int result = statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -126,6 +133,7 @@ public class DbPlaceDao implements PlaceDao {
                     instance.getId());
             int result = statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);

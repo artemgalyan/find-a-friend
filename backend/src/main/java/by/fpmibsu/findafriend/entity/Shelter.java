@@ -2,10 +2,13 @@ package by.fpmibsu.findafriend.entity;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
 public class Shelter extends Entity {
+    private final Logger logger = LogManager.getLogger();
     private String name;
     private List<User> administrators;
     private List<AnimalAdvert> animalAdverts;
@@ -66,6 +69,7 @@ public class Shelter extends Entity {
         try {
             return new ObjectMapper().writeValueAsString(this);
         } catch (JsonProcessingException e) {
+            logger.error(e.toString());
             throw new RuntimeException(e);
         }
     }

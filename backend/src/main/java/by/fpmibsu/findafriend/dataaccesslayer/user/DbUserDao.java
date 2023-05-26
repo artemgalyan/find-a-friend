@@ -4,12 +4,15 @@ import by.fpmibsu.findafriend.dataaccesslayer.DaoException;
 import by.fpmibsu.findafriend.dataaccesslayer.EntityProducer;
 import by.fpmibsu.findafriend.dataaccesslayer.StatementBuilder;
 import by.fpmibsu.findafriend.entity.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DbUserDao implements UserDao {
+    private final Logger logger = LogManager.getLogger();
     private static final String SQL_SELECT_ALL_USERS = """
             SELECT user_id, [user].name, surname, email, phone_number, login, password, role.role_id, role.name
             FROM [user]
@@ -64,7 +67,8 @@ public class DbUserDao implements UserDao {
                 users.add(EntityProducer.makeUser(resultSet));
             }
         } catch (SQLException e) {
-            throw new DaoException("", e);
+            logger.error(e.getMessage());
+            throw new DaoException(e);
         } finally {
             close(statement);
             close(connection);
@@ -84,6 +88,7 @@ public class DbUserDao implements UserDao {
             }
             return EntityProducer.makeUser(resultSet);
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException("", e);
         } finally {
             close(statement);
@@ -103,6 +108,7 @@ public class DbUserDao implements UserDao {
             statement = statementBuilder.prepareStatement(SQL_DELETE_BY_ID, value);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -126,6 +132,7 @@ public class DbUserDao implements UserDao {
                     instance.getRole().toInt());
             int result = statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -161,6 +168,7 @@ public class DbUserDao implements UserDao {
             statement = statementBuilder.prepareStatement(SQL_DELETE_BY_ID, id);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -180,6 +188,7 @@ public class DbUserDao implements UserDao {
             }
             return EntityProducer.makeUser(resultSet);
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);

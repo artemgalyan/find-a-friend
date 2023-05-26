@@ -1,6 +1,8 @@
 package by.fpmibsu.findafriend.dataaccesslayer;
 
 import by.fpmibsu.findafriend.entity.Entity;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -8,6 +10,7 @@ import java.sql.Statement;
 import java.util.List;
 
 public interface Dao<K, T extends Entity> {
+    public final Logger logger = LogManager.getLogger();
     List<T> getAll() throws DaoException;
 
     T getEntityById(K id) throws DaoException;
@@ -29,7 +32,7 @@ public interface Dao<K, T extends Entity> {
                 statement.close();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 
@@ -40,7 +43,7 @@ public interface Dao<K, T extends Entity> {
         try {
             connection.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 }

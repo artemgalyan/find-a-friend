@@ -10,8 +10,8 @@ import by.fpmibsu.findafriend.dataaccesslayer.pool.ConnectionPool;
 import by.fpmibsu.findafriend.services.HashPasswordHasher;
 import by.fpmibsu.findafriend.services.PasswordHasher;
 import by.fpmibsu.findafriend.services.SimplePasswordHasher;
-import com.microsoft.sqlserver.jdbc.SQLServerDriver;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,6 +27,7 @@ import java.util.Properties;
 
 @WebServlet("/*")
 public class DispatcherServlet extends HttpServlet {
+    static final Logger rootLogger = LogManager.getLogger();
     private Application application;
     private ConnectionPool connectionPool;
     private static final List<Setup> setups = List.of(
@@ -48,8 +49,8 @@ public class DispatcherServlet extends HttpServlet {
         var dbPath = (String) properties.getProperty("database_url");
         connectionPool = new ConnectionPool(dbPath);
         int startSize = Integer.parseInt(properties.getProperty("start_size", "1"));
-        int maxSize = Integer.parseInt(properties.getProperty("max_size", "30"));
-        int checkout = Integer.parseInt(properties.getProperty("checkout", "1"));
+        int maxSize = Integer.parseInt(properties.getProperty("max_size", "50"));
+        int checkout = Integer.parseInt(properties.getProperty("checkout", "0"));
         connectionPool.init(startSize, maxSize, checkout);
         boolean debug = Boolean.parseBoolean(properties.getProperty("debug"));
         var passwordHasher = debug
@@ -73,6 +74,7 @@ public class DispatcherServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        rootLogger.trace("start execute operation");
         application.send(req, resp);
     }
 

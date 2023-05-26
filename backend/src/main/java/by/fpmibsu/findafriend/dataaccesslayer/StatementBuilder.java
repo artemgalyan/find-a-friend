@@ -1,5 +1,8 @@
 package by.fpmibsu.findafriend.dataaccesslayer;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -8,6 +11,7 @@ import java.util.Date;
 
 public class StatementBuilder {
     private final Connection connection;
+    private final Logger logger = LogManager.getLogger();
 
     public StatementBuilder(Connection connection) {
         this.connection = connection;
@@ -52,7 +56,7 @@ public class StatementBuilder {
             statement.setBytes(index, bytes);
             return;
         }
-
+        logger.error("No conversion for type " + o.getClass().getName());
         throw new UnsupportedOperationException("No conversion for type " + o.getClass().getName());
     }
 }

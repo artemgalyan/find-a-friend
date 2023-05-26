@@ -4,12 +4,16 @@ import by.fpmibsu.findafriend.dataaccesslayer.DaoException;
 import by.fpmibsu.findafriend.dataaccesslayer.EntityProducer;
 import by.fpmibsu.findafriend.dataaccesslayer.StatementBuilder;
 import by.fpmibsu.findafriend.entity.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class DbShelterDao implements ShelterDao {
+    final private Logger logger = LogManager.getLogger();
     private static final String SQL_SELECT_ALL_SHELTERS = """
             SELECT shelter_id, name, place.place_id, place.country, place.region, place.city, place.district
             FROM shelter
@@ -58,6 +62,7 @@ public class DbShelterDao implements ShelterDao {
                 shelters.add(EntityProducer.makeShelter(resultSet));
             }
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -78,6 +83,7 @@ public class DbShelterDao implements ShelterDao {
             }
             return EntityProducer.makeShelter(resultSet);
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -97,6 +103,7 @@ public class DbShelterDao implements ShelterDao {
             statement = statementBuilder.prepareStatement(SQL_DELETE_BY_ID, value);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -114,6 +121,7 @@ public class DbShelterDao implements ShelterDao {
                     instance.getName());
             int result = statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -132,6 +140,7 @@ public class DbShelterDao implements ShelterDao {
                     instance.getId());
             int result = statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -147,6 +156,7 @@ public class DbShelterDao implements ShelterDao {
             statement = statementBuilder.prepareStatement(SQL_DELETE_BY_PLACE_SHELTER, id);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -162,6 +172,7 @@ public class DbShelterDao implements ShelterDao {
             statement = statementBuilder.prepareStatement(SQL_DELETE_BY_ID, id);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
