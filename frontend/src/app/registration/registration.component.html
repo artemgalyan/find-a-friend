@@ -1,30 +1,48 @@
-<div class="h-100 d-flex border justify-content-center" style="width: auto">
-  <div class="forms">
-    <div class="mb-3">
+<div class="d-flex justify-content-center align-content-center" style="height: 90%">
+  <div class="forms d-flex flex-column justify-content-center align-content-center">
+    <div class="mb-1">
       <label for="nameInput" class="form-label">Имя</label>
-      <input type="text" [(ngModel)]="name" class="form-control" id="nameInput" placeholder="Иван">
+      <input type="text" [(ngModel)]="name" class="form-control" id="nameInput" placeholder="Иван" required>
+      <span class="invalid-feedback position-relative">
+        Введите имя
+      </span>
     </div>
-    <div class="mb-3">
+    <div class="mb-1">
       <label for="surnameInput" class="form-label">Фамилия</label>
-      <input type="text" [(ngModel)]="surname" class="form-control" id="surnameInput" placeholder="Иванов">
+      <input type="text" [(ngModel)]="surname" class="form-control" id="surnameInput" placeholder="Иванов" required>
+      <span class="invalid-feedback position-relative">
+        Введите фамилию
+      </span>
     </div>
-    <div class="mb-3">
+    <div class="mb-1">
       <label for="loginInput" class="form-label">Логин</label>
-      <input type="text" [(ngModel)]="login" class="form-control" id="loginInput">
+      <input type="text" [(ngModel)]="login" class="form-control" id="loginInput" required>
+      <span class="invalid-feedback position-relative">
+        Неправильный логин. Возможно он уже занят
+      </span>
     </div>
 
-    <div class="mb-3">
+    <div class="mb-1">
       <label for="passwordInput" class="form-label">Пароль</label>
-      <input type="password" [(ngModel)]="password" class="form-control" id="passwordInput">
+      <input type="password" [(ngModel)]="password" class="form-control" id="passwordInput" required>
+      <span class="invalid-feedback position-relative">
+        Пароль должен быть больше 8 символов
+      </span>
     </div>
-    <div class="mb-3">
+    <div class="mb-1">
       <label for="emailInput" class="form-label">Электронная почта</label>
-      <input type="email" [(ngModel)]="email" class="form-control" id="emailInput">
+      <input type="email" [(ngModel)]="email" class="form-control" id="emailInput" required>
+      <span class="invalid-feedback position-relative">
+        Введите электронную почту
+      </span>
     </div>
 
-    <div class="mb-3">
+    <div class="mb-1">
       <label for="phoneInput" class="form-label">Номер телефона</label>
-      <input type="text" [(ngModel)]="phoneNumber" class="form-control" id="phoneInput">
+      <input type="text" [(ngModel)]="phoneNumber" class="form-control" id="phoneInput" required>
+      <span class="invalid-feedback position-relative">
+        Введите номер телефона
+      </span>
     </div>
     <button type="submit" class="btn btn-primary mb-3 w-100" (click)="onButtonClicked()">Зарегистрироваться</button>
   </div>
