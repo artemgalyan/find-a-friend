@@ -60,4 +60,8 @@ export class AnimalAdvertComponent implements OnInit {
       this.currentPhoto = this.currentPhoto - 1;
     }
   }
+
+  authorIsShelter() : boolean {
+    return this.advert.shelterName !== null && this.advert.shelterName !== undefined;
+  }
 }
