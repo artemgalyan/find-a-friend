@@ -18,12 +18,14 @@ import java.io.ObjectInputStream;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ApplicationBuilder {
     private final GlobalServiceProvider serviceProvider = new DefaultGlobalServiceProvider();
     private final HandlersDataList handlersDataList = new HandlersDataList();
-    private final List<EndpointInfo> endpointInfos = new ArrayList<>();
+    private final Map<String, EndpointInfo> endpointInfos = new HashMap<>();
     private Application.Keys keys;
 
     public ApplicationBuilder() {
@@ -69,7 +71,7 @@ public class ApplicationBuilder {
 
     public ApplicationBuilder mapController(Class<? extends Controller> controller) {
         List<EndpointInfo> data = ControllerMapper.mapController(controller);
-        endpointInfos.addAll(data);
+        data.forEach(d -> endpointInfos.put(d.path(), d));
         return this;
     }
 }

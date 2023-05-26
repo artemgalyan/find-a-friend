@@ -21,11 +21,10 @@ public class ControllerMethodInvoker {
                                       EndpointInfo endpointInfo, ScopedServiceProvider sp) {
 
         var controller = ObjectConstructor.createInstance(endpointInfo.controller(), sp);
-        logger.trace("selected the right controller " + controller.getClass());
+        logger.trace("Created controller " + endpointInfo.controller().getName());
         controller.setRequest(request);
         controller.setResponse(response);
         controller.setServiceProvider(sp);
-        logger.trace("selected controller is configured");
         var method = endpointInfo.method();
         if (method.isAnnotationPresent(RequireAuthentication.class) &&
                 !sp.getRequiredService(Application.AuthenticationData.class).isTokenValid()) {

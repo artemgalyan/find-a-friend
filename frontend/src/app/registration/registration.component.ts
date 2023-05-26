@@ -16,6 +16,7 @@ export class RegistrationComponent implements OnInit {
   password: string = '';
   email: string = '';
   phoneNumber: string = '';
+  loginErrorMessage = 'Введите логин'
 
   constructor(private httpClient: HttpClient,
               private router: Router) {
@@ -43,6 +44,7 @@ export class RegistrationComponent implements OnInit {
     }
     if (this.login.length === 0) {
       valid = false;
+      this.loginErrorMessage = 'Введите логин'
       loginInput.classList.add('is-invalid');
     } else {
       loginInput.classList.remove('is-invalid')
@@ -83,7 +85,8 @@ export class RegistrationComponent implements OnInit {
       this.router.navigate(['login'])
     }, (e: HttpErrorResponse) => {
       if (e.status == 400) {
-        alert('Проверьте правильность введённой информации.');
+        this.loginErrorMessage = 'Логин занят'
+        loginInput.classList.add('is-invalid')
       }
     })
   }

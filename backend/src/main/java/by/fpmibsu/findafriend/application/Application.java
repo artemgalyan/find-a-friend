@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class Application {
@@ -26,13 +27,13 @@ public class Application {
     public record Keys(RSAPublicKey publicKey, RSAPrivateKey privateKey) {}
 
     private final GlobalServiceProvider globalServiceProvider;
-    private final List<EndpointInfo> endpointInfos;
+    private final Map<String, EndpointInfo> endpointInfos;
     private final JwtConsumer consumer;
 
     private final Logger logger = LogManager.getLogger();
 
 
-    public Application(GlobalServiceProvider globalServiceProvider, List<EndpointInfo> endpointInfos, Keys keys) {
+    public Application(GlobalServiceProvider globalServiceProvider, Map<String, EndpointInfo> endpointInfos, Keys keys) {
         this.globalServiceProvider = globalServiceProvider;
         this.endpointInfos = endpointInfos;
         consumer = new JwtConsumerBuilder()
@@ -44,28 +45,25 @@ public class Application {
     }
 
     public void send(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        logger.trace("Started request processing from " + request.getLocalAddr());
         ServletUtils.setResponseHeaders(response);
-        Optional<EndpointInfo> endpoint = endpointInfos.stream()
-                .filter(e -> e.path().equals(request.getPathInfo())
-                        && e.httpMethod().toString().equalsIgnoreCase(request.getMethod()))
-                .findFirst();
-
-        if (endpoint.isEmpty()) {
+        if (!endpointInfos.containsKey(request.getPathInfo())) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
+        EndpointInfo endpoint = endpointInfos.get(request.getPathInfo());
 
         var sp = globalServiceProvider.getRequestServiceProvider();
-        var claims = parseToken(request.getParameter("token"));
-        sp.addScoped(AuthenticationData.class, claims);
+        AuthenticationData authData = parseToken(request.getParameter("token"));
+        sp.addScoped(AuthenticationData.class, authData);
         HandleResult result = ControllerMethodInvoker.invoke(
-                request, response, endpoint.get(), sp
+                request, response, endpoint, sp
         );
         response.setStatus(result.getCode());
         if (result.getResponseObject().isPresent()) {
             ServletUtils.writeResponse(result.getResponseObject().get(), response.getOutputStream());
         }
-        logger.trace("end execute operation");
+        logger.trace("Finished request processing from " + request.getLocalAddr());
     }
 
     private AuthenticationData parseToken(String token) {

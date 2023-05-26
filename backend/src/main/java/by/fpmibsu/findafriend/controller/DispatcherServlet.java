@@ -69,7 +69,6 @@ public class DispatcherServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        rootLogger.trace("start execute operation");
         application.send(req, resp);
     }
 

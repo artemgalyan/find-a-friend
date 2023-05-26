@@ -18,7 +18,7 @@
       <label for="loginInput" class="form-label">Логин</label>
       <input type="text" [(ngModel)]="login" class="form-control" id="loginInput" required>
       <span class="invalid-feedback position-relative">
-        Неправильный логин. Возможно он уже занят
+        {{loginErrorMessage}}
       </span>
     </div>
 

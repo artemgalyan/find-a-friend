@@ -43,4 +43,8 @@ public abstract class Controller {
     protected static HandleResult badRequest() {
         return new HandleResult(HttpServletResponse.SC_BAD_REQUEST);
     }
+
+    protected static HandleResult badRequest(Object value) {
+        return new HandleResult(HttpServletResponse.SC_BAD_REQUEST, value);
+    }
 }

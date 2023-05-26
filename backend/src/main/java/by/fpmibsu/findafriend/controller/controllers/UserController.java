@@ -8,6 +8,7 @@ import by.fpmibsu.findafriend.controller.commands.users.DeleteUserCommand;
 import by.fpmibsu.findafriend.controller.commands.users.UpdateUserCommand;
 import by.fpmibsu.findafriend.controller.queries.users.GetUserByIdQuery;
 import by.fpmibsu.findafriend.controller.queries.users.GetUsersQuery;
+import by.fpmibsu.findafriend.dataaccesslayer.user.UserDao;
 import by.fpmibsu.findafriend.entity.User;
 
 import java.util.Arrays;
@@ -35,6 +36,13 @@ public class UserController extends Controller {
     public HandleResult createUser(@FromBody CreateUserCommand request) {
         if (isAnyEmpty(request.name, request.surname, request.login, request.password, request.email, request.phoneNumber)) {
             return badRequest();
+        }
+        if (request.password.length() < 8) {
+            return badRequest("Too short password");
+        }
+        var userDao = serviceProvider.getRequiredService(UserDao.class);
+        if (userDao.findByLogin(request.login) != null) {
+            return badRequest("Duplicate login");
         }
         return ok(mediatr.send(request));
     }
