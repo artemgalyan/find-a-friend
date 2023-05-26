@@ -12,7 +12,7 @@ import {Router} from "@angular/router";
 })
 export class AccountComponent implements OnInit {
   self: User = null!;
-  adverts: AnimalAdvertWithPhoto[] = [];
+  adverts: AnimalAdvert[] = [];
   constructor(private httpClient: HttpClient,
               private _sanitizer: DomSanitizer,
               private router: Router) { }
@@ -30,15 +30,7 @@ export class AccountComponent implements OnInit {
 
   private fetchMine() {
     this.httpClient.get<AnimalAdvert[]>(Constants.api + 'animalAdverts/getMine?token=' + localStorage.getItem('jwt'))
-      .subscribe(r => {
-        for (let advert of r) {
-          this.httpClient.get<Photo>(Constants.api + 'photos/getPreview?id=' + advert.advertId).subscribe(res => {
-            const image = this._sanitizer.bypassSecurityTrustResourceUrl(res.base64content);
-            this.adverts.push(new AnimalAdvertWithPhoto(advert, image));
-            console.log(this.adverts.length)
-          })
-        }
-      });
+      .subscribe(r => this.adverts = r);
   }
 
   placeToString(p: Place) : string {

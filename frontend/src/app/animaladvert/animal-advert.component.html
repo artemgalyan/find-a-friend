@@ -1,0 +1,25 @@
+<h1 style="text-align: center">{{ advert?.title ?? 'Название' }}</h1>
+
+<div class="mb-3 forms m-4">
+  <label for="description">Описание</label>
+  <p id="description">{{advert.description}}</p>
+  <label for="type">Тип</label>
+  <p id="type">{{advert.animalType}}</p>
+  <label for="place">Место</label>
+  <p id="place">{{advert.place.city + ' ' + advert.place.district}}</p>
+  <h5>{{ advert.isCastrated ? 'Кастрирован' : 'Не кастрирован'}}</h5>
+  <label for="birthdate">День рождения</label>
+  <p id="birthdate">{{ dateToString(advert.birthDate) }}</p>
+  <h4>Контакты</h4>
+  <div *ngIf="user === null" class="alert alert-danger" role="alert">
+    Войдите, чтобы просмотреть контакты создателя объявления
+  </div>
+  <div *ngIf="user !== null">
+    <label for="name">Имя и фамилия</label>
+    <p id="name">{{user.name}} {{user.surname}}</p>
+    <label for="email">Электронная почта</label>
+    <p id="email">{{user.email}}</p>
+    <label for="phone-number">Номер телефона</label>
+    <p id="phone-number">{{user.phoneNumber}}</p>
+  </div>
+</div>
