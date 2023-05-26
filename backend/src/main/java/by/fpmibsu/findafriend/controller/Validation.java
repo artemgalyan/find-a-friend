@@ -11,4 +11,8 @@ public class Validation {
         return Arrays.stream(s)
                 .anyMatch(Validation::isNullOrEmpty);
     }
+
+    public static boolean in(String s, String... other) {
+        return Arrays.asList(other).contains(s);
+    }
 }

@@ -3,6 +3,7 @@ package by.fpmibsu.findafriend.controller.controllers;
 import by.fpmibsu.findafriend.application.HandleResult;
 import by.fpmibsu.findafriend.application.controller.*;
 import by.fpmibsu.findafriend.application.mediatr.Mediatr;
+import by.fpmibsu.findafriend.controller.Validation;
 import by.fpmibsu.findafriend.controller.commands.animaladverts.CreateAnimalAdvertCommand;
 import by.fpmibsu.findafriend.controller.models.AnimalAdvertModel;
 import by.fpmibsu.findafriend.dataaccesslayer.animaladvert.AnimalAdvertDao;
@@ -22,9 +23,9 @@ public class AnimalAdvertsController extends Controller {
     public HandleResult getAll() {
         return ok(
                 animalAdvertDao.getAll()
-                .stream()
-                .map(AnimalAdvertModel::of)
-                .toList()
+                        .stream()
+                        .map(AnimalAdvertModel::of)
+                        .toList()
         );
     }
 
@@ -51,6 +52,12 @@ public class AnimalAdvertsController extends Controller {
     @RequireAuthentication
     @Endpoint(path = "/create", method = HttpMethod.POST)
     public HandleResult create(@FromBody CreateAnimalAdvertCommand command) {
+        if (Validation.isAnyNullOrEmpty(command.animalType, command.description, command.sex, command.title)
+                || command.birthdate == null
+                || !Validation.in(command.sex, "M", "F")
+                || !Validation.in(command.animalType, "Кот", "Собака", "Другое")) {
+            return badRequest();
+        }
         return ok(mediatr.send(command));
     }
 
