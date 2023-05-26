@@ -8,6 +8,7 @@ import by.fpmibsu.findafriend.controller.commands.shelters.DeleteShelterCommand;
 import by.fpmibsu.findafriend.controller.commands.shelters.UpdateShelterCommand;
 import by.fpmibsu.findafriend.controller.queries.shelters.GetShelterByIdQuery;
 import by.fpmibsu.findafriend.controller.queries.shelters.GetSheltersQuery;
+import by.fpmibsu.findafriend.entity.User;
 
 @ControllerRoute(route = "/shelters")
 public class ShelterController extends Controller {
@@ -27,18 +28,30 @@ public class ShelterController extends Controller {
         return ok(mediatr.send(new GetShelterByIdQuery(id)));
     }
 
+    @RequireAuthentication
     @Endpoint(path = "/createShelter", method = HttpMethod.POST)
-    public HandleResult createShelter(@FromBody CreateShelterCommand request) {
+    public HandleResult createShelter(@FromBody CreateShelterCommand request, @WebToken(parameterName = "role") String role) {
+        if (!User.Role.ADMINISTRATOR.toString().equals(role)) {
+            return notAuthorized();
+        }
         return ok(mediatr.send(request));
     }
 
+    @RequireAuthentication
     @Endpoint(path = "/updateShelter", method = HttpMethod.PUT)
-    public HandleResult updateShelter(@FromBody UpdateShelterCommand request) {
+    public HandleResult updateShelter(@FromBody UpdateShelterCommand request, @WebToken(parameterName = "role") String role) {
+        if (User.Role.USER.toString().equals(role)) {
+            return notAuthorized();
+        }
         return ok(mediatr.send(request));
     }
 
+    @RequireAuthentication
     @Endpoint(path = "/deleteShelter", method = HttpMethod.DELETE)
-    public HandleResult deleteShelterById(@FromQuery(parameterName = "id") int id) {
+    public HandleResult deleteShelterById(@FromQuery(parameterName = "id") int id, @WebToken(parameterName = "role") String role) {
+        if (!User.Role.ADMINISTRATOR.toString().equals(role)) {
+            return notAuthorized();
+        }
         return ok(mediatr.send(new DeleteShelterCommand(id)));
     }
 

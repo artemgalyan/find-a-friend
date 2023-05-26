@@ -8,7 +8,7 @@ import by.fpmibsu.findafriend.entity.User;
 import java.util.Date;
 
 public class CreateAdvertCommand extends Request<Boolean> {
-    public Advert.AdvertType advertType;
+    public String advertType;
     public String title;
     public String description;
     public Date creationDate;

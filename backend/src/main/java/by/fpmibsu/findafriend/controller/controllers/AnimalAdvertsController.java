@@ -6,6 +6,7 @@ import by.fpmibsu.findafriend.application.mediatr.Mediatr;
 import by.fpmibsu.findafriend.controller.commands.animaladverts.CreateAnimalAdvertCommand;
 import by.fpmibsu.findafriend.controller.models.AnimalAdvertModel;
 import by.fpmibsu.findafriend.dataaccesslayer.animaladvert.AnimalAdvertDao;
+import by.fpmibsu.findafriend.entity.User;
 
 @ControllerRoute(route = "/animalAdverts")
 public class AnimalAdvertsController extends Controller {
@@ -35,10 +36,13 @@ public class AnimalAdvertsController extends Controller {
     }
 
     @Endpoint(path = "/delete", method = HttpMethod.DELETE)
-    public HandleResult delete(@FromQuery(parameterName = "id") int id, @WebToken(parameterName = "id") int userId) {
-        var advert = animalAdvertDao.getEntityById(id);
-        if (advert.getOwner().getId() != userId) {
-            return notAuthorized();
+    public HandleResult delete(@FromQuery(parameterName = "id") int id, @WebToken(parameterName = "id") int userId,
+                               @WebToken(parameterName = "role") String role) {
+        if (!User.Role.ADMINISTRATOR.toString().equals(role) && !User.Role.MODERATOR.equals(role)) {
+            var advert = animalAdvertDao.getEntityById(id);
+            if (advert.getOwner().getId() != userId) {
+                return notAuthorized();
+            }
         }
         animalAdvertDao.delete(id);
         return ok();

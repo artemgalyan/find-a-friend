@@ -8,6 +8,7 @@ import by.fpmibsu.findafriend.controller.commands.users.DeleteUserCommand;
 import by.fpmibsu.findafriend.controller.commands.users.UpdateUserCommand;
 import by.fpmibsu.findafriend.controller.queries.users.GetUserByIdQuery;
 import by.fpmibsu.findafriend.controller.queries.users.GetUsersQuery;
+import by.fpmibsu.findafriend.entity.User;
 
 import java.util.Arrays;
 
@@ -19,7 +20,6 @@ public class UserController extends Controller {
         this.mediatr = mediatr;
     }
 
-//    @RequireAuthentication
     @Endpoint(path = "/getAll", method = HttpMethod.GET)
     public HandleResult getAll() {
         return ok(mediatr.send(new GetUsersQuery()));
@@ -41,8 +41,9 @@ public class UserController extends Controller {
 
     @RequireAuthentication
     @Endpoint(path = "/updateUser", method = HttpMethod.PUT)
-    public HandleResult updateUser(@FromBody UpdateUserCommand request, @WebToken(parameterName = "id") int userId) {
-        if (userId != request.userId) {
+    public HandleResult updateUser(@FromBody UpdateUserCommand request, @WebToken(parameterName = "id") int userId,
+                                   @WebToken(parameterName = "role") String role) {
+        if (userId != request.userId && !User.Role.ADMINISTRATOR.toString().equals(role)) {
             return notAuthorized();
         }
         return ok(mediatr.send(request));
@@ -50,7 +51,11 @@ public class UserController extends Controller {
 
     @RequireAuthentication
     @Endpoint(path = "/deleteUser", method = HttpMethod.DELETE)
-    public HandleResult deleteUserById(@WebToken(parameterName = "id") int id) {
+    public HandleResult deleteUserById(@WebToken(parameterName = "id") int id, @WebToken(parameterName = "id") int userId,
+                                       @WebToken(parameterName = "role") String role) {
+        if (userId != id && !User.Role.ADMINISTRATOR.toString().equals(role)) {
+            return notAuthorized();
+        }
         return ok(mediatr.send(new DeleteUserCommand(id)));
     }
 
