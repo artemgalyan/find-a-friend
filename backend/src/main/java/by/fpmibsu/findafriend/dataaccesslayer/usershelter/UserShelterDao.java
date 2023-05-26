@@ -33,13 +33,19 @@ public interface UserShelterDao {
             this.userId = userId;
         }
     }
+
     List<Pair> getAll() throws SQLException, DaoException;
+
     void add(int shelterId, int userId) throws DaoException;
+
     void remove(int shelterId, int userId) throws DaoException;
+
     void removeAll(int shelterId) throws DaoException;
+
     void removeUser(int userId) throws DaoException;
 
     List<Integer> getUsersId(int shelterId) throws DaoException;
+
     int getShelterId(int userId) throws DaoException;
 
     default void close(Statement statement) {
@@ -60,9 +66,7 @@ public interface UserShelterDao {
             return;
         }
         try {
-            if (!connection.isClosed()) {
-                connection.close();
-            }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -15,11 +15,9 @@ import by.fpmibsu.findafriend.entity.User;
 @ControllerRoute(route = "/adverts")
 public class AdvertController extends Controller {
     private final Mediatr mediatr;
-    private final AdvertDao advertDao;
 
-    public AdvertController(Mediatr mediatr, AdvertDao advertDao) {
+    public AdvertController(Mediatr mediatr) {
         this.mediatr = mediatr;
-        this.advertDao = advertDao;
     }
 
     @Endpoint(path = "/getAll", method = HttpMethod.GET)
@@ -50,6 +48,7 @@ public class AdvertController extends Controller {
             return badRequest();
         }
         if (!User.Role.ADMINISTRATOR.toString().equals(role) && !User.Role.MODERATOR.equals(role)) {
+            var advertDao = serviceProvider.getRequiredService(AdvertDao.class);
             var advert = advertDao.getEntityById(request.advertId);
             if (advert == null) {
                 return badRequest();
@@ -65,6 +64,7 @@ public class AdvertController extends Controller {
     public HandleResult deleteAdvertById(@FromQuery(parameterName = "id") int id, @WebToken(parameterName = "id") int userId,
                                          @WebToken(parameterName = "role") String role) {
         if (!User.Role.ADMINISTRATOR.toString().equals(role) && !User.Role.MODERATOR.equals(role)) {
+            var advertDao = serviceProvider.getRequiredService(AdvertDao.class);
             var advert = advertDao.getEntityById(id);
             if (advert == null) {
                 return badRequest();
