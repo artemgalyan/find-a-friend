@@ -16,9 +16,12 @@ public class AnimalAdvertModel {
     public Date birthDate;
     public char sex;
     public boolean isCastrated;
+    public int shelterId;
+    public String shelterName;
 
     public AnimalAdvertModel(int advertId, int userId, String title, String description,
-                             String animalType, Date creationDate, Place place, Date birthDate, char sex, boolean isCastrated) {
+                             String animalType, Date creationDate, Place place, Date birthDate,
+                             char sex, boolean isCastrated, int shelterId, String shelterName) {
         this.advertId = advertId;
         this.userId = userId;
         this.title = title;
@@ -29,9 +32,11 @@ public class AnimalAdvertModel {
         this.birthDate = birthDate;
         this.sex = sex;
         this.isCastrated = isCastrated;
+        this.shelterId = shelterId;
+        this.shelterName = shelterName;
     }
 
-    public static AnimalAdvertModel of(AnimalAdvert animalAdvert) {
+    public static AnimalAdvertModel of(AnimalAdvert animalAdvert, int shelterId, String shelterName) {
         return new AnimalAdvertModel(
                 animalAdvert.getId(),
                 animalAdvert.getOwner().getId(),
@@ -42,7 +47,9 @@ public class AnimalAdvertModel {
                 animalAdvert.getPlace(),
                 animalAdvert.getBirthdate(),
                 animalAdvert.getSex().getValue(),
-                animalAdvert.isCastrated()
+                animalAdvert.isCastrated(),
+                shelterId,
+                shelterName
         );
     }
 }

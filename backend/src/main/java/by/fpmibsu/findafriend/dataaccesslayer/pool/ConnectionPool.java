@@ -1,6 +1,8 @@
 package by.fpmibsu.findafriend.dataaccesslayer.pool;
 
 import by.fpmibsu.findafriend.dataaccesslayer.DaoException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,9 +13,9 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.LinkedBlockingQueue;
 
 final public class ConnectionPool implements AutoCloseable {
-//	private static Logger logger = Logger.getLogger(ConnectionPool.class);
-
+	private static final Logger logger = LogManager.getLogger(ConnectionPool.class);
     private final String connectionString;
+
     private int maxSize;
     private int checkConnectionTimeout;
 
@@ -39,17 +41,17 @@ final public class ConnectionPool implements AutoCloseable {
                 } else if (usedConnections.size() < maxSize) {
                     connection = createConnection();
                 } else {
-//                    logger.error("The limit of number of database connections is exceeded");
+                    logger.error("The limit of number of database connections is exceeded");
 //                    throw new PersistentException();
                     throw new DaoException("The limit of number of db connections is exceeded");
                 }
             } catch (InterruptedException | SQLException e) {
-//                logger.error("It is impossible to connect to a database", e);
+                logger.error("It is impossible to connect to a database", e);
                 throw new DaoException(e);
             }
         }
         usedConnections.add(connection);
-//        logger.debug(String.format("Connection was received from pool. Current pool size: %d used connections; %d free connection", usedConnections.size(), freeConnections.size()));
+        logger.debug(String.format("Connection was received from pool. Current pool size: %d used connections; %d free connection", usedConnections.size(), freeConnections.size()));
         return connection;
     }
 
@@ -60,10 +62,10 @@ final public class ConnectionPool implements AutoCloseable {
                 connection.setAutoCommit(true);
                 usedConnections.remove(connection);
                 freeConnections.put(connection);
-//                logger.debug(String.format("Connection was returned into pool. Current pool size: %d used connections; %d free connection", usedConnections.size(), freeConnections.size()));
+                logger.debug(String.format("Connection was returned into pool. Current pool size: %d used connections; %d free connection", usedConnections.size(), freeConnections.size()));
             }
         } catch (SQLException | InterruptedException e1) {
-//            logger.warn("It is impossible to return database connection into pool", e1);
+            logger.warn("It is impossible to return database connection into pool", e1);
             try {
                 connection.getConnection().close();
             } catch (SQLException e2) {
@@ -79,11 +81,14 @@ final public class ConnectionPool implements AutoCloseable {
             for (int counter = 0; counter < startSize; counter++) {
                 freeConnections.put(createConnection());
             }
-        } catch (SQLException | InterruptedException e) {
-//            logger.fatal("It is impossible to initialize connection pool", e);
+        } catch (SQLException e) {
+            logger.fatal("It is impossible to initialize connection pool", e);
 //            throw new PersistentException(e);
             throw new DaoException(e);
+        } catch (InterruptedException e) {
+            logger.fatal("Interrupted");
         }
+        logger.info("Connection pool is initialized");
     }
 
     private PooledConnection createConnection() throws SQLException {

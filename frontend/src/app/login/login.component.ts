@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {Constants} from "../constants";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,8 @@ export class LoginComponent implements OnInit {
   login: string = '';
   password: string = '';
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient,
+              private router: Router) {}
 
   ngOnInit(): void {}
 
@@ -27,6 +29,7 @@ export class LoginComponent implements OnInit {
       }
 
       localStorage.setItem('jwt', r);
+      this.router.navigate(['animalAdverts']);
     })
   }
 }

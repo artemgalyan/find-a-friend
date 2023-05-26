@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Constants} from "../constants";
 import {PlacePickerComponent} from "../placepicker/place-picker.component";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-create-animal-advert',
@@ -24,10 +25,20 @@ export class CreateAnimalAdvertComponent implements OnInit {
   @ViewChild(PlacePickerComponent)
   private placeSelector!: PlacePickerComponent;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient,
+              private router: Router) {
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (!this.isLoggedIn()) {
+      this.router.navigate(['login'])
+      return
+    }
+  }
+
+  isLoggedIn() : boolean {
+    return localStorage.getItem('jwt') !== null && localStorage.getItem('jwt') !== undefined
+  }
 
   onImageUploadClicked(event: any) {
     const files = event.target.files;

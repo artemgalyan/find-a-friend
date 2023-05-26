@@ -10,7 +10,7 @@ import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
   styleUrls: ['./animal-adverts.component.css']
 })
 export class AnimalAdvertsComponent implements OnInit {
-  adverts: AnimalAdvertWithPhoto[] = [];
+  adverts: AnimalAdvert[] = [];
 
   constructor(private httpClient: HttpClient,
               private _sanitizer: DomSanitizer) {
@@ -22,15 +22,7 @@ export class AnimalAdvertsComponent implements OnInit {
 
   private fetchAdverts() {
     this.httpClient.get<AnimalAdvert[]>(Constants.api + 'animalAdverts/getAll')
-      .subscribe(r => {
-        for (let advert of r) {
-          this.httpClient.get<Photo>(Constants.api + 'photos/getPreview?id=' + advert.advertId).subscribe(res => {
-            const image = this._sanitizer.bypassSecurityTrustResourceUrl(res.base64content);
-            this.adverts.push(new AnimalAdvertWithPhoto(advert, image));
-            console.log(res?.base64content)
-          })
-        }
-      });
+      .subscribe(r => this.adverts = r);
   }
 
   placeToString(p: Place) : string {

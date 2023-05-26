@@ -94,7 +94,14 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
             statement = statementBuilder
                     .prepareStatement(SQL_SELECT_BY_ID, id);
             var resultSet = statement.executeQuery();
-            return EntityProducer.makeAnimalAdvert(resultSet);
+            try {
+                if (resultSet.next()) {
+                    return EntityProducer.makeAnimalAdvert(resultSet);
+                }
+                return null;
+            } catch (SQLException e) {
+                return null;
+            }
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {

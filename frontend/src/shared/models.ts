@@ -28,11 +28,13 @@ export interface AnimalAdvert {
   title: string
   description: string,
   animalType: string,
-  creationDate: Date,
+  creationDate: string,
   place: Place,
-  birthDate: Date,
-  sex: symbol,
+  birthDate: string,
+  sex: symbol
   isCastrated: boolean
+  shelterId: number
+  shelterName: string
 }
 
 export interface Advert {

@@ -16,18 +16,8 @@
     </div>
     <div *ngIf="adverts.length !== 0" class="d-flex flex-row flex-wrap">
       <div *ngFor="let advert of adverts" class="mb-3">
-        <div class="d-flex flex-column border rounded p-1 m-3"
-             style="height: 300px; width: 200px; justify-content: space-between;">
-          <img [src]="advert.photo" style="max-height: 200px; height: 100%; border-radius: 5px">
-          <div class="w-100">
-            <h5 style="text-align: center; margin-bottom: 0">{{ advert.advert.title }}</h5>
-            <div
-              style="text-align: center; font-size: 12px; margin-bottom: 2px">{{placeToString(advert.advert.place)}}</div>
-            <button class="btn btn-primary w-100" (click)="showAdvert(advert.advert.advertId)">
-              Подробнее
-            </button>
-          </div>
-        </div>
+        <app-animal-advert [advert]="advert"></app-animal-advert>
+
       </div>
     </div>
   </div>

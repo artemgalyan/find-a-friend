@@ -10,6 +10,8 @@ import by.fpmibsu.findafriend.dataaccesslayer.pool.ConnectionPool;
 import by.fpmibsu.findafriend.services.HashPasswordHasher;
 import by.fpmibsu.findafriend.services.PasswordHasher;
 import by.fpmibsu.findafriend.services.SimplePasswordHasher;
+import com.microsoft.sqlserver.jdbc.SQLServerDriver;
+import org.apache.logging.log4j.LogManager;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -46,8 +48,8 @@ public class DispatcherServlet extends HttpServlet {
         var dbPath = (String) properties.getProperty("database_url");
         connectionPool = new ConnectionPool(dbPath);
         int startSize = Integer.parseInt(properties.getProperty("start_size", "1"));
-        int maxSize = Integer.parseInt(properties.getProperty("max_size", "50"));
-        int checkout = Integer.parseInt(properties.getProperty("checkout", "0"));
+        int maxSize = Integer.parseInt(properties.getProperty("max_size", "30"));
+        int checkout = Integer.parseInt(properties.getProperty("checkout", "1"));
         connectionPool.init(startSize, maxSize, checkout);
         boolean debug = Boolean.parseBoolean(properties.getProperty("debug"));
         var passwordHasher = debug
@@ -56,6 +58,11 @@ public class DispatcherServlet extends HttpServlet {
         var builder = new ApplicationBuilder();
         builder.mapController(ExampleController.class);
         builder.readKeys("../conf/");
+        try {
+            DriverManager.registerDriver(new SQLServerDriver());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         setups.forEach(s -> s.applyTo(builder));
         builder.services()
                 .addSingleton(ConnectionPool.class, () -> connectionPool)

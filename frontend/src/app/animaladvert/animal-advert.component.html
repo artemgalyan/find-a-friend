@@ -1,0 +1,88 @@
+<h1 style="text-align: center">{{ advert?.title ?? 'Название' }}</h1>
+<div class="d-flex p-2 flex-row flex-wrap gap-4">
+  <div id="carousel" class="p-1 border d-flex flex-column align-content-between"
+       style="width: 30%; height: 30%;">
+    <div class="h-100 w-100 d-flex justify-content-center">
+      <img [src]="photos[currentPhoto]" style="max-width: 100%; max-height: 100%" *ngIf="photos.length > 0">
+      <img src="assets/images/default.png" style="max-width: 100%; max-height: 100%" *ngIf="photos.length === 0">
+    </div>
+    <div class="d-flex flex-row justify-content-between m-1" *ngIf="photos.length > 0">
+      <button class="btn btn-primary" (click)="previous()">Предыдущий</button>
+      <p *ngIf="photos.length > 0">{{currentPhoto + 1}}/{{photos.length}}</p>
+      <button class="btn btn-primary" (click)="next()">Следующий</button>
+    </div>
+    <div class="alert alert-warning m-1" role="alert" *ngIf="photos.length === 0">
+      Фотографии отсутствуют
+    </div>
+  </div>
+  <div style="width: 40%" class="border">
+
+  </div>
+</div>
+<div class="p-3">
+  <form>
+    <h3>Информация</h3>
+    <div class="form-group row">
+      <label for="animalDescription" class="col-sm-2 col-form-label">Описание</label>
+      <div class="col-sm-10">
+        <input type="text" readonly class="form-control-plaintext" id="animalDescription" [value]="advert.description">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="type" class="col-sm-2 col-form-label">Тип</label>
+      <div class="col-sm-10">
+        <input type="text" readonly class="form-control-plaintext" id="type" [value]="advert.animalType">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="sex" class="col-sm-2 col-form-label">Пол</label>
+      <div class="col-sm-10">
+        <input type="text" readonly class="form-control-plaintext" id="sex" [value]="advert.sex">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="birthdate" class="col-sm-2 col-form-label">Дата рождения</label>
+      <div class="col-sm-10">
+        <input type="text" readonly class="form-control-plaintext" id="birthdate"
+               [value]="dateToString(advert.birthDate)">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="castrated" class="col-sm-2 col-form-label">Кастрирован</label>
+      <div class="col-sm-10">
+        <input type="text" readonly class="form-control-plaintext" id="castrated"
+               [value]="advert.isCastrated ? 'Да' : 'Нет'">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="place" class="col-sm-2 col-form-label">Местонахождение</label>
+      <div class="col-sm-10">
+        <input type="text" readonly class="form-control-plaintext" id="place"
+               [value]="advert.place.city + ', ' + advert.place.district">
+      </div>
+    </div>
+  </form>
+</div>
+<div class="mb-3 forms m-4">
+  <!--  <label for="description">Описание</label>-->
+  <!--  <p id="description">{{advert.description}}</p>-->
+  <!--  <label for="type">Тип</label>-->
+  <!--  <p id="type">{{advert.animalType}}</p>-->
+  <!--  <label for="place">Место</label>-->
+  <!--  <p id="place">{{advert.place.city + ' ' + advert.place.district}}</p>-->
+  <!--  <h5>{{ advert.isCastrated ? 'Кастрирован' : 'Не кастрирован'}}</h5>-->
+  <!--  <label for="birthdate">День рождения</label>-->
+  <!--  <p id="birthdate">{{ dateToString(advert.birthDate) }}</p>-->
+  <!--  <h4>Контакты</h4>-->
+  <!--  <div *ngIf="user === null" class="alert alert-danger" role="alert">-->
+  <!--    Войдите, чтобы просмотреть контакты создателя объявления-->
+  <!--  </div>-->
+  <!--  <div *ngIf="user !== null">-->
+  <!--    <label for="name">Имя и фамилия</label>-->
+  <!--    <p id="name">{{user.name}} {{user.surname}}</p>-->
+  <!--    <label for="email">Электронная почта</label>-->
+  <!--    <p id="email">{{user.email}}</p>-->
+  <!--    <label for="phone-number">Номер телефона</label>-->
+  <!--    <p id="phone-number">{{user.phoneNumber}}</p>-->
+  <!--  </div>-->
+</div>

@@ -9,37 +9,44 @@ import java.util.List;
 
 public interface UserShelterDao {
     class Pair {
-        private int key;
-        private int value;
+        private int shelterId;
+        private int userId;
 
         public Pair(int key, int value) {
-            this.key = key;
-            this.value = value;
+            this.shelterId = key;
+            this.userId = value;
         }
 
-        public int getKey() {
-            return key;
+        public int getShelterId() {
+            return shelterId;
         }
 
-        public void setKey(int key) {
-            this.key = key;
+        public void setShelterId(int shelterId) {
+            this.shelterId = shelterId;
         }
 
-        public int getValue() {
-            return value;
+        public int getUserId() {
+            return userId;
         }
 
-        public void setValue(int value) {
-            this.value = value;
+        public void setUserId(int userId) {
+            this.userId = userId;
         }
     }
+
     List<Pair> getAll() throws SQLException, DaoException;
+
     void add(int shelterId, int userId) throws DaoException;
+
     void remove(int shelterId, int userId) throws DaoException;
+
     void removeAll(int shelterId) throws DaoException;
+
     void removeUser(int userId) throws DaoException;
 
     List<Integer> getUsersId(int shelterId) throws DaoException;
+
+    int getShelterId(int userId) throws DaoException;
 
     default void close(Statement statement) {
         if (statement == null) {
@@ -59,9 +66,7 @@ public interface UserShelterDao {
             return;
         }
         try {
-            if (!connection.isClosed()) {
-                connection.close();
-            }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
