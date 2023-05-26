@@ -10,6 +10,8 @@ import by.fpmibsu.findafriend.dataaccesslayer.pool.ConnectionPool;
 import by.fpmibsu.findafriend.services.HashPasswordHasher;
 import by.fpmibsu.findafriend.services.PasswordHasher;
 import by.fpmibsu.findafriend.services.SimplePasswordHasher;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,13 +20,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 
 @WebServlet("/*")
 public class DispatcherServlet extends HttpServlet {
+    static final Logger rootLogger = LogManager.getLogger();
     private Application application;
     private ConnectionPool connectionPool;
     private static final List<Setup> setups = List.of(
@@ -66,6 +67,7 @@ public class DispatcherServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        rootLogger.trace("start execute operation");
         application.send(req, resp);
     }
 

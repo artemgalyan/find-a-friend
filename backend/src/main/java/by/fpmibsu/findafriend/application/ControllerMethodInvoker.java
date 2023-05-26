@@ -6,18 +6,26 @@ import by.fpmibsu.findafriend.application.utils.ObjectConstructor;
 import by.fpmibsu.findafriend.controller.ServletUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+
 public class ControllerMethodInvoker {
+    private final static Logger logger = LogManager.getLogger();
+
     public static HandleResult invoke(HttpServletRequest request, HttpServletResponse response,
                                       EndpointInfo endpointInfo, ScopedServiceProvider sp) {
+
         var controller = ObjectConstructor.createInstance(endpointInfo.controller(), sp);
+        logger.trace("selected the right controller " + controller.getClass());
         controller.setRequest(request);
         controller.setResponse(response);
         controller.setServiceProvider(sp);
+        logger.trace("selected controller is configured");
         var method = endpointInfo.method();
         if (method.isAnnotationPresent(RequireAuthentication.class) &&
                 !sp.getRequiredService(Application.AuthenticationData.class).isTokenValid()) {
@@ -37,7 +45,7 @@ public class ControllerMethodInvoker {
                 } else if (parameter.isAnnotationPresent(WebToken.class)) {
                     var annotation = parameter.getAnnotation(WebToken.class);
                     methodParams[i] = tryParseObject(claims.getClaimValueAsString(annotation.parameterName()),
-                                parameter.getType());
+                            parameter.getType());
                 } else {
                     return new HandleResult(HttpServletResponse.SC_BAD_REQUEST);
                 }
@@ -54,6 +62,7 @@ public class ControllerMethodInvoker {
 
     private static Object readFromQuery(String key, HttpServletRequest request, Class<?> type) throws JsonProcessingException {
         if (request.getParameter(key) == null) {
+            logger.error("arg is null in query");
             throw new RuntimeException("Arg is null");
         }
         return tryParseObject(request.getParameter(key), type);
@@ -97,6 +106,7 @@ public class ControllerMethodInvoker {
         if (long.class.equals(type)) {
             return Long.parseLong(s);
         }
+        logger.error("incorrect type of object");
         throw new RuntimeException("Unreachable");
     }
 }

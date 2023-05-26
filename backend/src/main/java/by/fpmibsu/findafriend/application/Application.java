@@ -4,6 +4,8 @@ import by.fpmibsu.findafriend.application.controller.EndpointInfo;
 import by.fpmibsu.findafriend.application.serviceproviders.GlobalServiceProvider;
 import by.fpmibsu.findafriend.controller.ServletUtils;
 import by.fpmibsu.findafriend.services.JwtSigner;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jose4j.jwa.AlgorithmConstraints;
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.jwt.JwtClaims;
@@ -27,13 +29,13 @@ public class Application {
     private final List<EndpointInfo> endpointInfos;
     private final JwtConsumer consumer;
 
+    private final Logger logger = LogManager.getLogger();
+
 
     public Application(GlobalServiceProvider globalServiceProvider, List<EndpointInfo> endpointInfos, Keys keys) {
         this.globalServiceProvider = globalServiceProvider;
         this.endpointInfos = endpointInfos;
         consumer = new JwtConsumerBuilder()
-//                .setRequireExpirationTime()
-//                .setRequireSubject()
                 .setVerificationKey(keys.publicKey())
                 .setJwsAlgorithmConstraints(
                         AlgorithmConstraints.ConstraintType.PERMIT, AlgorithmIdentifiers.RSA_USING_SHA256)
@@ -63,6 +65,7 @@ public class Application {
         if (result.getResponseObject().isPresent()) {
             ServletUtils.writeResponse(result.getResponseObject().get(), response.getOutputStream());
         }
+        logger.trace("end execute operation");
     }
 
     private AuthenticationData parseToken(String token) {
