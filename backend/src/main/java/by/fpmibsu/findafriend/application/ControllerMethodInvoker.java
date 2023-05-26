@@ -17,6 +17,7 @@ public class ControllerMethodInvoker {
         var controller = ObjectConstructor.createInstance(endpointInfo.controller(), sp);
         controller.setRequest(request);
         controller.setResponse(response);
+        controller.setServiceProvider(sp);
         var method = endpointInfo.method();
         if (method.isAnnotationPresent(RequireAuthentication.class) &&
                 !sp.getRequiredService(Application.AuthenticationData.class).isTokenValid()) {

@@ -31,8 +31,10 @@ export interface AnimalAdvert {
   creationDate: Date,
   place: Place,
   birthDate: Date,
-  sex: symbol,
+  sex: symbol
   isCastrated: boolean
+  shelterId: number
+  shelterName: string
 }
 
 export interface Advert {

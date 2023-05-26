@@ -1,6 +1,7 @@
 package by.fpmibsu.findafriend.application.controller;
 
 import by.fpmibsu.findafriend.application.HandleResult;
+import by.fpmibsu.findafriend.application.serviceproviders.ServiceProvider;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -8,6 +9,11 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class Controller {
     protected HttpServletRequest request;
     protected HttpServletResponse response;
+    protected ServiceProvider serviceProvider;
+
+    public void setServiceProvider(ServiceProvider serviceProvider) {
+        this.serviceProvider = serviceProvider;
+    }
 
     public void setRequest(HttpServletRequest request) {
         this.request = request;

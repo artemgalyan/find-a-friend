@@ -26,6 +26,11 @@ public class DbUserShelterDao implements UserShelterDao {
             SELECT user_id
             FROM user_shelter
             WHERE shelter_id=?""";
+
+    private static final String SQL_SELECT_SHELTER_ID_BY_USER_ID = """
+            SELECT shelter_id
+            FROM user_shelter
+            WHERE user_id=?""";
     private final Connection connection;
     private final StatementBuilder builder;
 
@@ -120,6 +125,24 @@ public class DbUserShelterDao implements UserShelterDao {
                 result.add(set.getInt("user_id"));
             }
             return result;
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            close(statement);
+            close(connection);
+        }
+    }
+
+    @Override
+    public int getShelterId(int userId) throws DaoException {
+        PreparedStatement statement = null;
+        try {
+            statement = builder.prepareStatement(SQL_SELECT_SHELTER_ID_BY_USER_ID, userId);
+            var set = statement.executeQuery();
+            if (set.next()) {
+                return set.getInt("shelter_id");
+            }
+            return -1;
         } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
