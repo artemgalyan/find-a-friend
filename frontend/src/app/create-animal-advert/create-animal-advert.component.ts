@@ -73,7 +73,7 @@ export class CreateAnimalAdvertComponent implements OnInit {
       headers: {
         'Content-type': 'text/json; charset=UTF-8'
       }
-    }).subscribe(r => console.log(r))
+    }).subscribe(r => this.router.navigate(['animalAdverts']))
   }
 
   getSex(s: string) : string {
