@@ -4,12 +4,15 @@ import by.fpmibsu.findafriend.dataaccesslayer.DaoException;
 import by.fpmibsu.findafriend.dataaccesslayer.EntityProducer;
 import by.fpmibsu.findafriend.dataaccesslayer.StatementBuilder;
 import by.fpmibsu.findafriend.entity.Photo;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DbPhotoDao implements PhotoDao {
+    private final Logger logger = LogManager.getLogger();
     private static final String SQL_SELECT_ALL_PHOTO = """
             SELECT photo_id, data, animal_advert_id
             FROM photo""";
@@ -59,7 +62,8 @@ public class DbPhotoDao implements PhotoDao {
                 photo.add(EntityProducer.makePhoto(resultSet));
             }
         } catch (SQLException e) {
-            throw new DaoException("", e);
+            logger.error(e.getMessage());
+            throw new DaoException(e);
         } finally {
             close(statement);
             close(connection);
@@ -77,6 +81,7 @@ public class DbPhotoDao implements PhotoDao {
             resultSet.next();
             return EntityProducer.makePhoto(resultSet);
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -96,6 +101,7 @@ public class DbPhotoDao implements PhotoDao {
             statement = statementBuilder.prepareStatement(SQL_DELETE_PHOTO_BY_ID, value);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -112,6 +118,7 @@ public class DbPhotoDao implements PhotoDao {
                     instance.getData(), instance.getAdvertId());
             int result = statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -128,6 +135,7 @@ public class DbPhotoDao implements PhotoDao {
                     instance.getData(), instance.getId());
             int result = statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -143,6 +151,7 @@ public class DbPhotoDao implements PhotoDao {
             statement = statementBuilder.prepareStatement(SQL_DELETE_PHOTO_BY_ANIMAL_ADVERT_ID, id);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -164,6 +173,7 @@ public class DbPhotoDao implements PhotoDao {
             }
             return photos;
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);

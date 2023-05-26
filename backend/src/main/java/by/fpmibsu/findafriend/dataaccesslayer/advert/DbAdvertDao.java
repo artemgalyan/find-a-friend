@@ -4,12 +4,15 @@ import by.fpmibsu.findafriend.dataaccesslayer.DaoException;
 import by.fpmibsu.findafriend.dataaccesslayer.EntityProducer;
 import by.fpmibsu.findafriend.dataaccesslayer.StatementBuilder;
 import by.fpmibsu.findafriend.entity.Advert;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DbAdvertDao implements AdvertDao {
+    private final Logger logger = LogManager.getLogger();
     private static final String SQL_SELECT_ALL_ADVERTS = """
             SELECT * FROM advert
             INNER JOIN place p on p.place_id = advert.place_id;
@@ -84,6 +87,7 @@ public class DbAdvertDao implements AdvertDao {
             }
             return null;
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -104,6 +108,7 @@ public class DbAdvertDao implements AdvertDao {
             statement = statementBuilder.prepareStatement(SQL_DELETE_BY_ID, value);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -126,6 +131,7 @@ public class DbAdvertDao implements AdvertDao {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -147,6 +153,7 @@ public class DbAdvertDao implements AdvertDao {
             statement.executeUpdate();
             return instance;
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -161,6 +168,7 @@ public class DbAdvertDao implements AdvertDao {
             statement = statementBuilder.prepareStatement(SQL_DELETE_BY_ID, id);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -176,6 +184,7 @@ public class DbAdvertDao implements AdvertDao {
             statement = statementBuilder.prepareStatement(SQL_DELETE_ADVERT_BY_USER_ID, id);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -195,7 +204,8 @@ public class DbAdvertDao implements AdvertDao {
                 adverts.add(EntityProducer.makeAdvert(resultSet));
             }
         } catch (SQLException e) {
-            throw new DaoException("", e);
+            logger.error(e.getMessage());
+            throw new DaoException(e);
         } finally {
             close(statement);
             close(connection);
