@@ -1,5 +1,6 @@
 <div class="d-flex flex-column border rounded p-1 m-3" style="height: 300px; width: 200px; justify-content: space-between;">
-  <img [src]="photo" [alt]="defaultPhoto" style="max-height: 200px; height: 100%; border-radius: 5px">
+  <img [src]="photo" *ngIf="photo !== null" style="max-height: 200px; height: 100%; border-radius: 5px">
+  <img [src]="defaultPhoto" *ngIf="photo === null" style="max-height: 200px; height: 100%; border-radius: 5px">
   <div class="w-100">
     <h5 style="text-align: center; margin-bottom: 0">{{ advert.title }}</h5>
     <div

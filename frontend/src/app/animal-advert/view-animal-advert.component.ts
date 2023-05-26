@@ -15,7 +15,7 @@ export class ViewAnimalAdvertComponent implements OnInit {
   advert!: AnimalAdvert
 
   photo: SafeResourceUrl = '';
-  defaultPhoto: string = '';
+  defaultPhoto: SafeResourceUrl = '';
 
   constructor(private httpClient: HttpClient,
               private sanitizer: DomSanitizer,
@@ -23,14 +23,19 @@ export class ViewAnimalAdvertComponent implements OnInit {
 
   ngOnInit(): void {
     this.httpClient.get<Photo>(Constants.api + 'photos/getPreview?id=' + this.advert.advertId).subscribe(res => {
-      this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(res.base64content);
+      if (res !== null)
+        this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(res.base64content);
+      else {
+        this.photo = null!;
+      }
     })
+
     if (this.advert.animalType === 'Кот') {
-      this.defaultPhoto = '../assets/cat.png'
+      this.defaultPhoto = 'assets/images/cat.png'
     } else if (this.advert.animalType === 'Собака') {
-      this.defaultPhoto = '../assets/dog.png'
+      this.defaultPhoto = 'assets/images/dog.png'
     } else {
-      this.defaultPhoto = '../assets/monk.png'
+      this.defaultPhoto = 'assets/images/monk.png'
     }
   }
 
