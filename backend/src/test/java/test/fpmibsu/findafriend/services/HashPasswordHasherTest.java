@@ -42,7 +42,7 @@ public class HashPasswordHasherTest {
         String expected = "Hat375%12";
         String incorrect = "hat375%12";
         String hashedPassword = passwordHasher.hashPassword(expected);
-        User user = new User(3, contacts, new ArrayList<>(), new ArrayList<>(), User.Role.USER, "tom", hashedPassword);
+        User user = new User(3, contacts, new ArrayList<>(), new ArrayList<>(), User.Role.USER, "annHat", hashedPassword);
         if (passwordHasher.verifyPassword(user, incorrect) == PasswordHasher.PasswordVerificationResult.FAILED) {
             assertTrue(true);
         } else assertFalse(false);
