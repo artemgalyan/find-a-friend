@@ -5,7 +5,7 @@ import {HttpClient} from "@angular/common/http";
 import {Constants} from "../constants";
 
 @Component({
-  selector: 'app-animaladvert',
+  selector: 'app-animal-advert',
   templateUrl: './animal-advert.component.html',
   styleUrls: ['./animal-advert.component.css']
 })

@@ -6,7 +6,7 @@ import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-animal-advert',
+  selector: 'app-view-animal-advert',
   templateUrl: './view-animal-advert.component.html',
   styleUrls: ['./view-animal-advert.component.css']
 })

@@ -10,10 +10,11 @@ import { LoginComponent } from './login/login.component';
 import { AccountComponent } from './account/account.component';
 import { CreateAnimalAdvertComponent } from './create-animal-advert/create-animal-advert.component';
 import { PlacePickerComponent } from './placepicker/place-picker.component';
-import { AnimalAdvertsComponent } from './animaladverts/animal-adverts.component';
-import { ViewAnimalAdvertComponent } from './animal-advert/view-animal-advert.component';
-import { AnimalAdvertComponent } from './animaladvert/animal-advert.component';
+import { AnimalAdvertsComponent } from './animal-adverts/animal-adverts.component';
+import { ViewAnimalAdvertComponent } from './view-animal-advert/view-animal-advert.component';
+import { AnimalAdvertComponent } from './animal-advert/animal-advert.component';
 import { HeaderComponent } from './header/header.component';
+import { AdvertsComponent } from './adverts/adverts.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { HeaderComponent } from './header/header.component';
     AnimalAdvertsComponent,
     ViewAnimalAdvertComponent,
     AnimalAdvertComponent,
-    HeaderComponent
+    HeaderComponent,
+    AdvertsComponent
   ],
   imports: [
     BrowserModule,

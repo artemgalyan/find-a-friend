@@ -7,6 +7,8 @@ import by.fpmibsu.findafriend.controller.Validation;
 import by.fpmibsu.findafriend.controller.commands.adverts.CreateAdvertCommand;
 import by.fpmibsu.findafriend.controller.commands.adverts.DeleteAdvertCommand;
 import by.fpmibsu.findafriend.controller.commands.adverts.UpdateAdvertCommand;
+import by.fpmibsu.findafriend.controller.queries.adverts.GetAdvertByIdQuery;
+import by.fpmibsu.findafriend.controller.queries.adverts.GetAdvertsQuery;
 import by.fpmibsu.findafriend.controller.queries.users.GetUserByIdQuery;
 import by.fpmibsu.findafriend.controller.queries.users.GetUsersQuery;
 import by.fpmibsu.findafriend.dataaccesslayer.advert.AdvertDao;
@@ -26,13 +28,13 @@ public class AdvertController extends Controller {
     @Endpoint(path = "/getAll", method = HttpMethod.GET)
     public HandleResult getAll() {
         logger.trace("response is completed");
-        return ok(mediatr.send(new GetUsersQuery()));
+        return ok(mediatr.send(new GetAdvertsQuery()));
     }
 
     @Endpoint(path = "/getAdvert", method = HttpMethod.GET)
     public HandleResult getById(@FromQuery(parameterName = "id") int id) {
         logger.trace("response is completed");
-        return ok(mediatr.send(new GetUserByIdQuery(id)));
+        return ok(mediatr.send(new GetAdvertByIdQuery(id)));
     }
 
     @RequireAuthentication

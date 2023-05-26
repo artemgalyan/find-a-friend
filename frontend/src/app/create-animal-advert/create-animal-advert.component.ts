@@ -5,7 +5,7 @@ import {PlacePickerComponent} from "../placepicker/place-picker.component";
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-create-animal-advert',
+  selector: 'app-create-view-animal-advert',
   templateUrl: './create-animal-advert.component.html',
   styleUrls: ['./create-animal-advert.component.css'],
   providers: [PlacePickerComponent]

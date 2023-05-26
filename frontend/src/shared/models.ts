@@ -41,7 +41,10 @@ export interface Advert {
   id: number
   title: string,
   description: string,
-  ownerId: number
+  ownerId: number,
+  advertType: string,
+  place: Place,
+  creationDate: string
 }
 
 export interface Photo {

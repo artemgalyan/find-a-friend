@@ -5,7 +5,7 @@ import {Constants} from "../constants";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 
 @Component({
-  selector: 'app-animaladverts',
+  selector: 'app-animal-adverts',
   templateUrl: './animal-adverts.component.html',
   styleUrls: ['./animal-adverts.component.css']
 })
