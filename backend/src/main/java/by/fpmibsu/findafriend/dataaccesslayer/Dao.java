@@ -41,9 +41,7 @@ public interface Dao<K, T extends Entity> {
             return;
         }
         try {
-            if (!connection.isClosed()) {
-                connection.close();
-            }
+            connection.close();
         } catch (SQLException e) {
             logger.error(e.getMessage());
         }

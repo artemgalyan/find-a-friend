@@ -5,7 +5,6 @@ import by.fpmibsu.findafriend.application.controller.*;
 import by.fpmibsu.findafriend.application.mediatr.Mediatr;
 import by.fpmibsu.findafriend.controller.Validation;
 import by.fpmibsu.findafriend.controller.commands.animaladverts.CreateAnimalAdvertCommand;
-import by.fpmibsu.findafriend.controller.models.AnimalAdvertModel;
 import by.fpmibsu.findafriend.controller.queries.animalAdverts.GetAllAnimalAdvertsQuery;
 import by.fpmibsu.findafriend.controller.queries.animalAdverts.GetAnimalAdvertQuery;
 import by.fpmibsu.findafriend.controller.queries.animalAdverts.GetAnimalAdvertsByUserIdQuery;

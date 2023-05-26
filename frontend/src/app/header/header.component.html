@@ -37,12 +37,12 @@
     </ul>
   </div>
   <nav class="navbar navbar-light">
-    <div *ngIf="isLoggedIn()">
-      <button type="button" class="btn" (click)="onAccountClicked()">Аккаунт</button>
-      <button type="button" class="btn dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference"
+    <div *ngIf="isLoggedIn()" style="margin-right: 50px">
+      <button style="margin-right: 0" type="button" class="btn dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference"
               data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
         <span class="visually-hidden">Toggle Dropdown</span>
       </button>
+      <button style="margin-left: 0" type="button" class="btn" (click)="onAccountClicked()">Аккаунт</button>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenuReference">
         <li><a class="dropdown-item" (click)="onExit()">Выйти</a></li>
       </ul>

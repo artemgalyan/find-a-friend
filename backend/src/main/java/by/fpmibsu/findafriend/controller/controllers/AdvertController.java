@@ -18,11 +18,9 @@ import org.apache.logging.log4j.Logger;
 public class AdvertController extends Controller {
     private final Logger logger = LogManager.getLogger();
     private final Mediatr mediatr;
-    private final AdvertDao advertDao;
 
-    public AdvertController(Mediatr mediatr, AdvertDao advertDao) {
+    public AdvertController(Mediatr mediatr) {
         this.mediatr = mediatr;
-        this.advertDao = advertDao;
     }
 
     @Endpoint(path = "/getAll", method = HttpMethod.GET)
@@ -58,6 +56,7 @@ public class AdvertController extends Controller {
             return badRequest();
         }
         if (!User.Role.ADMINISTRATOR.toString().equals(role) && !User.Role.MODERATOR.equals(role)) {
+            var advertDao = serviceProvider.getRequiredService(AdvertDao.class);
             var advert = advertDao.getEntityById(request.advertId);
             if (advert == null) {
                 logger.error("request doesn't exist or is incorrect");
@@ -76,6 +75,7 @@ public class AdvertController extends Controller {
     public HandleResult deleteAdvertById(@FromQuery(parameterName = "id") int id, @WebToken(parameterName = "id") int userId,
                                          @WebToken(parameterName = "role") String role) {
         if (!User.Role.ADMINISTRATOR.toString().equals(role) && !User.Role.MODERATOR.equals(role)) {
+            var advertDao = serviceProvider.getRequiredService(AdvertDao.class);
             var advert = advertDao.getEntityById(id);
             if (advert == null) {
                 logger.error("request doesn't exist or is incorrect");
