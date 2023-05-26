@@ -3,6 +3,7 @@ package test.fpmibsu.findafriend.services;
 import by.fpmibsu.findafriend.entity.Contacts;
 import by.fpmibsu.findafriend.entity.User;
 
+import by.fpmibsu.findafriend.services.HashPasswordHasher;
 import by.fpmibsu.findafriend.services.PasswordHasher;
 import org.testng.annotations.Test;
 
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import static org.testng.Assert.*;
 
 public class HashPasswordHasherTest {
-    PasswordHasher passwordHasher;
+    PasswordHasher passwordHasher = new HashPasswordHasher();
     private final int passwordSize = 64 * 8;
 
     @Test

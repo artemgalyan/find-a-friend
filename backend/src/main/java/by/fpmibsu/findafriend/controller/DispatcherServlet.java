@@ -59,11 +59,6 @@ public class DispatcherServlet extends HttpServlet {
         var builder = new ApplicationBuilder();
         builder.mapController(ExampleController.class);
         builder.readKeys("../conf/");
-        try {
-            DriverManager.registerDriver(new SQLServerDriver());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
         setups.forEach(s -> s.applyTo(builder));
         builder.services()
                 .addSingleton(ConnectionPool.class, () -> connectionPool)
