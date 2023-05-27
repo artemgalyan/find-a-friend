@@ -53,9 +53,16 @@ public class ControllerMethodInvoker {
             }
         }
         try {
-            return (HandleResult) method.invoke(controller, methodParams);
+            var result = (HandleResult) method.invoke(controller, methodParams);
+            return result;
         } catch (Exception e) {
             return new HandleResult(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        } finally {
+            try {
+                sp.close();
+            } catch (Exception e) {
+
+            }
         }
     }
 

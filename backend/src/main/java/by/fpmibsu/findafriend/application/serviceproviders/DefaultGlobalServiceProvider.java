@@ -129,7 +129,8 @@ public class DefaultGlobalServiceProvider implements GlobalServiceProvider {
         @Override
         public void close() throws Exception {
             for (var entry : scoped.entrySet()) {
-                if (entry instanceof AutoCloseable ac) {
+                var instance = entry.getValue().instance;
+                if (instance != this && instance instanceof AutoCloseable ac) {
                     ac.close();
                 }
             }
