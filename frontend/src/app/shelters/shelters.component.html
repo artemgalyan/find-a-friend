@@ -1,0 +1,12 @@
+<div class="p-4">
+  <h1 style="text-align: center">Приюты</h1>
+  <div class="d-flex flex-column">
+    <div class="border m-1 d-flex flex-row justify-content-between p-2" *ngFor="let shelter of shelters">
+      <div>
+        <h5 style="margin-bottom: 0">{{ shelter.name }}</h5>
+        <p style="margin-bottom: 2px">{{ placeToString(shelter.place) }}</p>
+      </div>
+      <button class="btn btn-primary" (click)="viewShelter(shelter.id)">Подробнее</button>
+    </div>
+  </div>
+</div>

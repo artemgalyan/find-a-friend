@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Place, Shelter} from "../../shared/models";
+import {AnimalAdvert, Place, Shelter} from "../../shared/models";
 import {HttpClient} from "@angular/common/http";
 import {Constants} from "../constants";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -11,6 +11,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class ShelterComponent implements OnInit {
   shelter?: Shelter;
+  adverts: AnimalAdvert[] = [];
   constructor(private httpClient: HttpClient,
               private route: ActivatedRoute,
               private router: Router) {}
@@ -23,8 +24,12 @@ export class ShelterComponent implements OnInit {
         this.router.navigate(['shelters'])
         return;
       }
-      this.httpClient.get<Shelter>(Constants.api + 'shelters/getShelter?id=' + shelterId)
-        .subscribe(result => this.shelter = result, error => alert('Произошла ошибка'))
+      this.httpClient.get<Shelter>(Constants.api + 'shelters/getById?id=' + shelterId)
+        .subscribe(result => {
+          this.shelter = result
+          this.httpClient.get<AnimalAdvert[]>(Constants.api + 'animalAdverts/getByShelterId?id=' + shelterId)
+            .subscribe(r => this.adverts = r);
+        }, error => this.router.navigate(['shelters']))
     })
   }
 
