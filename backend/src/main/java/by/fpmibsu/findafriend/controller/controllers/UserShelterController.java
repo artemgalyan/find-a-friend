@@ -19,20 +19,20 @@ public class UserShelterController extends Controller {
             return notAuthorized();
         }
 
+        serviceProvider.getRequiredService(UserShelterDao.class).removeUser(userId);
         serviceProvider.getRequiredService(UserShelterDao.class).add(shelterId, userId);
         return ok();
     }
 
     @RequireAuthentication
     @Endpoint(path = "/removeUserFromShelter", method = HttpMethod.POST)
-    public HandleResult removeFromShelter(@FromQuery(parameterName = "shelterId") int shelterId,
-                                          @FromQuery(parameterName = "userId") int userId,
+    public HandleResult removeFromShelter(@FromQuery(parameterName = "userId") int userId,
                                           @WebToken(parameterName = "role") String role) {
         if (AuthUtils.allowRoles(role, User.Role.MODERATOR, User.Role.ADMINISTRATOR)) {
             return notAuthorized();
         }
 
-        serviceProvider.getRequiredService(UserShelterDao.class).remove(shelterId, userId);
+        serviceProvider.getRequiredService(UserShelterDao.class).removeUser(userId);
         return ok();
     }
 }

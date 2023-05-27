@@ -9,36 +9,59 @@ import {Constants} from "../constants";
   styleUrls: ['./admin-panel.component.css'],
   providers: [PlacePickerComponent]
 })
-export class AdminPanelComponent implements OnInit {
+export class AdminPanelComponent {
   userId: number = 0
-  advertId: number = 0
-  animalAdvertId: number = 0
   shelterIdToDelete: number = 0
 
 
-  @ViewChild(PlacePickerComponent)
+  @ViewChild('placeforshelter')
   private placeSelector!: PlacePickerComponent;
-  constructor(private httpClient: HttpClient) { }
+  shelterToCreateName: string = ''
 
-  ngOnInit(): void {
+  @ViewChild('placetodelete')
+  private toDeleteplaceSelector!: PlacePickerComponent;
+
+  constructor(private httpClient: HttpClient) {
   }
+
+  country: string = ''
+  region: string = ''
+  city: string = ''
+  district: string = ''
 
   deleteUser() {
     this.httpClient.delete(Constants.api + 'users/delete?id=' + this.userId + '&token=' + this.token())
       .subscribe(r => console.log(r))
   }
 
-  deleteAdvert() {
-    this.httpClient.delete(Constants.api + 'adverts/delete?id=' + this.advertId + '&token=' + this.token())
+  deleteShelter() {
+    this.httpClient.delete(Constants.api + 'shelters/delete?id=' + this.shelterIdToDelete + '&token=' + this.token())
       .subscribe(r => console.log(r))
   }
 
-  deleteAnimalAdvert() {
-    this.httpClient.delete(Constants.api + 'animalAdverts/delete?id=' + this.advertId + '&token=' + this.token())
-      .subscribe(r => console.log(r))
-  }
-
-  private token() : string | null {
+  private token(): string | null {
     return localStorage.getItem('jwt')
+  }
+
+  createShelter() {
+    this.httpClient.post(Constants.api + 'shelters/create?token=' + this.token(), {
+      'name': this.shelterToCreateName,
+      'placeId': this.placeSelector.selectedPlace.id
+    }).subscribe(r => alert(r))
+  }
+
+  createPlace() {
+    this.httpClient.post(Constants.api + 'places/create?token=' + this.token(), {
+      'country': this.country,
+      'region': this.region,
+      'city': this.city,
+      'district': this.district
+    }).subscribe(r => {}, e => console.log(e))
+  }
+
+  deletePlace() {
+    this.httpClient.delete(Constants.api + 'places/delete?id=' + this.toDeleteplaceSelector.selectedPlace.id + '&token=' + this.token())
+      .subscribe(r => {},
+                e => console.log(e))
   }
 }

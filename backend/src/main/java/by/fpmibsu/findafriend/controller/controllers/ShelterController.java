@@ -40,8 +40,14 @@ public class ShelterController extends Controller {
 
     @RequireAuthentication
     @Endpoint(path = "/update", method = HttpMethod.PUT)
-    public HandleResult updateShelter(@FromBody UpdateShelterCommand request, @WebToken(parameterName = "role") String role) {
-        if (!AuthUtils.allowRoles(role, User.Role.ADMINISTRATOR, User.Role.MODERATOR, User.Role.SHELTER_ADMINISTRATOR)) {
+    public HandleResult updateShelter(@FromBody UpdateShelterCommand request,
+                                      @WebToken(parameterName = "role") String role,
+                                      @WebToken(parameterName = "shelter_id") int shelterId) {
+        if (User.Role.SHELTER_ADMINISTRATOR.toString().equals(role)) {
+            if (shelterId != request.shelterId) {
+                return notAuthorized();
+            }
+        } else if (!AuthUtils.allowRoles(role, User.Role.ADMINISTRATOR, User.Role.MODERATOR)) {
             return notAuthorized();
         }
         return ok(mediatr.send(request));

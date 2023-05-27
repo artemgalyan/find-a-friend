@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
       }
 
       localStorage.setItem('jwt', r.token);
-      localStorage.setItem('id', r.id)
+      localStorage.setItem('id', r.userId)
       localStorage.setItem('role', r.role)
       this.router.navigate(['animalAdverts']);
     })

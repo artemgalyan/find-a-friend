@@ -1,7 +1,10 @@
 package by.fpmibsu.findafriend.controller.commands.auth;
 
 import by.fpmibsu.findafriend.application.mediatr.RequestHandler;
+import by.fpmibsu.findafriend.application.serviceproviders.ServiceProvider;
 import by.fpmibsu.findafriend.dataaccesslayer.user.UserDao;
+import by.fpmibsu.findafriend.dataaccesslayer.usershelter.UserShelterDao;
+import by.fpmibsu.findafriend.entity.User;
 import by.fpmibsu.findafriend.services.JwtSigner;
 import by.fpmibsu.findafriend.services.PasswordHasher;
 import org.jose4j.jwt.JwtClaims;
@@ -10,11 +13,13 @@ import org.jose4j.lang.JoseException;
 public class SignInHandler extends RequestHandler<SignInResult, SignInCommand> {
     private final JwtSigner signer;
     private final PasswordHasher passwordHasher;
+    private final ServiceProvider serviceProvider;
     private final UserDao userDao;
 
-    public SignInHandler(JwtSigner signer, PasswordHasher passwordHasher, UserDao userDao) {
+    public SignInHandler(JwtSigner signer, PasswordHasher passwordHasher, ServiceProvider serviceProvider, UserDao userDao) {
         this.signer = signer;
         this.passwordHasher = passwordHasher;
+        this.serviceProvider = serviceProvider;
         this.userDao = userDao;
     }
 
@@ -32,6 +37,11 @@ public class SignInHandler extends RequestHandler<SignInResult, SignInCommand> {
         var claims = new JwtClaims();
         claims.setClaim("id", user.getId());
         claims.setClaim("role", user.getRole());
+        if (user.getRole() == User.Role.SHELTER_ADMINISTRATOR) {
+            var userShelterDao = serviceProvider.getRequiredService(UserShelterDao.class);
+            var shelterId = userShelterDao.getShelterId(user.getId());
+            claims.setClaim("shelter_id", shelterId);
+        }
         return new SignInResult(signer.signJwt(claims.toJson()), user.getId(), user.getRole().toString());
     }
 }
