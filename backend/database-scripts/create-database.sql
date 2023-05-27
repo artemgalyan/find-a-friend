@@ -25,7 +25,7 @@ CREATE TABLE [user]
     surname      VARCHAR(max) NOT NULL,
     email        VARCHAR(max) NOT NULL,
     phone_number VARCHAR(max),
-    login        VARCHAR(max) NOT NULL,
+    login        VARCHAR(max) NOT NULL UNIQUE,
     password     VARCHAR(max) NOT NULL,
     role_id      INT          NOT NULL REFERENCES role (role_id)
 );

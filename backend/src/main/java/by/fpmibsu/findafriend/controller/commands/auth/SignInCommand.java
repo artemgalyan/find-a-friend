@@ -2,7 +2,7 @@ package by.fpmibsu.findafriend.controller.commands.auth;
 
 import by.fpmibsu.findafriend.application.mediatr.Request;
 
-public class SignInCommand extends Request<String> {
+public class SignInCommand extends Request<SignInResult> {
     public String login;
     public String password;
 
