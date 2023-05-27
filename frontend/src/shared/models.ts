@@ -19,7 +19,9 @@ export interface Place {
 export interface Shelter {
   id: number
   name: string
-  place: Place
+  place: Place,
+  address: string,
+  website: string
 }
 
 export interface AnimalAdvert {

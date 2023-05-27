@@ -15,16 +15,18 @@ import java.util.List;
 public class DbShelterDao implements ShelterDao, AutoCloseable {
     final private Logger logger = LogManager.getLogger();
     private static final String SQL_SELECT_ALL_SHELTERS = """
-            SELECT shelter_id, name, place.place_id, place.country, place.region, place.city, place.district
+            SELECT shelter_id, name, place.place_id, place.country,
+                place.region, place.city, place.district, shelter.address, shelter.website
             FROM shelter
                 LEFT JOIN place ON shelter.place_id=place.place_id""";
     private static final String SQL_SELECT_BY_ID = """
-            SELECT shelter_id, name, place.place_id, place.country, place.region, place.city, place.district
+            SELECT shelter_id, name, place.place_id, place.country, place.region, place.city, place.district,
+                shelter.address, shelter.website
             FROM shelter
                 LEFT JOIN place ON shelter.place_id=place.place_id
                 WHERE shelter_id=?""";
     private static final String SQL_INSERT_SHELTER = """
-            INSERT INTO shelter VALUES(?,?)""";
+            INSERT INTO shelter VALUES(?,?,?,?)""";
     private static final String SQL_DELETE_BY_ID = """
             DELETE
             FROM shelter
@@ -33,7 +35,9 @@ public class DbShelterDao implements ShelterDao, AutoCloseable {
     private static final String SQL_UPDATE_SHELTER = """
             UPDATE shelter
             SET place_id=?,
-                name=?
+                name=?,
+                website=?,
+                address=?
             WHERE shelter_id=?
             """;
 
@@ -118,7 +122,9 @@ public class DbShelterDao implements ShelterDao, AutoCloseable {
         try {
             statement = statementBuilder.prepareStatement(SQL_INSERT_SHELTER,
                     instance.getPlace().getId(),
-                    instance.getName());
+                    instance.getName(),
+                    instance.getAddress(),
+                    instance.getWebsite());
             int result = statement.executeUpdate();
         } catch (SQLException e) {
             logger.error(e.getMessage());
@@ -137,6 +143,8 @@ public class DbShelterDao implements ShelterDao, AutoCloseable {
             statement = statementBuilder.prepareStatement(SQL_UPDATE_SHELTER,
                     instance.getPlace().getId(),
                     instance.getName(),
+                    instance.getWebsite(),
+                    instance.getAddress(),
                     instance.getId());
             int result = statement.executeUpdate();
         } catch (SQLException e) {
