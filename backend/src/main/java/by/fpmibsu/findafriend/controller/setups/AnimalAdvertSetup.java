@@ -14,6 +14,7 @@ public class AnimalAdvertSetup extends Setup {
                 .registerHandler(GetAllAnimalAdvertsHandler.class, GetAllAnimalAdvertsQuery.class)
                 .registerHandler(GetAnimalAdvertHandler.class, GetAnimalAdvertQuery.class)
                 .registerHandler(GetAnimalAdvertsByUserIdHandler.class, GetAnimalAdvertsByUserIdQuery.class)
+                .registerHandler(GetAnimalAdvertsByShelterIdHandler.class, GetAnimalAdvertsByShelterIdQuery.class)
                 .mapController(AnimalAdvertsController.class);
     }
 }

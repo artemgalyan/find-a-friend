@@ -6,6 +6,7 @@ import by.fpmibsu.findafriend.application.mediatr.Mediatr;
 import by.fpmibsu.findafriend.controller.Validation;
 import by.fpmibsu.findafriend.controller.commands.animaladverts.CreateAnimalAdvertCommand;
 import by.fpmibsu.findafriend.controller.queries.animalAdverts.GetAllAnimalAdvertsQuery;
+import by.fpmibsu.findafriend.controller.queries.animalAdverts.GetAnimalAdvertsByShelterIdQuery;
 import by.fpmibsu.findafriend.controller.queries.animalAdverts.GetAnimalAdvertQuery;
 import by.fpmibsu.findafriend.controller.queries.animalAdverts.GetAnimalAdvertsByUserIdQuery;
 import by.fpmibsu.findafriend.dataaccesslayer.animaladvert.AnimalAdvertDao;
@@ -24,7 +25,7 @@ public class AnimalAdvertsController extends Controller {
         return ok(mediatr.send(new GetAllAnimalAdvertsQuery()));
     }
 
-    @Endpoint(path = "/get", method = HttpMethod.GET)
+    @Endpoint(path = "/getById", method = HttpMethod.GET)
     public HandleResult getById(@FromQuery(parameterName = "id") int id) {
         return ok(mediatr.send(new GetAnimalAdvertQuery(id)));
     }
@@ -59,6 +60,11 @@ public class AnimalAdvertsController extends Controller {
     @Endpoint(path = "/getByUserId", method = HttpMethod.GET)
     public HandleResult getByUserId(@FromQuery(parameterName = "id") int userId) {
         return ok(mediatr.send(new GetAnimalAdvertsByUserIdQuery(userId)));
+    }
+
+    @Endpoint(path = "/getByShelterId", method = HttpMethod.GET)
+    public HandleResult getByShelterId(@FromQuery(parameterName = "id") int id) {
+        return ok(mediatr.send(new GetAnimalAdvertsByShelterIdQuery(id)));
     }
 
     @RequireAuthentication

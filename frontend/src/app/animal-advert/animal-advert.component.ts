@@ -28,7 +28,7 @@ export class AnimalAdvertComponent implements OnInit {
         return
       }
 
-      this.httpClient.get<AnimalAdvert>(Constants.api + 'animalAdverts/get?id=' + advertId)
+      this.httpClient.get<AnimalAdvert>(Constants.api + 'animalAdverts/getById?id=' + advertId)
         .subscribe(advert => {
           this.advert = advert;
           this.httpClient.get<Photo[]>(Constants.api + 'photos/getByAdvertId?id=' + advertId)

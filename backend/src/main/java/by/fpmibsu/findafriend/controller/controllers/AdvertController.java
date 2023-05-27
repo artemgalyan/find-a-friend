@@ -31,14 +31,14 @@ public class AdvertController extends Controller {
         return ok(mediatr.send(new GetAdvertsQuery()));
     }
 
-    @Endpoint(path = "/getAdvert", method = HttpMethod.GET)
+    @Endpoint(path = "/getById", method = HttpMethod.GET)
     public HandleResult getById(@FromQuery(parameterName = "id") int id) {
         logger.trace("response is completed");
         return ok(mediatr.send(new GetAdvertByIdQuery(id)));
     }
 
     @RequireAuthentication
-    @Endpoint(path = "/createAdvert", method = HttpMethod.POST)
+    @Endpoint(path = "/create", method = HttpMethod.POST)
     public HandleResult createAdvert(@FromBody CreateAdvertCommand request) {
         if (Validation.isAnyNullOrEmpty(request.advertType, request.description, request.title)
                 || (!"V".equals(request.advertType) && !"S".equals(request.advertType))) {
@@ -50,7 +50,7 @@ public class AdvertController extends Controller {
     }
 
     @RequireAuthentication
-    @Endpoint(path = "/updateAdvert", method = HttpMethod.PUT)
+    @Endpoint(path = "/update", method = HttpMethod.PUT)
     public HandleResult updateAdvert(@FromBody UpdateAdvertCommand request, @WebToken(parameterName = "id") int userId,
                                      @WebToken(parameterName = "role") String role) {
         if (Validation.isAnyNullOrEmpty(request.description, request.title)) {
@@ -73,7 +73,7 @@ public class AdvertController extends Controller {
         return ok(mediatr.send(request));
     }
 
-    @Endpoint(path = "/deleteAdvert", method = HttpMethod.DELETE)
+    @Endpoint(path = "/delete", method = HttpMethod.DELETE)
     public HandleResult deleteAdvertById(@FromQuery(parameterName = "id") int id, @WebToken(parameterName = "id") int userId,
                                          @WebToken(parameterName = "role") String role) {
         if (!User.Role.ADMINISTRATOR.toString().equals(role) && !User.Role.MODERATOR.equals(role)) {

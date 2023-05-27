@@ -18,18 +18,18 @@ public class ShelterController extends Controller {
         this.mediatr = mediatr;
     }
 
-    @Endpoint(path = "/getAllShelters", method = HttpMethod.GET)
+    @Endpoint(path = "/getAll", method = HttpMethod.GET)
     public HandleResult getAll() {
         return ok(mediatr.send(new GetSheltersQuery()));
     }
 
-    @Endpoint(path = "/getShelter", method = HttpMethod.GET)
+    @Endpoint(path = "/getById", method = HttpMethod.GET)
     public HandleResult getById(@FromQuery(parameterName = "id") int id) {
         return ok(mediatr.send(new GetShelterByIdQuery(id)));
     }
 
     @RequireAuthentication
-    @Endpoint(path = "/createShelter", method = HttpMethod.POST)
+    @Endpoint(path = "/create", method = HttpMethod.POST)
     public HandleResult createShelter(@FromBody CreateShelterCommand request, @WebToken(parameterName = "role") String role) {
         if (!User.Role.ADMINISTRATOR.toString().equals(role)) {
             return notAuthorized();
@@ -38,7 +38,7 @@ public class ShelterController extends Controller {
     }
 
     @RequireAuthentication
-    @Endpoint(path = "/updateShelter", method = HttpMethod.PUT)
+    @Endpoint(path = "/update", method = HttpMethod.PUT)
     public HandleResult updateShelter(@FromBody UpdateShelterCommand request, @WebToken(parameterName = "role") String role) {
         if (User.Role.USER.toString().equals(role)) {
             return notAuthorized();
@@ -47,16 +47,11 @@ public class ShelterController extends Controller {
     }
 
     @RequireAuthentication
-    @Endpoint(path = "/deleteShelter", method = HttpMethod.DELETE)
+    @Endpoint(path = "/delete", method = HttpMethod.DELETE)
     public HandleResult deleteShelterById(@FromQuery(parameterName = "id") int id, @WebToken(parameterName = "role") String role) {
         if (!User.Role.ADMINISTRATOR.toString().equals(role)) {
             return notAuthorized();
         }
         return ok(mediatr.send(new DeleteShelterCommand(id)));
-    }
-
-    @Endpoint(path = "/readShelter", method = HttpMethod.POST)
-    public HandleResult handlePostReadObject(@FromBody CreateShelterCommand request) {
-        return ok(request);
     }
 }

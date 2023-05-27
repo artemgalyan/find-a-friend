@@ -27,12 +27,12 @@ public class UserController extends Controller {
     }
 
     @RequireAuthentication
-    @Endpoint(path = "/getUser", method = HttpMethod.GET)
+    @Endpoint(path = "/getById", method = HttpMethod.GET)
     public HandleResult getById(@FromQuery(parameterName = "id") int id) {
         return ok(mediatr.send(new GetUserByIdQuery(id)));
     }
 
-    @Endpoint(path = "/createUser", method = HttpMethod.POST)
+    @Endpoint(path = "/create", method = HttpMethod.POST)
     public HandleResult createUser(@FromBody CreateUserCommand request) {
         if (isAnyEmpty(request.name, request.surname, request.login, request.password, request.email, request.phoneNumber)) {
             return badRequest();
@@ -48,7 +48,7 @@ public class UserController extends Controller {
     }
 
     @RequireAuthentication
-    @Endpoint(path = "/updateUser", method = HttpMethod.PUT)
+    @Endpoint(path = "/update", method = HttpMethod.PUT)
     public HandleResult updateUser(@FromBody UpdateUserCommand request, @WebToken(parameterName = "id") int userId,
                                    @WebToken(parameterName = "role") String role) {
         if (userId != request.userId && !User.Role.ADMINISTRATOR.toString().equals(role)) {
@@ -58,7 +58,7 @@ public class UserController extends Controller {
     }
 
     @RequireAuthentication
-    @Endpoint(path = "/deleteUser", method = HttpMethod.DELETE)
+    @Endpoint(path = "/delete", method = HttpMethod.DELETE)
     public HandleResult deleteUserById(@WebToken(parameterName = "id") int id, @WebToken(parameterName = "id") int userId,
                                        @WebToken(parameterName = "role") String role) {
         if (userId != id && !User.Role.ADMINISTRATOR.toString().equals(role)) {

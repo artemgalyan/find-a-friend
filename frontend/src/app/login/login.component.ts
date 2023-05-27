@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   onButtonClicked() {
-    this.httpClient.get<string>(Constants.api + 'auth/signin?login=' + this.login + '&password=' + this.password, {
+    this.httpClient.get<string>(Constants.api + 'auth/signIn?login=' + this.login + '&password=' + this.password, {
       headers: {
         'Content-type': 'text/plain'
       }

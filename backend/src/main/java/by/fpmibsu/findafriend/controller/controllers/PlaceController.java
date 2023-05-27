@@ -18,18 +18,18 @@ public class PlaceController extends Controller {
         this.mediatr = mediatr;
     }
 
-    @Endpoint(path = "/getAllPlaces", method = HttpMethod.GET)
+    @Endpoint(path = "/getAll", method = HttpMethod.GET)
     public HandleResult getAll() {
         return ok(mediatr.send(new GetPlacesQuery()));
     }
 
-    @Endpoint(path = "/getPlace", method = HttpMethod.GET)
+    @Endpoint(path = "/getById", method = HttpMethod.GET)
     public HandleResult getById(@FromQuery(parameterName = "id") int id) {
         return ok(mediatr.send(new GetPlaceByIdQuery(id)));
     }
 
     @RequireAuthentication
-    @Endpoint(path = "/createPlace", method = HttpMethod.POST)
+    @Endpoint(path = "/create", method = HttpMethod.POST)
     public HandleResult createPlace(@FromBody CreatePlaceCommand request, @WebToken(parameterName = "role") String role) {
         if (!User.Role.ADMINISTRATOR.toString().equals(role)) {
             return notAuthorized();
@@ -38,7 +38,7 @@ public class PlaceController extends Controller {
     }
 
     @RequireAuthentication
-    @Endpoint(path = "/updatePlace", method = HttpMethod.PUT)
+    @Endpoint(path = "/update", method = HttpMethod.PUT)
     public HandleResult updatePlace(@FromBody UpdatePlaceCommand request, @WebToken(parameterName = "role") String role) {
         if (!User.Role.ADMINISTRATOR.toString().equals(role)) {
             return notAuthorized();
@@ -47,17 +47,12 @@ public class PlaceController extends Controller {
     }
 
     @RequireAuthentication
-    @Endpoint(path = "/deletePlace", method = HttpMethod.DELETE)
+    @Endpoint(path = "/delete", method = HttpMethod.DELETE)
     public HandleResult deletePlaceById(@FromQuery(parameterName = "id") int id, @WebToken(parameterName = "role") String role) {
         if (!User.Role.ADMINISTRATOR.toString().equals(role)) {
             return notAuthorized();
         }
         return ok(mediatr.send(new DeletePlaceCommand(id)));
-    }
-
-    @Endpoint(path = "/readPlace", method = HttpMethod.POST)
-    public HandleResult handlePostReadObject(@FromBody CreatePlaceCommand request) {
-        return ok(request);
     }
 }
 

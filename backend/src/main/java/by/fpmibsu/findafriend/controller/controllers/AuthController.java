@@ -13,7 +13,7 @@ public class AuthController extends Controller {
         this.mediatr = mediatr;
     }
 
-    @Endpoint(path = "/signin", method = HttpMethod.GET)
+    @Endpoint(path = "/signIn", method = HttpMethod.GET)
     public HandleResult signIn(@FromQuery(parameterName = "login") String login,
                                @FromQuery(parameterName = "password") String password) {
         return ok(mediatr.send(new SignInCommand(login, password)));

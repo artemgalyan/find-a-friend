@@ -19,7 +19,7 @@ export class PlacePickerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.httpClient.get<Place[]>(Constants.api + 'places/getAllPlaces', {
+    this.httpClient.get<Place[]>(Constants.api + 'places/getAll', {
       headers: {
         'Content-type': 'text/json; charset=UTF-8',
       }

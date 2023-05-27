@@ -3,7 +3,6 @@ package by.fpmibsu.findafriend.controller;
 import by.fpmibsu.findafriend.application.Application;
 import by.fpmibsu.findafriend.application.ApplicationBuilder;
 import by.fpmibsu.findafriend.application.Setup;
-import by.fpmibsu.findafriend.controller.controllers.ExampleController;
 import by.fpmibsu.findafriend.controller.setups.*;
 import by.fpmibsu.findafriend.dataaccesslayer.DaoSetup;
 import by.fpmibsu.findafriend.dataaccesslayer.pool.ConnectionPool;
@@ -20,8 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 
@@ -57,7 +54,6 @@ public class DispatcherServlet extends HttpServlet {
                 ? SimplePasswordHasher.class
                 : HashPasswordHasher.class;
         var builder = new ApplicationBuilder();
-        builder.mapController(ExampleController.class);
         builder.readKeys("../conf/");
         setups.forEach(s -> s.applyTo(builder));
         builder.services()
