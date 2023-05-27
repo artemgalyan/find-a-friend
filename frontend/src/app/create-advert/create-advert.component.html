@@ -1,0 +1,29 @@
+<h1 class="m-4" style="text-align: center">Создание объявления о помощи</h1>
+<div style="padding: 10px" class="m-4">
+  <div class="mb-3">
+    <label for="titleInput" class="form-label">Название</label>
+    <input type="text" [(ngModel)]="title" class="form-control" id="titleInput" placeholder="Название">
+  </div>
+  <div class="mb-3">
+    <label for="descriptionInput" class="form-label">Описание</label>
+    <textarea [(ngModel)]="description" class="form-control" id="descriptionInput" placeholder="Описание"></textarea>
+  </div>
+  <div class="mb-3"><label for="type-selector">Чем хотите заняться?</label>
+    <select class="form-control" id="type-selector" [(ngModel)]="advertType"
+            (ngModelChange)="this.advertType = $event">
+      <option *ngFor="let t of advertTypes">{{ t.toString() }}</option>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label for="place-picker">Где?</label>
+    <app-placepicker id="place-picker"></app-placepicker>
+  </div>
+  <div class="mb-3">
+    <label for="startDate">Дата создания объявления</label>
+    <input id="startDate" class="form-control" type="date" [(ngModel)]="creationDate"/>
+  </div>
+  <div style="font-size: 20px; text-align: center">
+    <button class="btn btn-primary mb-3 w-50" (click)="createAdvert()">Создать объявление</button>
+  </div>
+
+</div>
