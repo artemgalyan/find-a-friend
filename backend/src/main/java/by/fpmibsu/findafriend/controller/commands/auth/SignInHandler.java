@@ -42,11 +42,12 @@ public class SignInHandler extends RequestHandler<SignInResult, SignInCommand> {
         var claims = new JwtClaims();
         claims.setClaim("id", user.getId());
         claims.setClaim("role", user.getRole());
-        if (user.getRole() == User.Role.SHELTER_ADMINISTRATOR) {
-            var shelterId = userShelterDao.getShelterId(user.getId());
+        int shelterId = -1;
+        if (User.Role.SHELTER_ADMINISTRATOR.equals(user.getRole())) {
+            shelterId = userShelterDao.getShelterId(user.getId());
             claims.setClaim("shelter_id", shelterId);
         }
         logger.info(String.format("User %s logged in successfully", request.login));
-        return new SignInResult(signer.signJwt(claims.toJson()), user.getId(), user.getRole().toString());
+        return new SignInResult(signer.signJwt(claims.toJson()), user.getId(), user.getRole().toString(), shelterId);
     }
 }

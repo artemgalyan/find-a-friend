@@ -25,6 +25,12 @@ public class UpdateShelterHandler extends RequestHandler<Boolean, UpdateShelterC
             p.setId(request.placeId);
             shelter.setPlace(p);
         }
+        if (request.website != null) {
+            shelter.setWebsite(request.website);
+        }
+        if (request.address != null) {
+            shelter.setAddress(request.address);
+        }
 
         shelterDao.update(shelter);
         return true;

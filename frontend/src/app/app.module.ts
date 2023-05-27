@@ -17,10 +17,15 @@ import {HeaderComponent} from './header/header.component';
 import {AdvertsComponent} from './adverts/adverts.component';
 import {ShelterComponent} from './shelter/shelter.component';
 import {CreateAdvertComponent} from './create-advert/create-advert.component';
-import {CanActivateAdminPanelGuard, CanActivateModeratorPanelGuard} from "../shared/activator";
+import {
+  CanActivateAdminPanelGuard,
+  CanActivateModeratorPanelGuard,
+  CanActivateShelterModeratorPanelGuard
+} from "../shared/activator";
 import {AdminPanelComponent} from "./admin-panel/admin-panel.component";
 import {ModeratorToolsComponent} from './moderator-tools/moderator-tools.component';
 import {SheltersComponent} from './shelters/shelters.component';
+import { EditShelterComponent } from './edit-shelter/edit-shelter.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +44,8 @@ import {SheltersComponent} from './shelters/shelters.component';
     CreateAdvertComponent,
     AdminPanelComponent,
     ModeratorToolsComponent,
-    SheltersComponent
+    SheltersComponent,
+    EditShelterComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +53,7 @@ import {SheltersComponent} from './shelters/shelters.component';
     FormsModule,
     HttpClientModule,
   ],
-  providers: [CanActivateAdminPanelGuard, CanActivateModeratorPanelGuard],
+  providers: [CanActivateAdminPanelGuard, CanActivateModeratorPanelGuard, CanActivateShelterModeratorPanelGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {
