@@ -3,6 +3,7 @@ package by.fpmibsu.findafriend.controller.controllers;
 import by.fpmibsu.findafriend.application.HandleResult;
 import by.fpmibsu.findafriend.application.controller.*;
 import by.fpmibsu.findafriend.application.mediatr.Mediatr;
+import by.fpmibsu.findafriend.controller.AuthUtils;
 import by.fpmibsu.findafriend.controller.commands.users.CreateUserCommand;
 import by.fpmibsu.findafriend.controller.commands.users.DeleteUserCommand;
 import by.fpmibsu.findafriend.controller.commands.users.UpdateUserCommand;
@@ -51,7 +52,7 @@ public class UserController extends Controller {
     @Endpoint(path = "/update", method = HttpMethod.PUT)
     public HandleResult updateUser(@FromBody UpdateUserCommand request, @WebToken(parameterName = "id") int userId,
                                    @WebToken(parameterName = "role") String role) {
-        if (userId != request.userId && !User.Role.ADMINISTRATOR.toString().equals(role)) {
+        if (userId != request.userId && !AuthUtils.allowRoles(role, User.Role.ADMINISTRATOR)) {
             return notAuthorized();
         }
         return ok(mediatr.send(request));
@@ -61,7 +62,7 @@ public class UserController extends Controller {
     @Endpoint(path = "/delete", method = HttpMethod.DELETE)
     public HandleResult deleteUserById(@WebToken(parameterName = "id") int id, @WebToken(parameterName = "id") int userId,
                                        @WebToken(parameterName = "role") String role) {
-        if (userId != id && !User.Role.ADMINISTRATOR.toString().equals(role)) {
+        if (userId != id && !AuthUtils.allowRoles(role, User.Role.ADMINISTRATOR)) {
             return notAuthorized();
         }
         return ok(mediatr.send(new DeleteUserCommand(id)));

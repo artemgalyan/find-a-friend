@@ -3,6 +3,7 @@ package by.fpmibsu.findafriend.controller.controllers;
 import by.fpmibsu.findafriend.application.HandleResult;
 import by.fpmibsu.findafriend.application.controller.*;
 import by.fpmibsu.findafriend.application.mediatr.Mediatr;
+import by.fpmibsu.findafriend.controller.AuthUtils;
 import by.fpmibsu.findafriend.controller.Validation;
 import by.fpmibsu.findafriend.controller.commands.animaladverts.CreateAnimalAdvertCommand;
 import by.fpmibsu.findafriend.controller.queries.animalAdverts.GetAllAnimalAdvertsQuery;
@@ -30,16 +31,18 @@ public class AnimalAdvertsController extends Controller {
         return ok(mediatr.send(new GetAnimalAdvertQuery(id)));
     }
 
+    @RequireAuthentication
     @Endpoint(path = "/delete", method = HttpMethod.DELETE)
     public HandleResult delete(@FromQuery(parameterName = "id") int id, @WebToken(parameterName = "id") int userId,
                                @WebToken(parameterName = "role") String role) {
-        var animalAdvertDao = serviceProvider.getRequiredService(AnimalAdvertDao.class);
-        if (!User.Role.ADMINISTRATOR.toString().equals(role) && !User.Role.MODERATOR.equals(role)) {
-            var advert = animalAdvertDao.getEntityById(id);
+        if (!AuthUtils.allowRoles(role, User.Role.ADMINISTRATOR, User.Role.MODERATOR)) {
+            var animalAdvertDao1 = serviceProvider.getRequiredService(AnimalAdvertDao.class);
+            var advert = animalAdvertDao1.getEntityById(id);
             if (advert.getOwner().getId() != userId) {
                 return notAuthorized();
             }
         }
+        var animalAdvertDao = serviceProvider.getRequiredService(AnimalAdvertDao.class);
         animalAdvertDao.delete(id);
         return ok();
     }
@@ -56,7 +59,6 @@ public class AnimalAdvertsController extends Controller {
         return ok(mediatr.send(command));
     }
 
-    @RequireAuthentication
     @Endpoint(path = "/getByUserId", method = HttpMethod.GET)
     public HandleResult getByUserId(@FromQuery(parameterName = "id") int userId) {
         return ok(mediatr.send(new GetAnimalAdvertsByUserIdQuery(userId)));

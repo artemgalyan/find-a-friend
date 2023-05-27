@@ -18,17 +18,19 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   onButtonClicked() {
-    this.httpClient.get<string>(Constants.api + 'auth/signIn?login=' + this.login + '&password=' + this.password, {
+    this.httpClient.get<any>(Constants.api + 'auth/signIn?login=' + this.login + '&password=' + this.password, {
       headers: {
         'Content-type': 'text/plain'
       }
     }).subscribe((r) => {
-      if (r === null || r === '') {
+      if (r === null) {
         alert('Неверное имя пользователя или пароль.')
         return
       }
 
-      localStorage.setItem('jwt', r);
+      localStorage.setItem('jwt', r.token);
+      localStorage.setItem('id', r.id)
+      localStorage.setItem('role', r.role)
       this.router.navigate(['animalAdverts']);
     })
   }

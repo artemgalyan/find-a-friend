@@ -55,3 +55,10 @@ export class AnimalAdvertWithPhoto {
   constructor(public advert: AnimalAdvert, public photo: SafeResourceUrl) {
   }
 }
+
+export class Roles {
+  public static readonly User: string = 'USER'
+  public static readonly Moderator: string = 'MODERATOR'
+  public static readonly ShelterAdministrator: string = 'SHELTER_ADMINISTRATOR'
+  public static readonly Administrator: string = 'ADMINISTRATOR'
+}

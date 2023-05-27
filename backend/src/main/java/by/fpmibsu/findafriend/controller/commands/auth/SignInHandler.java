@@ -7,7 +7,7 @@ import by.fpmibsu.findafriend.services.PasswordHasher;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.lang.JoseException;
 
-public class SignInHandler extends RequestHandler<String, SignInCommand> {
+public class SignInHandler extends RequestHandler<SignInResult, SignInCommand> {
     private final JwtSigner signer;
     private final PasswordHasher passwordHasher;
     private final UserDao userDao;
@@ -19,19 +19,19 @@ public class SignInHandler extends RequestHandler<String, SignInCommand> {
     }
 
     @Override
-    public String handle(SignInCommand request) throws JoseException {
+    public SignInResult handle(SignInCommand request) throws JoseException {
         var user = userDao.findByLogin(request.login);
         if (user == null) {
-            return "";
+            return null;
         }
 
         if (passwordHasher.verifyPassword(user, request.password) == PasswordHasher.PasswordVerificationResult.FAILED) {
-            return "";
+            return null;
         }
 
         var claims = new JwtClaims();
         claims.setClaim("id", user.getId());
         claims.setClaim("role", user.getRole());
-        return signer.signJwt(claims.toJson());
+        return new SignInResult(signer.signJwt(claims.toJson()), user.getId(), user.getRole().toString());
     }
 }

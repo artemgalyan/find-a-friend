@@ -16,6 +16,7 @@ import { AnimalAdvertComponent } from './animal-advert/animal-advert.component';
 import { HeaderComponent } from './header/header.component';
 import { AdvertsComponent } from './adverts/adverts.component';
 import { ShelterComponent } from './shelter/shelter.component';
+import {CanActivateAdminPanelGuard} from "../shared/activator";
 
 @NgModule({
   declarations: [
@@ -38,7 +39,7 @@ import { ShelterComponent } from './shelter/shelter.component';
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [CanActivateAdminPanelGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {

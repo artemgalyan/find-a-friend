@@ -14,8 +14,7 @@ public class Shelter extends Entity {
     private List<AnimalAdvert> animalAdverts;
     private Place place;
 
-    public Shelter() {
-    }
+    public Shelter() {}
 
     public Shelter(int id, String name, List<User> administrators, List<AnimalAdvert> animalAdverts, Place place) {
         this.id = id;
