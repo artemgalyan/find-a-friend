@@ -70,7 +70,7 @@ export class RegistrationComponent implements OnInit {
     if (!valid) {
       return
     }
-    this.httpClient.post<HttpResponse<any>>(Constants.api + '/users/createUser', {
+    this.httpClient.post<HttpResponse<any>>(Constants.api + '/users/create', {
       'name': this.name,
       'surname': this.surname,
       'login': this.login,
