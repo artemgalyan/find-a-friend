@@ -10,7 +10,7 @@ import java.sql.Statement;
 import java.util.List;
 
 public interface Dao<K, T extends Entity> {
-    public final Logger logger = LogManager.getLogger();
+    public final Logger logger = LogManager.getLogger(Dao.class);
     List<T> getAll() throws DaoException;
 
     T getEntityById(K id) throws DaoException;

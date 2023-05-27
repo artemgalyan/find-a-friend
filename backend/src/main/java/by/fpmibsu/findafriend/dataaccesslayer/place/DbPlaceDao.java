@@ -11,7 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DbPlaceDao implements PlaceDao {
+public class DbPlaceDao implements PlaceDao, AutoCloseable {
     private final Logger logger = LogManager.getLogger();
     private static final String SQL_SELECT_ALL_PLACES = """
             SELECT place_id, country, region, city, district
@@ -55,7 +55,7 @@ public class DbPlaceDao implements PlaceDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+            
         }
         return places;
     }
@@ -76,7 +76,7 @@ public class DbPlaceDao implements PlaceDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+            
         }
     }
 
@@ -96,7 +96,7 @@ public class DbPlaceDao implements PlaceDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+            
         }
         return true;
     }
@@ -116,7 +116,7 @@ public class DbPlaceDao implements PlaceDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+            
         }
         return true;
     }
@@ -137,8 +137,13 @@ public class DbPlaceDao implements PlaceDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+            
         }
         return instance;
+    }
+
+    @Override
+    public void close() throws Exception {
+        close(connection);
     }
 }

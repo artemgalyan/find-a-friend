@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class DbShelterDao implements ShelterDao {
+public class DbShelterDao implements ShelterDao, AutoCloseable {
     final private Logger logger = LogManager.getLogger();
     private static final String SQL_SELECT_ALL_SHELTERS = """
             SELECT shelter_id, name, place.place_id, place.country, place.region, place.city, place.district
@@ -66,7 +66,7 @@ public class DbShelterDao implements ShelterDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+            
         }
         return shelters;
     }
@@ -87,7 +87,7 @@ public class DbShelterDao implements ShelterDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+            
         }
     }
 
@@ -107,7 +107,7 @@ public class DbShelterDao implements ShelterDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+            
         }
         return true;
     }
@@ -125,7 +125,7 @@ public class DbShelterDao implements ShelterDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+            
         }
         return true;
     }
@@ -144,7 +144,7 @@ public class DbShelterDao implements ShelterDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+            
         }
         return instance;
     }
@@ -160,7 +160,7 @@ public class DbShelterDao implements ShelterDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+            
         }
         return true;
     }
@@ -176,8 +176,13 @@ public class DbShelterDao implements ShelterDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+            
         }
         return true;
+    }
+
+    @Override
+    public void close() throws Exception {
+        close(connection);
     }
 }

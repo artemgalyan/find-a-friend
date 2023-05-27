@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DbUserShelterDao implements UserShelterDao {
+public class DbUserShelterDao implements UserShelterDao, AutoCloseable {
     private final Logger logger = LogManager.getLogger();
     private static final String SQL_ADD_CONNECTION = """
             INSERT INTO user_shelter(user_id, shelter_id) VALUES (?, ?)
@@ -58,7 +58,6 @@ public class DbUserShelterDao implements UserShelterDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
         }
     }
 
@@ -73,7 +72,6 @@ public class DbUserShelterDao implements UserShelterDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
         }
     }
 
@@ -88,7 +86,6 @@ public class DbUserShelterDao implements UserShelterDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
         }
     }
 
@@ -103,7 +100,6 @@ public class DbUserShelterDao implements UserShelterDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
         }
     }
 
@@ -118,7 +114,6 @@ public class DbUserShelterDao implements UserShelterDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
         }
     }
 
@@ -138,7 +133,6 @@ public class DbUserShelterDao implements UserShelterDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
         }
     }
 
@@ -157,7 +151,11 @@ public class DbUserShelterDao implements UserShelterDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
         }
+    }
+
+    @Override
+    public void close() throws Exception {
+        close(connection);
     }
 }

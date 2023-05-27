@@ -13,13 +13,13 @@ import org.jose4j.lang.JoseException;
 public class SignInHandler extends RequestHandler<SignInResult, SignInCommand> {
     private final JwtSigner signer;
     private final PasswordHasher passwordHasher;
-    private final ServiceProvider serviceProvider;
+    private final UserShelterDao userShelterDao;
     private final UserDao userDao;
 
-    public SignInHandler(JwtSigner signer, PasswordHasher passwordHasher, ServiceProvider serviceProvider, UserDao userDao) {
+    public SignInHandler(JwtSigner signer, PasswordHasher passwordHasher, UserShelterDao userShelterDao, UserDao userDao) {
         this.signer = signer;
         this.passwordHasher = passwordHasher;
-        this.serviceProvider = serviceProvider;
+        this.userShelterDao = userShelterDao;
         this.userDao = userDao;
     }
 
@@ -38,7 +38,6 @@ public class SignInHandler extends RequestHandler<SignInResult, SignInCommand> {
         claims.setClaim("id", user.getId());
         claims.setClaim("role", user.getRole());
         if (user.getRole() == User.Role.SHELTER_ADMINISTRATOR) {
-            var userShelterDao = serviceProvider.getRequiredService(UserShelterDao.class);
             var shelterId = userShelterDao.getShelterId(user.getId());
             claims.setClaim("shelter_id", shelterId);
         }

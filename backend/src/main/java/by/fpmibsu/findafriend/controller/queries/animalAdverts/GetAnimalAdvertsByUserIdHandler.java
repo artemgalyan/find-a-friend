@@ -12,12 +12,12 @@ import java.util.List;
 public class GetAnimalAdvertsByUserIdHandler extends RequestHandler<List<AnimalAdvertModel>, GetAnimalAdvertsByUserIdQuery> {
     private final AnimalAdvertDao animalAdvertDao;
     private final UserShelterDao userShelterDao;
-    private final ServiceProvider serviceProvider;
+    private final ShelterDao shelterDao;
 
-    public GetAnimalAdvertsByUserIdHandler(AnimalAdvertDao animalAdvertDao, UserShelterDao userShelterDao, ServiceProvider serviceProvider) {
+    public GetAnimalAdvertsByUserIdHandler(AnimalAdvertDao animalAdvertDao, UserShelterDao userShelterDao, ShelterDao shelterDao) {
         this.animalAdvertDao = animalAdvertDao;
         this.userShelterDao = userShelterDao;
-        this.serviceProvider = serviceProvider;
+        this.shelterDao = shelterDao;
     }
 
     @Override
@@ -27,7 +27,7 @@ public class GetAnimalAdvertsByUserIdHandler extends RequestHandler<List<AnimalA
         if (shelterId == -1) {
             shelterName = null;
         } else {
-            shelterName = serviceProvider.getRequiredService(ShelterDao.class).getEntityById(shelterId).getName();
+            shelterName = shelterDao.getEntityById(shelterId).getName();
         }
 
         return animalAdvertDao.getUsersAdverts(request.userId)

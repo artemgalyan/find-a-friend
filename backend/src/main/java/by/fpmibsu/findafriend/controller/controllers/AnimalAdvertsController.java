@@ -35,14 +35,13 @@ public class AnimalAdvertsController extends Controller {
     @Endpoint(path = "/delete", method = HttpMethod.DELETE)
     public HandleResult delete(@FromQuery(parameterName = "id") int id, @WebToken(parameterName = "id") int userId,
                                @WebToken(parameterName = "role") String role) {
+        var animalAdvertDao = serviceProvider.getRequiredService(AnimalAdvertDao.class);
         if (!AuthUtils.allowRoles(role, User.Role.ADMINISTRATOR, User.Role.MODERATOR)) {
-            var animalAdvertDao1 = serviceProvider.getRequiredService(AnimalAdvertDao.class);
-            var advert = animalAdvertDao1.getEntityById(id);
+            var advert = animalAdvertDao.getEntityById(id);
             if (advert.getOwner().getId() != userId) {
                 return notAuthorized();
             }
         }
-        var animalAdvertDao = serviceProvider.getRequiredService(AnimalAdvertDao.class);
         animalAdvertDao.delete(id);
         return ok();
     }

@@ -32,7 +32,6 @@ public class DaoSetup extends Setup {
                 .addService(PlaceDao.class, SERVICE_LIFETIME, DbPlaceDao.class)
                 .addService(ShelterDao.class, SERVICE_LIFETIME, DbShelterDao.class)
                 .addService(UserDao.class, SERVICE_LIFETIME, DbUserDao.class)
-                .addService(TokenDao.class, SERVICE_LIFETIME, DbTokenDao.class)
                 .addService(UserShelterDao.class, SERVICE_LIFETIME, DbUserShelterDao.class);
     }
 }

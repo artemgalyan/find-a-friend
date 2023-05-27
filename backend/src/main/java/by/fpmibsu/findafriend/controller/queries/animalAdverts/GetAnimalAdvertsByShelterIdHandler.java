@@ -11,25 +11,26 @@ import java.util.HashSet;
 import java.util.List;
 
 public class GetAnimalAdvertsByShelterIdHandler extends RequestHandler<List<AnimalAdvertModel>, GetAnimalAdvertsByShelterIdQuery> {
-    private final ServiceProvider serviceProvider;
+    private final ShelterDao shelterDao;
+    private final UserShelterDao userShelterDao;
+    private final AnimalAdvertDao animalAdvertDao;
 
-    public GetAnimalAdvertsByShelterIdHandler(ServiceProvider serviceProvider) {
-        this.serviceProvider = serviceProvider;
+    public GetAnimalAdvertsByShelterIdHandler(ShelterDao shelterDao, UserShelterDao userShelterDao, AnimalAdvertDao animalAdvertDao) {
+        this.shelterDao = shelterDao;
+        this.userShelterDao = userShelterDao;
+        this.animalAdvertDao = animalAdvertDao;
     }
 
     @Override
     public List<AnimalAdvertModel> handle(GetAnimalAdvertsByShelterIdQuery request) throws Exception {
-        var shelterDao = serviceProvider.getRequiredService(ShelterDao.class);
         var shelter = shelterDao.getEntityById(request.id);
         if (shelter == null) {
             return null;
         }
 
-        var userShelterDao = serviceProvider.getRequiredService(UserShelterDao.class);
         var admins = new HashSet<>(
                 userShelterDao.getUsersId(shelter.getId())
         );
-        var animalAdvertDao = serviceProvider.getRequiredService(AnimalAdvertDao.class);
         return animalAdvertDao.getAll()
                 .stream()
                 .filter(a -> admins.contains(a.getOwner().getId()))
