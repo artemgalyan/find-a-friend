@@ -29,13 +29,21 @@ export class ModeratorToolsComponent {
   }
 
   removeUser() {
-    this.httpClient.post(Constants.api + 'userShelter/removeUserFromShelter?userId=' + this.removeUserId + '&token=' + this.token(), {})
+    this.httpClient.post(Constants.api + 'userShelter/removeUserFromShelter?userId=' + this.removeUserId + '&token=' + this.token(), {}, {
+      headers: {
+        'Content-type': 'text/json; charset=UTF-8'
+      }
+    })
       .subscribe(_ => {}, e => console.log(e))
   }
 
   addUserToShelter() {
     this.httpClient.post(Constants.api + 'userShelter/addUserToShelter?userId=' + this.addUserId + '&shelterId=' + this.addShelterId
-      + '&token=' + this.token(), {})
+      + '&token=' + this.token(), {}, {
+      headers: {
+        'Content-type': 'text/json; charset=UTF-8'
+      }
+    })
       .subscribe(_ => {}, e => console.log(e))
   }
 

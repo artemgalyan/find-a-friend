@@ -47,6 +47,10 @@ export class AdminPanelComponent {
     this.httpClient.post(Constants.api + 'shelters/create?token=' + this.token(), {
       'name': this.shelterToCreateName,
       'placeId': this.placeSelector.selectedPlace.id
+    }, {
+      headers: {
+        'Content-type': 'text/json; charset=UTF-8'
+      }
     }).subscribe(r => alert(r))
   }
 
@@ -56,6 +60,10 @@ export class AdminPanelComponent {
       'region': this.region,
       'city': this.city,
       'district': this.district
+    }, {
+      headers: {
+        'Content-type': 'text/json; charset=UTF-8'
+      }
     }).subscribe(r => {}, e => console.log(e))
   }
 
