@@ -125,6 +125,16 @@ public class DefaultGlobalServiceProvider implements GlobalServiceProvider {
             scoped.put(clazz, new ConstructedObject<>(clazz, instance));
             return this;
         }
+
+        @Override
+        public void close() throws Exception {
+            for (ConstructedObject<?> entry : scoped.values()) {
+                var instance = entry.instance;
+                if (instance != this && instance instanceof AutoCloseable ac) {
+                    ac.close();
+                }
+            }
+        }
     }
 
 }

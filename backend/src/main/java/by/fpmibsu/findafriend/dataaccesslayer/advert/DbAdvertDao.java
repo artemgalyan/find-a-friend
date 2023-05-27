@@ -11,7 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DbAdvertDao implements AdvertDao {
+public class DbAdvertDao implements AdvertDao, AutoCloseable {
     private final Logger logger = LogManager.getLogger();
     private static final String SQL_SELECT_ALL_ADVERTS = """
             SELECT * FROM advert
@@ -70,8 +70,8 @@ public class DbAdvertDao implements AdvertDao {
             throw new DaoException("", e);
         } finally {
             close(statement);
-            close(connection);
-            close(connection);
+
+
         }
         return adverts;
     }
@@ -91,8 +91,8 @@ public class DbAdvertDao implements AdvertDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
-            close(connection);
+
+
         }
     }
 
@@ -112,7 +112,7 @@ public class DbAdvertDao implements AdvertDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+
         }
         return true;
     }
@@ -135,7 +135,7 @@ public class DbAdvertDao implements AdvertDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+
         }
     }
 
@@ -157,7 +157,7 @@ public class DbAdvertDao implements AdvertDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+
         }
     }
 
@@ -172,7 +172,7 @@ public class DbAdvertDao implements AdvertDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+
         }
         return true;
     }
@@ -188,7 +188,7 @@ public class DbAdvertDao implements AdvertDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+
         }
         return true;
     }
@@ -208,8 +208,13 @@ public class DbAdvertDao implements AdvertDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+
         }
         return adverts;
+    }
+
+    @Override
+    public void close() throws Exception {
+        close(connection);
     }
 }

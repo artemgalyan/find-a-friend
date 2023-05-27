@@ -11,7 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DbPhotoDao implements PhotoDao {
+public class DbPhotoDao implements PhotoDao, AutoCloseable {
     private final Logger logger = LogManager.getLogger();
     private static final String SQL_SELECT_ALL_PHOTO = """
             SELECT photo_id, data, animal_advert_id
@@ -66,7 +66,7 @@ public class DbPhotoDao implements PhotoDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+
         }
         return photo;
     }
@@ -85,7 +85,7 @@ public class DbPhotoDao implements PhotoDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+
         }
     }
 
@@ -105,7 +105,7 @@ public class DbPhotoDao implements PhotoDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+
         }
         return true;
     }
@@ -122,7 +122,7 @@ public class DbPhotoDao implements PhotoDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+
         }
         return true;
     }
@@ -139,7 +139,7 @@ public class DbPhotoDao implements PhotoDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+
         }
         return instance;
     }
@@ -155,7 +155,7 @@ public class DbPhotoDao implements PhotoDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+
         }
         return true;
     }
@@ -177,7 +177,7 @@ public class DbPhotoDao implements PhotoDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+
         }
     }
 
@@ -200,8 +200,15 @@ public class DbPhotoDao implements PhotoDao {
             close(statement);
             try {
                 connection.setAutoCommit(true);
-            } catch (SQLException e) {}
-            close(connection);
+            } catch (SQLException e) {
+
+            }
+
         }
+    }
+
+    @Override
+    public void close() throws Exception {
+        close(connection);
     }
 }

@@ -17,7 +17,9 @@ import { HeaderComponent } from './header/header.component';
 import { AdvertsComponent } from './adverts/adverts.component';
 import { ShelterComponent } from './shelter/shelter.component';
 import { CreateAdvertComponent } from './create-advert/create-advert.component';
-import { AdvertComponent } from './advert/advert.component';
+import {CanActivateAdminPanelGuard, CanActivateModeratorPanelGuard} from "../shared/activator";
+import {AdminPanelComponent} from "./admin-panel/admin-panel.component";
+import { ModeratorToolsComponent } from './moderator-tools/moderator-tools.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,8 @@ import { AdvertComponent } from './advert/advert.component';
     AdvertsComponent,
     ShelterComponent,
     CreateAdvertComponent,
-    AdvertComponent
+    AdminPanelComponent,
+    ModeratorToolsComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +45,7 @@ import { AdvertComponent } from './advert/advert.component';
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [CanActivateAdminPanelGuard, CanActivateModeratorPanelGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {

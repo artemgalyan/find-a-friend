@@ -11,7 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DbAnimalAdvertDao implements AnimalAdvertDao {
+public class DbAnimalAdvertDao implements AnimalAdvertDao, AutoCloseable {
     private final Logger logger = LogManager.getLogger();
     private static final String SQL_SELECT_ALL_ANIMALADVERTS = """
             SELECT *
@@ -86,7 +86,7 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+            
         }
         return adverts;
     }
@@ -111,7 +111,7 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+            
         }
     }
 
@@ -131,7 +131,7 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+            
         }
         return true;
     }
@@ -166,7 +166,7 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+            
         }
     }
 
@@ -192,7 +192,7 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+            
         }
     }
 
@@ -207,7 +207,7 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+            
         }
         return true;
     }
@@ -227,8 +227,13 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+            
         }
         return adverts;
+    }
+
+    @Override
+    public void close() throws Exception {
+        close(connection);
     }
 }

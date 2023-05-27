@@ -5,5 +5,5 @@ import by.fpmibsu.findafriend.entity.Place;
 
 public class CreateShelterCommand extends Request<Boolean> {
     public String name;
-    public Place place;
+    public int placeId;
 }

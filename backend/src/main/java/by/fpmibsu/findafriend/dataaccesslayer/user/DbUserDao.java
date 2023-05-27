@@ -11,7 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DbUserDao implements UserDao {
+public class DbUserDao implements UserDao, AutoCloseable {
     private final Logger logger = LogManager.getLogger();
     private static final String SQL_SELECT_ALL_USERS = """
             SELECT user_id, [user].name, surname, email, phone_number, login, password, role.role_id, role.name
@@ -71,7 +71,7 @@ public class DbUserDao implements UserDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+
         }
         return users;
     }
@@ -92,7 +92,7 @@ public class DbUserDao implements UserDao {
             throw new DaoException("", e);
         } finally {
             close(statement);
-            close(connection);
+
         }
     }
 
@@ -112,7 +112,7 @@ public class DbUserDao implements UserDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+
         }
         return true;
     }
@@ -136,28 +136,28 @@ public class DbUserDao implements UserDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
+
         }
         return true;
     }
 
     @Override
     public User update(User instance) throws DaoException {
-//        PreparedStatement statement = null;
-//        try {
-//            statement = statementBuilder.prepareStatement(SQL_UPDATE,
-//                    instance.getContacts(),
-//                    instance.getAnimalAdverts(),
-//                    instance.getAdverts(),
-//                    instance.getRole());
-//                    instance.getLogin();
-//                    instance.getPassword();
-//            int result = statement.executeUpdate();
-//        } catch (SQLException e) {
-//            throw new DaoException(e);
-//        } finally {
-//            close(statement); close(connection);
-//        }
+        PreparedStatement statement = null;
+        try {
+            statement = statementBuilder.prepareStatement(SQL_UPDATE,
+                    instance.getContacts(),
+                    instance.getAnimalAdverts(),
+                    instance.getAdverts(),
+                    instance.getRole(),
+                    instance.getLogin(),
+                    instance.getPassword());
+            int result = statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        } finally {
+            close(statement);
+        }
         return instance;
     }
 
@@ -172,7 +172,6 @@ public class DbUserDao implements UserDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
         }
         return true;
     }
@@ -192,7 +191,11 @@ public class DbUserDao implements UserDao {
             throw new DaoException(e);
         } finally {
             close(statement);
-            close(connection);
         }
+    }
+
+    @Override
+    public void close() throws Exception {
+        close(connection);
     }
 }

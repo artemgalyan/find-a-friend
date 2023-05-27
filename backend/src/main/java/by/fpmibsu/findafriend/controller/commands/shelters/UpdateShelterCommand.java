@@ -6,11 +6,11 @@ import by.fpmibsu.findafriend.entity.Place;
 public class UpdateShelterCommand extends Request<Boolean> {
     public int shelterId;
     public String name;
-    public Place place;
+    public int placeId;
 
-    public UpdateShelterCommand(int shelterId, String name, Place place) {
+    public UpdateShelterCommand(int shelterId, String name, int placeId) {
         this.shelterId = shelterId;
         this.name = name;
-        this.place = place;
+        this.placeId = placeId;
     }
 }

@@ -1,0 +1,64 @@
+<div class="p-4">
+  <app-moderator-tools></app-moderator-tools>
+  <div class="border-bottom"></div>
+  <div class="row m-2">
+    <label for="delete-user-input" class="col-sm-3">Удалить пользователя (id):</label>
+    <input id="delete-user-input" class="col-sm-1" type="number" [(ngModel)]="userId"/>
+    <button class="btn col-sm-3 btn-danger" style="margin-left: 5px" (click)="deleteUser()">Удалить пользователя</button>
+  </div>
+
+  <div class="row m-2 border-bottom">
+    <label for="delete-shelter-input" class="col-sm-3">Удалить приют (id):</label>
+    <input id="delete-shelter-input" class="col-sm-1" type="number" [(ngModel)]="shelterIdToDelete" />
+    <button class="btn btn-danger col-sm-3" style="margin-left: 5px" (click)="deleteShelter()">Удалить объявление</button>
+  </div>
+  <div class="m-2">
+    <h2>Создать приют</h2>
+    <div class="form-group row">
+      <label for="type" class="col-sm-1 col-form-label">Название:</label>
+      <div class="col-sm-3">
+        <input type="text" class="input-group" id="type" [(ngModel)]="shelterToCreateName"/>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="place-for-shelter" class="col-sm-1 col-form-label">Место:</label>
+      <app-placepicker #placeforshelter id="place-for-shelter" class="col-sm-3"></app-placepicker>
+    </div>
+    <button class="btn btn-primary" (click)="createShelter()">Создать</button>
+  </div>
+  <div class="border-bottom"></div>
+  <div class="m-2">
+    <h2>Создать место</h2>
+    <div class="form-group row">
+      <label for="country" class="col-sm-1 col-form-label">Страна:</label>
+      <div class="col-sm-3">
+        <input type="text" class="input-group" id="country" [(ngModel)]="country"/>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="region" class="col-sm-1 col-form-label">Область:</label>
+      <div class="col-sm-3">
+        <input type="text" class="input-group" id="region" [(ngModel)]="region"/>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="city" class="col-sm-1 col-form-label">Город:</label>
+      <div class="col-sm-3">
+        <input type="text" class="input-group" id="city" [(ngModel)]="city"/>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="district" class="col-sm-1 col-form-label">Район:</label>
+      <div class="col-sm-3">
+        <input type="text" class="input-group" id="district" [(ngModel)]="district"/>
+      </div>
+    </div>
+    <button class="btn btn-primary" (click)="createPlace()">Создать</button>
+  </div>
+  <div class="border-bottom"></div>
+  <div class="m-2">
+    <h2>Удаление места</h2>
+    <app-placepicker #placetodelete></app-placepicker>
+    <button class="btn btn-danger" (click)="deletePlace()">Удалить место</button>
+  </div>
+</div>
