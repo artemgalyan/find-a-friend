@@ -9,7 +9,8 @@ import {AnimalAdvertComponent} from "./animal-advert/animal-advert.component";
 import {AdvertsComponent} from "./adverts/adverts.component";
 import {ShelterComponent} from "./shelter/shelter.component";
 import {AdminPanelComponent} from "./admin-panel/admin-panel.component";
-import {CanActivateAdminPanelGuard} from "../shared/activator";
+import {CanActivateAdminPanelGuard, CanActivateModeratorPanelGuard} from "../shared/activator";
+import {ModeratorToolsComponent} from "./moderator-tools/moderator-tools.component";
 
 const routes: Routes = [
   {path: 'registration', component: RegistrationComponent},
@@ -20,7 +21,8 @@ const routes: Routes = [
   {path: 'animalAdvert', component: AnimalAdvertComponent},
   {path: 'adverts', component: AdvertsComponent},
   {path: 'shelter', component: ShelterComponent},
-  {path: 'admin', component: AdminPanelComponent, canActivate: [CanActivateAdminPanelGuard] }
+  {path: 'admin', component: AdminPanelComponent, canActivate: [CanActivateAdminPanelGuard] },
+  {path: 'moderator', component: ModeratorToolsComponent, canActivate: [CanActivateModeratorPanelGuard]}
 ];
 
 @NgModule({

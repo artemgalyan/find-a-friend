@@ -34,7 +34,7 @@ export class AnimalAdvertComponent implements OnInit {
           this.httpClient.get<Photo[]>(Constants.api + 'photos/getByAdvertId?id=' + advertId)
             .subscribe(photos => this.photos = photos.map(p => p.base64content))
           if (this.advert.shelterName === null) {
-            this.httpClient.get<User>(Constants.api + 'users/getUser?id=' + advert.userId + '&token=' + localStorage.getItem('jwt'))
+            this.httpClient.get<User>(Constants.api + 'users/getById?id=' + advert.userId + '&token=' + localStorage.getItem('jwt'))
               .subscribe(u => this.user = u,
                 e => this.user = null!)
           }

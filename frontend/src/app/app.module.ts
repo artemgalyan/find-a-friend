@@ -16,7 +16,9 @@ import { AnimalAdvertComponent } from './animal-advert/animal-advert.component';
 import { HeaderComponent } from './header/header.component';
 import { AdvertsComponent } from './adverts/adverts.component';
 import { ShelterComponent } from './shelter/shelter.component';
-import {CanActivateAdminPanelGuard} from "../shared/activator";
+import {CanActivateAdminPanelGuard, CanActivateModeratorPanelGuard} from "../shared/activator";
+import {AdminPanelComponent} from "./admin-panel/admin-panel.component";
+import { ModeratorToolsComponent } from './moderator-tools/moderator-tools.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import {CanActivateAdminPanelGuard} from "../shared/activator";
     AnimalAdvertComponent,
     HeaderComponent,
     AdvertsComponent,
-    ShelterComponent
+    ShelterComponent,
+    AdminPanelComponent,
+    ModeratorToolsComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +43,7 @@ import {CanActivateAdminPanelGuard} from "../shared/activator";
     FormsModule,
     HttpClientModule
   ],
-  providers: [CanActivateAdminPanelGuard],
+  providers: [CanActivateAdminPanelGuard, CanActivateModeratorPanelGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {
