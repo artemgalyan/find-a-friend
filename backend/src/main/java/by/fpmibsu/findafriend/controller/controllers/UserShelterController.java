@@ -3,12 +3,16 @@ package by.fpmibsu.findafriend.controller.controllers;
 import by.fpmibsu.findafriend.application.HandleResult;
 import by.fpmibsu.findafriend.application.controller.*;
 import by.fpmibsu.findafriend.controller.AuthUtils;
+import by.fpmibsu.findafriend.controller.Logging;
 import by.fpmibsu.findafriend.dataaccesslayer.shelter.ShelterDao;
 import by.fpmibsu.findafriend.dataaccesslayer.usershelter.UserShelterDao;
 import by.fpmibsu.findafriend.entity.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @ControllerRoute(route = "/userShelter")
 public class UserShelterController extends Controller {
+    private static final Logger logger = LogManager.getLogger(UserController.class);
 
     @RequireAuthentication
     @Endpoint(path = "/addUserToShelter", method = HttpMethod.POST)
@@ -16,6 +20,7 @@ public class UserShelterController extends Controller {
                                          @FromQuery(parameterName = "userId") int userId,
                                          @WebToken(parameterName = "role") String role) {
         if (AuthUtils.allowRoles(role, User.Role.MODERATOR, User.Role.ADMINISTRATOR)) {
+            Logging.warnNonAuthorizedAccess(this.request, logger);
             return notAuthorized();
         }
 
@@ -29,6 +34,7 @@ public class UserShelterController extends Controller {
     public HandleResult removeFromShelter(@FromQuery(parameterName = "userId") int userId,
                                           @WebToken(parameterName = "role") String role) {
         if (AuthUtils.allowRoles(role, User.Role.MODERATOR, User.Role.ADMINISTRATOR)) {
+            Logging.warnNonAuthorizedAccess(this.request, logger);
             return notAuthorized();
         }
 

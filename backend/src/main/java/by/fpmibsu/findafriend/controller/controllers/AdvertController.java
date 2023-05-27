@@ -4,6 +4,7 @@ import by.fpmibsu.findafriend.application.HandleResult;
 import by.fpmibsu.findafriend.application.controller.*;
 import by.fpmibsu.findafriend.application.mediatr.Mediatr;
 import by.fpmibsu.findafriend.controller.AuthUtils;
+import by.fpmibsu.findafriend.controller.Logging;
 import by.fpmibsu.findafriend.controller.Validation;
 import by.fpmibsu.findafriend.controller.commands.adverts.CreateAdvertCommand;
 import by.fpmibsu.findafriend.controller.commands.adverts.DeleteAdvertCommand;
@@ -17,7 +18,7 @@ import org.apache.logging.log4j.Logger;
 
 @ControllerRoute(route = "/adverts")
 public class AdvertController extends Controller {
-    private final Logger logger = LogManager.getLogger();
+    private final Logger logger = LogManager.getLogger(AdvertController.class);
     private final Mediatr mediatr;
 
     public AdvertController(Mediatr mediatr) {
@@ -26,13 +27,11 @@ public class AdvertController extends Controller {
 
     @Endpoint(path = "/getAll", method = HttpMethod.GET)
     public HandleResult getAll() {
-        logger.trace("response is completed");
         return ok(mediatr.send(new GetAdvertsQuery()));
     }
 
     @Endpoint(path = "/getById", method = HttpMethod.GET)
     public HandleResult getById(@FromQuery(parameterName = "id") int id) {
-        logger.trace("response is completed");
         return ok(mediatr.send(new GetAdvertByIdQuery(id)));
     }
 
@@ -41,10 +40,8 @@ public class AdvertController extends Controller {
     public HandleResult createAdvert(@FromBody CreateAdvertCommand request) {
         if (Validation.isAnyNullOrEmpty(request.advertType, request.description, request.title)
                 || !Validation.in(request.advertType, "V", "S")) {
-            logger.error("request does not exist or is incorrect");
             return badRequest();
         }
-        logger.trace("response is completed");
         return ok(mediatr.send(request));
     }
 
@@ -53,22 +50,19 @@ public class AdvertController extends Controller {
     public HandleResult updateAdvert(@FromBody UpdateAdvertCommand request, @WebToken(parameterName = "id") int userId,
                                      @WebToken(parameterName = "role") String role) {
         if (Validation.isAnyNullOrEmpty(request.description, request.title)) {
-            logger.error("request doesn't exist or is incorrect");
             return badRequest();
         }
         if (!AuthUtils.allowRoles(role, User.Role.ADMINISTRATOR, User.Role.MODERATOR)) {
             var advertDao = serviceProvider.getRequiredService(AdvertDao.class);
             var advert = advertDao.getEntityById(request.advertId);
             if (advert == null) {
-                logger.error("request doesn't exist or is incorrect");
                 return badRequest();
             }
             if (advert.getOwner().getId() != userId) {
-                logger.warn("non authorized user");
+                Logging.warnNonAuthorizedAccess(this.request, logger);
                 return notAuthorized();
             }
         }
-        logger.trace("response is completed");
         return ok(mediatr.send(request));
     }
 
@@ -80,11 +74,10 @@ public class AdvertController extends Controller {
             var advertDao = serviceProvider.getRequiredService(AdvertDao.class);
             var advert = advertDao.getEntityById(id);
             if (advert == null) {
-                logger.error("request doesn't exist or is incorrect");
                 return badRequest();
             }
             if (advert.getOwner().getId() != userId) {
-                logger.warn("non authorized user");
+                Logging.warnNonAuthorizedAccess(this.request, logger);
                 return notAuthorized();
             }
         }

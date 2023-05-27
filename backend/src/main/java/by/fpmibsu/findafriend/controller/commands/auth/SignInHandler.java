@@ -7,10 +7,13 @@ import by.fpmibsu.findafriend.dataaccesslayer.usershelter.UserShelterDao;
 import by.fpmibsu.findafriend.entity.User;
 import by.fpmibsu.findafriend.services.JwtSigner;
 import by.fpmibsu.findafriend.services.PasswordHasher;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jose4j.jwt.JwtClaims;
 import org.jose4j.lang.JoseException;
 
 public class SignInHandler extends RequestHandler<SignInResult, SignInCommand> {
+    private final static Logger logger = LogManager.getLogger(SignInHandler.class);
     private final JwtSigner signer;
     private final PasswordHasher passwordHasher;
     private final UserShelterDao userShelterDao;
@@ -27,10 +30,12 @@ public class SignInHandler extends RequestHandler<SignInResult, SignInCommand> {
     public SignInResult handle(SignInCommand request) throws JoseException {
         var user = userDao.findByLogin(request.login);
         if (user == null) {
+            logger.info(String.format("Failed to log for user %s", request.login));
             return null;
         }
 
         if (passwordHasher.verifyPassword(user, request.password) == PasswordHasher.PasswordVerificationResult.FAILED) {
+            logger.info(String.format("Failed to log for user %s", request.login));
             return null;
         }
 
@@ -41,6 +46,7 @@ public class SignInHandler extends RequestHandler<SignInResult, SignInCommand> {
             var shelterId = userShelterDao.getShelterId(user.getId());
             claims.setClaim("shelter_id", shelterId);
         }
+        logger.info(String.format("User %s logged in successfully", request.login));
         return new SignInResult(signer.signJwt(claims.toJson()), user.getId(), user.getRole().toString());
     }
 }

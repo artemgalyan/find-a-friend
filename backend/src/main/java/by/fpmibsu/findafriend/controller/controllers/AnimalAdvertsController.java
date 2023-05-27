@@ -4,6 +4,7 @@ import by.fpmibsu.findafriend.application.HandleResult;
 import by.fpmibsu.findafriend.application.controller.*;
 import by.fpmibsu.findafriend.application.mediatr.Mediatr;
 import by.fpmibsu.findafriend.controller.AuthUtils;
+import by.fpmibsu.findafriend.controller.Logging;
 import by.fpmibsu.findafriend.controller.Validation;
 import by.fpmibsu.findafriend.controller.commands.animaladverts.CreateAnimalAdvertCommand;
 import by.fpmibsu.findafriend.controller.queries.animalAdverts.GetAllAnimalAdvertsQuery;
@@ -12,9 +13,12 @@ import by.fpmibsu.findafriend.controller.queries.animalAdverts.GetAnimalAdvertQu
 import by.fpmibsu.findafriend.controller.queries.animalAdverts.GetAnimalAdvertsByUserIdQuery;
 import by.fpmibsu.findafriend.dataaccesslayer.animaladvert.AnimalAdvertDao;
 import by.fpmibsu.findafriend.entity.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @ControllerRoute(route = "/animalAdverts")
 public class AnimalAdvertsController extends Controller {
+    private static final Logger logger = LogManager.getLogger(AnimalAdvertsController.class);
     private final Mediatr mediatr;
 
     public AnimalAdvertsController(Mediatr mediatr) {
@@ -39,6 +43,7 @@ public class AnimalAdvertsController extends Controller {
         if (!AuthUtils.allowRoles(role, User.Role.ADMINISTRATOR, User.Role.MODERATOR)) {
             var advert = animalAdvertDao.getEntityById(id);
             if (advert.getOwner().getId() != userId) {
+                Logging.warnNonAuthorizedAccess(this.request, logger);
                 return notAuthorized();
             }
         }

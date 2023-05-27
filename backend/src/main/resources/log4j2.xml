@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="ALL">
     <Appenders>
-        <Console name="Console" target="SYSTEM_OUT">
+        <Console name="console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+            <!--            <GELFLayout></GELFLayout>-->
         </Console>
+        <File name="file-appender" fileName="logs/log.txt" bufferedIO="true">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </File>
     </Appenders>
     <Loggers>
         <Root level="all">
-            <AppenderRef ref="Console"/>
+            <AppenderRef ref="console" level="info"/>
             <AppenderRef ref="STDOUT"/>
+            <AppenderRef ref="file-appender"/>
         </Root>
     </Loggers>
 </Configuration>

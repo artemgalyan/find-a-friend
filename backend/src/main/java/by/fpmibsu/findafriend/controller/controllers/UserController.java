@@ -4,6 +4,7 @@ import by.fpmibsu.findafriend.application.HandleResult;
 import by.fpmibsu.findafriend.application.controller.*;
 import by.fpmibsu.findafriend.application.mediatr.Mediatr;
 import by.fpmibsu.findafriend.controller.AuthUtils;
+import by.fpmibsu.findafriend.controller.Logging;
 import by.fpmibsu.findafriend.controller.commands.users.CreateUserCommand;
 import by.fpmibsu.findafriend.controller.commands.users.DeleteUserCommand;
 import by.fpmibsu.findafriend.controller.commands.users.UpdateUserCommand;
@@ -11,11 +12,14 @@ import by.fpmibsu.findafriend.controller.queries.users.GetUserByIdQuery;
 import by.fpmibsu.findafriend.controller.queries.users.GetUsersQuery;
 import by.fpmibsu.findafriend.dataaccesslayer.user.UserDao;
 import by.fpmibsu.findafriend.entity.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 
 @ControllerRoute(route = "/users")
 public class UserController extends Controller {
+    private static final Logger logger = LogManager.getLogger(UserController.class);
     private final Mediatr mediatr;
 
     public UserController(Mediatr mediatr) {
@@ -53,6 +57,7 @@ public class UserController extends Controller {
     public HandleResult updateUser(@FromBody UpdateUserCommand request, @WebToken(parameterName = "id") int userId,
                                    @WebToken(parameterName = "role") String role) {
         if (userId != request.userId && !AuthUtils.allowRoles(role, User.Role.ADMINISTRATOR)) {
+            Logging.warnNonAuthorizedAccess(this.request, logger);
             return notAuthorized();
         }
         return ok(mediatr.send(request));
@@ -63,6 +68,7 @@ public class UserController extends Controller {
     public HandleResult deleteUserById(@WebToken(parameterName = "id") int id, @WebToken(parameterName = "id") int userId,
                                        @WebToken(parameterName = "role") String role) {
         if (userId != id && !AuthUtils.allowRoles(role, User.Role.ADMINISTRATOR)) {
+            Logging.warnNonAuthorizedAccess(this.request, logger);
             return notAuthorized();
         }
         return ok(mediatr.send(new DeleteUserCommand(id)));

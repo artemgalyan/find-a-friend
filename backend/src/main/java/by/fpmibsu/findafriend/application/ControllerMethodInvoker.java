@@ -52,23 +52,18 @@ public class ControllerMethodInvoker {
                 return new HandleResult(HttpServletResponse.SC_BAD_REQUEST);
             }
         }
-        try {
-            var result = (HandleResult) method.invoke(controller, methodParams);
-            return result;
+        try (sp) {
+            return (HandleResult) method.invoke(controller, methodParams);
         } catch (Exception e) {
+            logger.error(String.format("Error during request handling path: %s, method: %s, query: %s, exception: %s",
+                    request.getContextPath(), request.getMethod(), request.getQueryString(), e.getMessage())
+            );
             return new HandleResult(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        } finally {
-            try {
-                sp.close();
-            } catch (Exception e) {
-
-            }
         }
     }
 
     private static Object readFromQuery(String key, HttpServletRequest request, Class<?> type) throws JsonProcessingException {
         if (request.getParameter(key) == null) {
-            logger.error("arg is null in query");
             throw new RuntimeException("Arg is null");
         }
         return tryParseObject(request.getParameter(key), type);
@@ -112,7 +107,8 @@ public class ControllerMethodInvoker {
         if (long.class.equals(type)) {
             return Long.parseLong(s);
         }
-        logger.error("incorrect type of object");
+
+        logger.fatal("No mapping for type " + type.getName());
         throw new RuntimeException("Unreachable");
     }
 }

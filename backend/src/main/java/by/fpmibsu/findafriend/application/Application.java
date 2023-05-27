@@ -22,9 +22,11 @@ import java.util.Map;
 import java.util.Optional;
 
 public class Application {
-    public record AuthenticationData(JwtClaims claims, boolean isTokenValid) {}
+    public record AuthenticationData(JwtClaims claims, boolean isTokenValid) {
+    }
 
-    public record Keys(RSAPublicKey publicKey, RSAPrivateKey privateKey) {}
+    public record Keys(RSAPublicKey publicKey, RSAPrivateKey privateKey) {
+    }
 
     private final GlobalServiceProvider globalServiceProvider;
     private final Map<String, EndpointInfo> endpointInfos;
@@ -45,7 +47,7 @@ public class Application {
     }
 
     public void send(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        logger.trace("Started request processing from " + request.getLocalAddr());
+        logger.trace("Started request " + request.getContextPath() + " processing from " + request.getLocalAddr());
         ServletUtils.setResponseHeaders(response);
         if (!endpointInfos.containsKey(request.getPathInfo())) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -63,7 +65,8 @@ public class Application {
         if (result.getResponseObject().isPresent()) {
             ServletUtils.writeResponse(result.getResponseObject().get(), response.getOutputStream());
         }
-        logger.trace("Finished request processing from " + request.getLocalAddr());
+        logger.trace("Finished request " + request.getContextPath() + " processing from " + request.getLocalAddr());
+
     }
 
     private AuthenticationData parseToken(String token) {
