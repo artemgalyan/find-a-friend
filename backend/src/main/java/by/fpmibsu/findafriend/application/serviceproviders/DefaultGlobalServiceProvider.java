@@ -114,7 +114,7 @@ public class DefaultGlobalServiceProvider implements GlobalServiceProvider {
 
         @Override
         public <T> boolean hasService(Class<T> clazz) {
-            return false;
+            return DefaultGlobalServiceProvider.this.hasService(clazz);
         }
 
         @Override
