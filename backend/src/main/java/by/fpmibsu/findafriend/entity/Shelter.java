@@ -13,10 +13,14 @@ public class Shelter extends Entity {
     private List<User> administrators;
     private List<AnimalAdvert> animalAdverts;
     private Place place;
+    private String address;
+    private String website;
 
     public Shelter() {}
 
-    public Shelter(int id, String name, List<User> administrators, List<AnimalAdvert> animalAdverts, Place place) {
+    public Shelter(int id, String name, List<User> administrators, List<AnimalAdvert> animalAdverts, Place place, String address, String website) {
+        this.address = address;
+        this.website = website;
         this.id = id;
         this.name = name;
         this.administrators = administrators;
@@ -24,11 +28,13 @@ public class Shelter extends Entity {
         this.place = place;
     }
 
-    public Shelter(String name, List<User> administrators, List<AnimalAdvert> animalAdverts, Place place) {
+    public Shelter(String name, List<User> administrators, List<AnimalAdvert> animalAdverts, Place place, String address, String website) {
         this.name = name;
         this.administrators = administrators;
         this.animalAdverts = animalAdverts;
         this.place = place;
+        this.address = address;
+        this.website = website;
     }
 
     public String getName() {
@@ -61,6 +67,22 @@ public class Shelter extends Entity {
 
     public void setPlace(Place place) {
         this.place = place;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
     }
 
     @Override

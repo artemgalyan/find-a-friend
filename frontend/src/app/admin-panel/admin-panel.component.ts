@@ -17,6 +17,8 @@ export class AdminPanelComponent {
   @ViewChild('placeforshelter')
   private placeSelector!: PlacePickerComponent;
   shelterToCreateName: string = ''
+  shelterAddress: string = ''
+  shelterWebsite: string = ''
 
   @ViewChild('placetodelete')
   private toDeleteplaceSelector!: PlacePickerComponent;
@@ -46,7 +48,9 @@ export class AdminPanelComponent {
   createShelter() {
     this.httpClient.post(Constants.api + 'shelters/create?token=' + this.token(), {
       'name': this.shelterToCreateName,
-      'placeId': this.placeSelector.selectedPlace.id
+      'placeId': this.placeSelector.selectedPlace.id,
+      'address': this.shelterAddress,
+      'website': this.shelterWebsite
     }, {
       headers: {
         'Content-type': 'text/json; charset=UTF-8'

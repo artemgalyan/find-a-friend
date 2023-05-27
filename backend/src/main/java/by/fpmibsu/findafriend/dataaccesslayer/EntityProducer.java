@@ -63,7 +63,9 @@ public class EntityProducer {
                 set.getString("name"),
                 null,
                 null,
-                makePlace(set)
+                makePlace(set),
+                set.getString("address"),
+                set.getString("website")
         );
     }
 

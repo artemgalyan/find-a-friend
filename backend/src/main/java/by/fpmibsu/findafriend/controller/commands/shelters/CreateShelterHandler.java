@@ -18,7 +18,7 @@ public class CreateShelterHandler extends RequestHandler<Boolean, CreateShelterC
     public Boolean handle(CreateShelterCommand request) {
         var p = new Place();
         p.setId(request.placeId);
-        Shelter shelter = new Shelter(0, request.name, new ArrayList<>(), new ArrayList<>(), p);
+        Shelter shelter = new Shelter(0, request.name, new ArrayList<>(), new ArrayList<>(), p, request.address, request.website);
         try {
             shelterDao.create(shelter);
             return true;

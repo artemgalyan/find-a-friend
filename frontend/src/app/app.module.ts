@@ -22,6 +22,8 @@ import {AdminPanelComponent} from "./admin-panel/admin-panel.component";
 import { ModeratorToolsComponent } from './moderator-tools/moderator-tools.component';
 import { AdvertComponent } from './advert/advert.component';
 import { PreviewComponent } from './preview/preview.component';
+import {ModeratorToolsComponent} from './moderator-tools/moderator-tools.component';
+import {SheltersComponent} from './shelters/shelters.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,9 @@ import { PreviewComponent } from './preview/preview.component';
     AdminPanelComponent,
     ModeratorToolsComponent,
     AdvertComponent,
-    PreviewComponent
+    PreviewComponent,
+    ModeratorToolsComponent,
+    SheltersComponent
   ],
   imports: [
     BrowserModule,
@@ -52,4 +56,5 @@ import { PreviewComponent } from './preview/preview.component';
   providers: [CanActivateAdminPanelGuard, CanActivateModeratorPanelGuard],
   bootstrap: [AppComponent]
 })
-
+export class AppModule {
+}

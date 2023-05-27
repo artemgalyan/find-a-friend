@@ -15,6 +15,7 @@ import {ModeratorToolsComponent} from "./moderator-tools/moderator-tools.compone
 import {AdvertComponent} from "./advert/advert.component";
 import {PrefixNot} from "@angular/compiler";
 import {PreviewComponent} from "./preview/preview.component";
+import {SheltersComponent} from "./shelters/shelters.component";
 
 const routes: Routes = [
   {path: 'registration', component: RegistrationComponent},
@@ -29,7 +30,8 @@ const routes: Routes = [
   {path: 'preview', component: PreviewComponent},
   {path: 'shelter', component: ShelterComponent},
   {path: 'admin', component: AdminPanelComponent, canActivate: [CanActivateAdminPanelGuard] },
-  {path: 'moderator', component: ModeratorToolsComponent, canActivate: [CanActivateModeratorPanelGuard]}
+  {path: 'moderator', component: ModeratorToolsComponent, canActivate: [CanActivateModeratorPanelGuard]},
+  {path: 'shelters', component: SheltersComponent}
 ];
 
 @NgModule({
