@@ -2,6 +2,7 @@ package by.fpmibsu.findafriend.controller.commands.shelters;
 
 import by.fpmibsu.findafriend.application.mediatr.RequestHandler;
 import by.fpmibsu.findafriend.dataaccesslayer.shelter.ShelterDao;
+import by.fpmibsu.findafriend.entity.Place;
 
 public class UpdateShelterHandler extends RequestHandler<Boolean, UpdateShelterCommand> {
     private final ShelterDao shelterDao;
@@ -19,8 +20,10 @@ public class UpdateShelterHandler extends RequestHandler<Boolean, UpdateShelterC
         if (request.name != null) {
             shelter.setName(request.name);
         }
-        if (request.place != null) {
-            shelter.setPlace(request.place);
+        if (request.placeId != -1) {
+            var p = new Place();
+            p.setId(request.placeId);
+            shelter.setPlace(p);
         }
 
         shelterDao.update(shelter);
