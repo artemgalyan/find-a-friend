@@ -48,7 +48,7 @@ public class DefaultGlobalServiceProvider implements GlobalServiceProvider {
 
     @Override
     public <T> boolean hasService(Class<T> clazz) {
-        return false;
+        return entries.containsKey(clazz);
     }
 
     @Override
@@ -88,7 +88,9 @@ public class DefaultGlobalServiceProvider implements GlobalServiceProvider {
         public RequestServiceProvider() {
             addScoped(ScopedServiceProvider.class, this);
             addScoped(ServiceProvider.class, this);
-            addScoped(Mediatr.class, new Mediatr(this, getRequiredService(HandlersDataList.class)));
+            if (hasService(HandlersDataList.class)) {
+                addScoped(Mediatr.class, new Mediatr(this, getRequiredService(HandlersDataList.class)));
+            }
         }
 
         @Override
