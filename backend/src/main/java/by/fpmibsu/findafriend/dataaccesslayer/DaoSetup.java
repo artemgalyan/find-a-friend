@@ -13,8 +13,6 @@ import by.fpmibsu.findafriend.dataaccesslayer.place.DbPlaceDao;
 import by.fpmibsu.findafriend.dataaccesslayer.place.PlaceDao;
 import by.fpmibsu.findafriend.dataaccesslayer.shelter.DbShelterDao;
 import by.fpmibsu.findafriend.dataaccesslayer.shelter.ShelterDao;
-import by.fpmibsu.findafriend.dataaccesslayer.token.DbTokenDao;
-import by.fpmibsu.findafriend.dataaccesslayer.token.TokenDao;
 import by.fpmibsu.findafriend.dataaccesslayer.user.DbUserDao;
 import by.fpmibsu.findafriend.dataaccesslayer.user.UserDao;
 import by.fpmibsu.findafriend.dataaccesslayer.usershelter.DbUserShelterDao;
