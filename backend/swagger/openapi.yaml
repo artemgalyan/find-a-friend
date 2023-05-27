@@ -1,0 +1,250 @@
+openapi: 3.0.3
+info:
+  title: Find a friend - OpenAPI 3.0
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api/
+tags:
+  - name: Animal adverts
+    description: Animal adverts CRUD
+security:
+  - jwt:
+    - s1
+paths:
+  /animalAdverts/getAll:
+    get:
+      tags:
+        - Animal adverts
+      summary: Get all animal adverts
+      responses:
+        '200':
+          description: Success
+  /animalAdverts/getById:
+    get:
+      tags:
+        - Animal adverts
+      parameters:
+        - name: id
+          in: query
+          description: Advert id
+          required: true
+          schema:
+            type: integer
+      summary: Get animal advert by id
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AnimalAdvert'
+        '400':
+          description: No id supplied
+  /animalAdverts/delete:
+    delete:
+      tags:
+        - Animal adverts
+      parameters:
+        - name: id
+          in: query
+          description: Id of animal advert to be deleted
+          required: true
+          schema:
+            type: integer
+      summary: Delete animal advert by id
+      description: Delete existing animala advert by id
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnimalAdvert'
+        '400':
+          description: No id provided
+        '403':
+          description: You are not author of the or advert or not moderator/administrator
+  /animalAdverts/create:
+    post:
+      tags:
+        - Animal adverts
+      summary: Create animal advert
+      description: Create animal advert
+      responses:
+        '200':
+          description: true if was created, false otherwise
+          content:
+            application/json:
+              schema:
+                type: boolean
+        '403':
+          description: if not authorized
+        '400':
+          description: bad data
+      requestBody:
+        description: Create new animal advert
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAnimalAdvert'
+  /animalAdverts/getByUserId:
+    get:
+      tags:
+        - Animal adverts
+      parameters:
+        - name: id
+          in: query
+          description: creator id
+          required: true
+          schema:
+            type: integer
+            example: 10
+      summary: Get animal advert by creator id
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AnimalAdvert'
+        '400':
+          description: No user id supplied
+  /animalAdverts/getByShelterId:
+    get:
+      tags:
+        - Animal adverts
+      parameters:
+        - name: id
+          in: query
+          description: shelter id
+          required: true
+          schema:
+            type: integer
+            example: 2
+      summary: Get animal advert by shelter id
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AnimalAdvert'
+        '400':
+          description: No shelter id supplied
+  /animalAdverts/getMine:
+    get:
+      tags:
+        - Animal adverts
+      summary: Get animal advert by creator id
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AnimalAdvert'
+        '403':
+          description: If not authorized
+components:
+  schemas:
+    Place:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 10
+        country:
+          type: string
+          example: Беларусь
+        region:
+          type: string
+          example: Брестская область
+        city:
+          type: string
+          example: Брест
+        district:
+          type: string
+          example: Московский район
+    AnimalAdvert:
+      type: object
+      properties:
+        advertId:
+          type: integer
+          example: 32
+        userId:
+          type: integer
+          example: 42
+        title:
+          type: string
+        description:
+          type: string
+        animalType:
+          type: string
+          enum:
+            - Кот
+            - Собака
+            - Другое
+        creationDate:
+          type: string
+          format: date-time
+        place:
+          $ref: '#/components/schemas/Place'
+        birthDate:
+          type: string
+          format: date-time
+        sex:
+          type: string
+          enum:
+            - M
+            - F
+        isCastrated: 
+          type: boolean
+        shelterId:
+          type: integer
+          description: -1, if advert doesn't belong to any shelter
+        shelterName:
+          type: string
+          description: null, if advert doesn't belong to any sheler
+    CreateAnimalAdvert:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        animalType:
+          type: string
+          enum:
+            - Кот
+            - Собака
+            - Другое
+        placeId:
+          type: integer
+          description: id of place
+        birthdate:
+          type: string
+          format: date
+        sex:
+          type: string
+          enum:
+            - M
+            - F
+        isCastrated:
+          type: boolean
+        photos:
+          type: array
+          description: array of base64 image strings
+          items:
+            type: string
+  securitySchemes:
+    jwt:
+      type: http
+      scheme: bearer
