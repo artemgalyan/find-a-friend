@@ -10,7 +10,8 @@
     <div class="h-100 w-100">
       <div class="w-100 h-100">
         <img [src]="photos[currentPhoto]" style="width: 100%; max-height: 100%;" *ngIf="photos.length > 0">
-        <img src="assets/images/default.png" style="width: 100%; max-height: 100%; aspect-ratio: initial" *ngIf="photos.length === 0">
+        <img src="assets/images/default.png" style="width: 100%; max-height: 100%; aspect-ratio: initial"
+             *ngIf="photos.length === 0">
       </div>
     </div>
     <div class="alert alert-warning m-1" role="alert" *ngIf="photos.length === 0">
@@ -73,7 +74,7 @@
     <h2>Автор</h2>
     <div *ngIf="authorIsShelter()">
       <p>Приют "{{advert.shelterName}}"</p>
-      <button>Открыть приют</button>
+      <button class="btn btn-primary" (click)="showAdvert(advert)">Открыть приют</button>
     </div>
     <div *ngIf="!authorIsShelter()">
       <div *ngIf="user === null" class="alert alert-danger" role="alert">

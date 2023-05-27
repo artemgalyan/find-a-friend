@@ -15,6 +15,7 @@ import { ViewAnimalAdvertComponent } from './view-animal-advert/view-animal-adve
 import { AnimalAdvertComponent } from './animal-advert/animal-advert.component';
 import { HeaderComponent } from './header/header.component';
 import { AdvertsComponent } from './adverts/adverts.component';
+import { ShelterComponent } from './shelter/shelter.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { AdvertsComponent } from './adverts/adverts.component';
     ViewAnimalAdvertComponent,
     AnimalAdvertComponent,
     HeaderComponent,
-    AdvertsComponent
+    AdvertsComponent,
+    ShelterComponent
   ],
   imports: [
     BrowserModule,

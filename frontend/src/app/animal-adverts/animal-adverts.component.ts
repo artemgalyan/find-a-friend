@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {AnimalAdvert, AnimalAdvertWithPhoto, Photo, Place} from "../../shared/models";
+import {Advert, AnimalAdvert, AnimalAdvertWithPhoto, Photo, Place} from "../../shared/models";
 import {HttpClient} from "@angular/common/http";
 import {Constants} from "../constants";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-animal-adverts',
@@ -13,7 +14,7 @@ export class AnimalAdvertsComponent implements OnInit {
   adverts: AnimalAdvert[] = [];
 
   constructor(private httpClient: HttpClient,
-              private _sanitizer: DomSanitizer) {
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -28,6 +29,4 @@ export class AnimalAdvertsComponent implements OnInit {
   placeToString(p: Place) : string {
     return p.city + ', ' + p.district;
   }
-
-  showAdvert(advertId: number) {}
 }

@@ -19,16 +19,18 @@ export class ViewAnimalAdvertComponent implements OnInit {
 
   constructor(private httpClient: HttpClient,
               private sanitizer: DomSanitizer,
-              private router: Router) {}
+              private router: Router) {
+  }
 
   ngOnInit(): void {
-    this.httpClient.get<Photo>(Constants.api + 'photos/getPreview?id=' + this.advert.advertId).subscribe(res => {
-      if (res !== null)
-        this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(res.base64content);
-      else {
-        this.photo = null!;
-      }
-    })
+    this.httpClient.get<Photo>(Constants.api + 'photos/getPreview?id=' + this.advert.advertId)
+      .subscribe(res => {
+        if (res !== null)
+          this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(res.base64content);
+        else {
+          this.photo = null!;
+        }
+      })
 
     if (this.advert.animalType === 'Кот') {
       this.defaultPhoto = 'assets/images/cat.png'
@@ -39,13 +41,15 @@ export class ViewAnimalAdvertComponent implements OnInit {
     }
   }
 
-  placeToString(p: Place) : string {
+  placeToString(p: Place): string {
     return p.city + ', ' + p.district;
   }
 
   showAdvert() {
-    this.router.navigate(['animalAdvert'], {queryParams: {
-      'advertId': this.advert.advertId
-    }})
+    this.router.navigate(['animalAdvert'], {
+      queryParams: {
+        'advertId': this.advert.advertId
+      }
+    })
   }
 }

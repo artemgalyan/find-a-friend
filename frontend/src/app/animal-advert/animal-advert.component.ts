@@ -64,4 +64,8 @@ export class AnimalAdvertComponent implements OnInit {
   authorIsShelter() : boolean {
     return this.advert.shelterName !== null && this.advert.shelterName !== undefined;
   }
+
+  showAdvert(advert: AnimalAdvert) {
+    this.router.navigate(['shelter'], {queryParams: {'id': advert.shelterId}})
+  }
 }
