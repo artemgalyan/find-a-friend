@@ -23,7 +23,6 @@ const routes: Routes = [
   {path: 'animalAdvert', component: AnimalAdvertComponent},
   {path: 'adverts', component: AdvertsComponent},
   {path: 'shelter', component: ShelterComponent},
-  {path: 'shelter', component: ShelterComponent},
   {path: 'admin', component: AdminPanelComponent, canActivate: [CanActivateAdminPanelGuard] },
   {path: 'moderator', component: ModeratorToolsComponent, canActivate: [CanActivateModeratorPanelGuard]}
 ];

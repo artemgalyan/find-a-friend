@@ -11,6 +11,5 @@ public class CreateAdvertCommand extends Request<Boolean> {
     public String advertType;
     public String title;
     public String description;
-    public Date creationDate;
     public int placeId;
 }

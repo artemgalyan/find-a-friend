@@ -11,16 +11,12 @@
   <div class="mb-3"><label for="type-selector">Чем хотите заняться?</label>
     <select class="form-control" id="type-selector" [(ngModel)]="advertType"
             (ngModelChange)="this.advertType = $event">
-      <option *ngFor="let t of advertTypes">{{ t.toString() }}</option>
+      <option *ngFor="let t of advertTypes" [ngValue]="t">{{ typeToString(t) }}</option>
     </select>
   </div>
   <div class="mb-3">
     <label for="place-picker">Где?</label>
     <app-placepicker id="place-picker"></app-placepicker>
-  </div>
-  <div class="mb-3">
-    <label for="startDate">Дата создания объявления</label>
-    <input id="startDate" class="form-control" type="date" [(ngModel)]="creationDate"/>
   </div>
   <div style="font-size: 20px; text-align: center">
     <button class="btn btn-primary mb-3 w-50" (click)="createAdvert()">Создать объявление</button>

@@ -25,6 +25,10 @@ export class CreateAdvertComponent implements OnInit {
               private router: Router) {
   }
 
+  typeToString(type: string) : string {
+    return type == 'V' ? 'Волонтёр' : 'Ситтер'
+  }
+
   ngOnInit(): void {
     if (!this.isLoggedIn()) {
       this.router.navigate(['login'])
@@ -41,19 +45,11 @@ export class CreateAdvertComponent implements OnInit {
       'advertType': this.advertType,
       'title': this.title,
       'description': this.description,
-      'creationDate': this.creationDate,
       'placeId': this.placeSelector.selectedPlace.id
     }, {
       headers: {
         'Content-type': 'text/json; charset=UTF-8'
       }
     }).subscribe(r => this.router.navigate(['adverts']))
-  }
-
-  getAdvertType(s: string) : string {
-    if (s === 'V') {
-      return 'Волонтер';
-    }
-    return 'Ситтер';
   }
 }

@@ -9,7 +9,6 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 
 public class PooledConnection implements Connection, Comparable<PooledConnection> {
-	private static final Logger logger = LogManager.getLogger(PooledConnection.class);
 	private final ConnectionPool connectionPool;
 	private final Connection connection;
 

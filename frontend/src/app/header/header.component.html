@@ -1,58 +1,56 @@
-<nav class="navbar navbar-expand-lg navbar-light p-2 border-bottom"
-     style="background: #7fd328">
-  <a class="navbar-brand" href="#">Найди друга</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
-          aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarText">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <div class="dropdown">
-          <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink2" data-bs-toggle="dropdown"
-             aria-expanded="false">
-            Объявления
-          </a>
+<nav class="navbar navbar-expand-md navbar-light" style="background: #7fd328">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Найди друга</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse w-100" id="navbarNav">
+      <ul class="navbar-nav w-100" id="account-menu">
+        <li class="nav-item">
+          <div class="dropdown">
+            <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink2" data-bs-toggle="dropdown"
+               aria-expanded="false">
+              Объявления
+            </a>
 
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink2">
-            <li><a class="dropdown-item" href="adverts">О помощи</a></li>
-            <li><a class="dropdown-item" href="animalAdverts">О животных</a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="nav-item">
-        <div class="dropdown">
-          <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
-             aria-expanded="false">
-            Добавить объявление
-          </a>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink2">
+              <li><a class="dropdown-item" href="adverts">О помощи</a></li>
+              <li><a class="dropdown-item" href="animalAdverts">О животных</a></li>
+            </ul>
+          </div>
+        </li>
+        <li class="nav-item">
+          <div class="dropdown">
+            <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+               aria-expanded="false">
+              Добавить объявление
+            </a>
 
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li><a class="dropdown-item" href="createAdvert">О помощи</a></li>
-            <li><a class="dropdown-item" href="createAnimalAdvert">О животном</a></li>
-          </ul>
-        </div>
-      </li>
-
-    </ul>
-  </div>
-  <nav class="navbar navbar-light">
-    <div *ngIf="isLoggedIn()" style="margin-right: 50px">
-      <button style="margin-right: 0" type="button" class="btn dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference"
-              data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
-        <span class="visually-hidden">Toggle Dropdown</span>
-      </button>
-      <button style="margin-left: 0" type="button" class="btn" (click)="onAccountClicked()">Аккаунт</button>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenuReference">
-        <li><a class="dropdown-item" (click)="onExit()">Выйти</a></li>
-      </ul>
-    </div>
-    <div *ngIf="!isLoggedIn()" class="collapse navbar-collapse">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-item nav-link navbar-nav mr-auto" href="login">Войти</a>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <li><a class="dropdown-item" href="createAdvert">О помощи</a></li>
+              <li><a class="dropdown-item" href="createAnimalAdvert">О животном</a></li>
+            </ul>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="shelters">Приюты</a>
+        </li>
+        <li class="w-100"></li>
+        <li class="nav-item" style="margin-right: 50px">
+          <div class="dropdown">
+            <a class="btn dropdown-toggle" href="#" role="button" id="accountDropdown" data-bs-toggle="dropdown"
+               aria-expanded="false">
+              Аккаунт
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="accountDropdown">
+              <li *ngIf="this.isLoggedIn()"><a class="dropdown-item" href="account">Аккаунт</a></li>
+              <li *ngIf="this.isLoggedIn()"><a class="dropdown-item" href="login" (click)="onExit()">Выйти</a></li>
+              <li *ngIf="!this.isLoggedIn()"><a class="dropdown-item" href="login">Войти</a></li>
+            </ul>
+          </div>
         </li>
       </ul>
     </div>
-  </nav>
+  </div>
 </nav>

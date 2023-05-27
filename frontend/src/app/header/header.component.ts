@@ -6,7 +6,7 @@ import {Router} from "@angular/router";
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
 
   constructor(private router: Router) { }
 
@@ -32,6 +32,8 @@ export class HeaderComponent {
 
   onExit() {
     localStorage.removeItem('jwt')
-    this.router.navigate(['login'])
+    // this.router.navigate(['login'])
   }
+
+  ngOnInit(): void {}
 }
