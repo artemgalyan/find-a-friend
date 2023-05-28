@@ -33,7 +33,7 @@ public class UpdateUserHandler extends RequestHandler<Boolean, UpdateUserCommand
         }
         if (request.password != null) {
             var hashedPassword = passwordHasher.hashPassword(request.password);
-            
+
             user.setPassword(hashedPassword);
         }
         if (request.email != null) {
