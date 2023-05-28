@@ -14,7 +14,7 @@ export class CreateAdvertComponent implements OnInit {
   title: string = '';
   description: string = '';
   advertType: string = '';
-  placeId: number = -1;
+  placeId: number = 1;
   readonly advertTypes: string[] = ['V', 'S'];
 
   @ViewChild(PlacePickerComponent)
@@ -36,8 +36,8 @@ export class CreateAdvertComponent implements OnInit {
 
     let titleInput = document.querySelector('#titleInput') as HTMLInputElement
     let descriptionInput = document.querySelector('#descriptionInput') as HTMLInputElement
-    let advertTypeInput = document.querySelector('#advertTypeInput') as HTMLInputElement
-    let placeIdInput = document.querySelector('#placeIdInput') as HTMLInputElement
+    let advertTypeInput = document.querySelector('#type-selector') as HTMLInputElement
+    let placeIdInput = document.querySelector('#place-picker') as HTMLInputElement
     let validator = (element: HTMLInputElement, minSize: number = 1) => (e: Event) => {
       if (element.value.length < minSize) {
         element.classList.add('is-invalid')
@@ -58,8 +58,10 @@ export class CreateAdvertComponent implements OnInit {
   createAdvert() {
     let titleInput = document.querySelector('#titleInput') as HTMLInputElement
     let descriptionInput = document.querySelector('#descriptionInput') as HTMLInputElement
-    let advertTypeInput = document.querySelector('#advertTypeInput') as HTMLInputElement
-    let placeIdInput = document.querySelector('#placeIdInput') as HTMLInputElement
+    //let advertTypeInput = document.querySelector('#advertTypeInput') as HTMLInputElement
+    //let placeIdInput = document.querySelector('#placeIdInput') as HTMLInputElement
+    let advertTypeInput = document.querySelector('#type-selector') as HTMLInputElement
+    let placeIdInput = document.querySelector('#place-picker') as HTMLInputElement
     if (this.title.length === 0) {
       titleInput.classList.add('is-invalid')
     } else {
@@ -75,7 +77,7 @@ export class CreateAdvertComponent implements OnInit {
     } else {
       advertTypeInput.classList.remove('is-invalid')
     }
-    if (this.placeId === -1) {
+    if (this.placeId === 1) {
       placeIdInput.classList.add('is-invalid');
     } else {
       placeIdInput.classList.remove('is-invalid')
