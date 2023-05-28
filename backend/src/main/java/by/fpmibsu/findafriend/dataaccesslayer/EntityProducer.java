@@ -4,17 +4,20 @@ import by.fpmibsu.findafriend.entity.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class EntityProducer {
     public static Advert makeAdvert(ResultSet set) throws SQLException {
         var user = new User();
         user.setId(set.getInt("user_id"));
+        var place = new Place();
+        place.setId(set.getInt("place_id"));
         return new Advert(
                 set.getInt("advert_id"),
                 set.getString("title"),
                 set.getString("description"),
                 set.getDate("creation_date"),
-                EntityProducer.makePlace(set),
+                place,
                 user,
                 Advert.AdvertType.fromValue(set.getString("advert_type"))
         );
@@ -23,6 +26,8 @@ public class EntityProducer {
     public static AnimalAdvert makeAnimalAdvert(ResultSet set) throws SQLException {
         var user = new User();
         user.setId(set.getInt("user_id"));
+        var place = new Place();
+        place.setId(set.getInt("place_id"));
         return new AnimalAdvert(
                 set.getInt("animal_advert_id"),
                 set.getString("title"),
@@ -31,7 +36,7 @@ public class EntityProducer {
                 null,
                 user,
                 set.getDate("creation_date"),
-                makePlace(set),
+                place,
                 set.getDate("birthday"),
                 AnimalAdvert.Sex.fromValue(set.getString("sex")),
                 booleanFromString(set.getString("castrated"))
@@ -58,12 +63,14 @@ public class EntityProducer {
     }
 
     public static Shelter makeShelter(ResultSet set) throws SQLException {
+        var place = new Place();
+        place.setId(set.getInt("place_id"));
         return new Shelter(
                 set.getInt("shelter_id"),
                 set.getString("name"),
                 null,
                 null,
-                makePlace(set),
+                place,
                 set.getString("address"),
                 set.getString("website")
         );

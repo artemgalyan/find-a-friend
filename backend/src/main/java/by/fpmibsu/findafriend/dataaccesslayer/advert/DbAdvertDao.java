@@ -14,17 +14,14 @@ import java.util.List;
 public class DbAdvertDao implements AdvertDao, AutoCloseable {
     private final Logger logger = LogManager.getLogger();
     private static final String SQL_SELECT_ALL_ADVERTS = """
-            SELECT * FROM advert
-            INNER JOIN place p on p.place_id = advert.place_id;
+            SELECT * FROM advert;
             """;
     private static final String SQL_GET_USERS_ADVERTS = """
             SELECT * FROM advert
-            INNER JOIN place p on p.place_id = advert.place_id
             WHERE user_id=?
             """;
     private static final String SQL_SELECT_BY_ID = """
             SELECT * FROM advert
-            INNER JOIN place p on p.place_id = advert.place_id
             WHERE advert_id=?;
             """;
     private static final String SQL_INSERT_ADVERT = """

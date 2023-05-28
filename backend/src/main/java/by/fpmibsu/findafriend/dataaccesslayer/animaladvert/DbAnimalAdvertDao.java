@@ -16,21 +16,18 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao, AutoCloseable {
     private static final String SQL_SELECT_ALL_ANIMALADVERTS = """
             SELECT *
             FROM animal_advert
-            LEFT JOIN animal_type a on a.animal_type_id = animal_advert.animal_type_id
-            INNER JOIN place p on animal_advert.place_id = p.place_id""";
+            LEFT JOIN animal_type a on a.animal_type_id = animal_advert.animal_type_id""";
 
     private static final String SQL_SELECT_USERS_ADVERTS = """
                 SELECT *
                     FROM animal_advert
                     LEFT JOIN animal_type a on a.animal_type_id = animal_advert.animal_type_id
-                    INNER JOIN place p on animal_advert.place_id = p.place_id
                 WHERE user_id=?
             """;
     private static final String SQL_SELECT_BY_ID = """
             SELECT *
             FROM animal_advert
             LEFT JOIN animal_type a on a.animal_type_id = animal_advert.animal_type_id
-            INNER JOIN place p on animal_advert.place_id = p.place_id
             WHERE animal_advert_id=?""";
     private static final String SQL_INSERT_ANIMALADVERT = """
             DECLARE @type_id INT = (

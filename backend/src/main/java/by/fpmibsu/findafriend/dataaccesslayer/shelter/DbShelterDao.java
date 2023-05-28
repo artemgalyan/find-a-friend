@@ -15,16 +15,12 @@ import java.util.List;
 public class DbShelterDao implements ShelterDao, AutoCloseable {
     final private Logger logger = LogManager.getLogger();
     private static final String SQL_SELECT_ALL_SHELTERS = """
-            SELECT shelter_id, name, place.place_id, place.country,
-                place.region, place.city, place.district, shelter.address, shelter.website
-            FROM shelter
-                LEFT JOIN place ON shelter.place_id=place.place_id""";
+            SELECT shelter_id, name, place_id, address, website
+            FROM shelter""";
     private static final String SQL_SELECT_BY_ID = """
-            SELECT shelter_id, name, place.place_id, place.country, place.region, place.city, place.district,
-                shelter.address, shelter.website
+            SELECT shelter_id, name, shelter.place_id, shelter.address, shelter.website
             FROM shelter
-                LEFT JOIN place ON shelter.place_id=place.place_id
-                WHERE shelter_id=?""";
+            WHERE shelter_id=?""";
     private static final String SQL_INSERT_SHELTER = """
             INSERT INTO shelter VALUES(?,?,?,?)""";
     private static final String SQL_DELETE_BY_ID = """
