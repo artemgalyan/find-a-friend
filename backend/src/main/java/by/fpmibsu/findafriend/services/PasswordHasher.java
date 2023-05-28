@@ -10,5 +10,6 @@ public abstract class PasswordHasher {
     }
 
     public abstract String hashPassword(String password);
+
     public abstract PasswordVerificationResult verifyPassword(User user, String providedPassword);
 }

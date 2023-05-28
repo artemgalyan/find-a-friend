@@ -70,7 +70,6 @@ public class DbShelterDao implements ShelterDao, AutoCloseable {
             throw new DaoException(e);
         } finally {
             close(statement);
-            
         }
         return shelters;
     }
@@ -91,7 +90,6 @@ public class DbShelterDao implements ShelterDao, AutoCloseable {
             throw new DaoException(e);
         } finally {
             close(statement);
-            
         }
     }
 
@@ -111,7 +109,6 @@ public class DbShelterDao implements ShelterDao, AutoCloseable {
             throw new DaoException(e);
         } finally {
             close(statement);
-            
         }
         return true;
     }
@@ -131,7 +128,6 @@ public class DbShelterDao implements ShelterDao, AutoCloseable {
             throw new DaoException(e);
         } finally {
             close(statement);
-            
         }
         return true;
     }
@@ -152,7 +148,6 @@ public class DbShelterDao implements ShelterDao, AutoCloseable {
             throw new DaoException(e);
         } finally {
             close(statement);
-            
         }
         return instance;
     }
@@ -168,7 +163,6 @@ public class DbShelterDao implements ShelterDao, AutoCloseable {
             throw new DaoException(e);
         } finally {
             close(statement);
-            
         }
         return true;
     }
@@ -184,7 +178,6 @@ public class DbShelterDao implements ShelterDao, AutoCloseable {
             throw new DaoException(e);
         } finally {
             close(statement);
-            
         }
         return true;
     }
