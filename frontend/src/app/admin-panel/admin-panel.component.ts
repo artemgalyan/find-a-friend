@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {PlacePickerComponent} from "../placepicker/place-picker.component";
 import {HttpClient} from "@angular/common/http";
 import {Constants} from "../constants";
@@ -21,6 +21,10 @@ export class AdminPanelComponent {
   shelterAddress: string = ''
   shelterWebsite: string = ''
 
+  setRoleUserId: number = 0
+  roles = [Roles.Moderator, Roles.User]
+  setRoleUserRole?: string
+
   @ViewChild('placetodelete')
   private toDeleteplaceSelector!: PlacePickerComponent;
 
@@ -34,12 +38,12 @@ export class AdminPanelComponent {
 
   deleteUser() {
     this.httpClient.delete(Constants.api + 'users/delete?id=' + this.userId + '&token=' + this.token())
-      .subscribe(r => console.log(r))
+      .subscribe(r => alert('Done'))
   }
 
   deleteShelter() {
     this.httpClient.delete(Constants.api + 'shelters/delete?id=' + this.shelterIdToDelete + '&token=' + this.token())
-      .subscribe(r => console.log(r))
+      .subscribe(r => alert('Done'))
   }
 
   private token(): string | null {
@@ -56,7 +60,7 @@ export class AdminPanelComponent {
       headers: {
         'Content-type': 'text/json; charset=UTF-8'
       }
-    }).subscribe(r => alert(r))
+    }).subscribe(r => alert('Done'))
   }
 
   createPlace() {
@@ -69,7 +73,7 @@ export class AdminPanelComponent {
       headers: {
         'Content-type': 'text/json; charset=UTF-8'
       }
-    }).subscribe(r => {}, e => console.log(e))
+    }).subscribe(r => alert('Done'), e => console.log(e))
   }
 
   deletePlace() {
@@ -78,4 +82,10 @@ export class AdminPanelComponent {
                 e => console.log(e))
   }
 
+  updateRole() {
+    this.httpClient.put(Constants.api + 'users/setRole?token=' + localStorage.getItem('jwt'), {
+      'userId': this.setRoleUserId,
+      'role': this.setRoleUserRole
+    }).subscribe(_ => alert('Done'))
+  }
 }

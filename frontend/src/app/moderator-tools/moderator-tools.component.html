@@ -1,36 +1,52 @@
-<div class="p-1">
-  <div class="row m-2">
-    <label for="delete-advert-input" class="col-sm-3">Удалить объявление (id):</label>
-    <input id="delete-advert-input" class="col-sm-1" type="number" [(ngModel)]="advertId"/>
-    <button class="btn btn-danger col-sm-3" style="margin-left: 5px" (click)="deleteAdvert()">Удалить объявление
-    </button>
-  </div>
-  <div class="row m-2">
-    <label for="delete-animal-advert-input" class="col-sm-3">Удалить объявление о животном (id):</label>
-    <input id="delete-animal-advert-input" class="col-sm-1" type="number" [(ngModel)]="animalAdvertId"/>
-    <button class="btn btn-danger col-sm-3" style="margin-left: 5px" (click)="deleteAnimalAdvert()">Удалить объявление
-    </button>
-  </div>
-  <div class="border-bottom"></div>
-  <div class="row m-2">
-    <label for="remove-user-input" class="col-sm-3">Убрать пользователя из приюта</label>
-    <input id="remove-user-input" class="col-sm-1" type="number" [(ngModel)]="removeUserId"/>
-    <button class="btn btn-danger col-sm-3" style="margin-left: 5px" (click)="removeUser()">Выполнить</button>
-  </div>
-  <div class="m-2">
-    <h2>Добавить пользователя в приют</h2>
-    <div class="">
-      <div>
-        <div class="row">
-          <label for="user-input" class="col-sm-3">Пользователь</label>
-          <input id="user-input" class="col-sm-1" type="number" [(ngModel)]="addUserId"/>
+<div class="d-flex flex-row align-content-center justify-content-center">
+  <div class="p-1 col-12 col-sm-12 col-md-10 col-lg-8 col-xl-6">
+    <div class="row m-2">
+      <label for="delete-advert-input" class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">Удалить объявление
+        (id):</label>
+      <input id="delete-advert-input" class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6" type="number"
+             [(ngModel)]="advertId"/>
+      <button class="btn btn-danger col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="margin-left: 5px; margin-top: 5px"
+              (click)="deleteAdvert()">Удалить объявление
+      </button>
+    </div>
+    <div class="row m-2">
+      <label for="delete-animal-advert-input" class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">Удалить объявление о
+        животном (id):</label>
+      <input id="delete-animal-advert-input" class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6" type="number"
+             [(ngModel)]="animalAdvertId"/>
+      <button class="btn btn-danger col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="margin-left: 5px; margin-top: 5px"
+              (click)="deleteAnimalAdvert()">Удалить объявление
+      </button>
+    </div>
+    <div class="border-bottom"></div>
+    <div class="row m-2">
+      <label for="remove-user-input" class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">Убрать пользователя из
+        приюта</label>
+      <input id="remove-user-input" class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6" type="number"
+             [(ngModel)]="removeUserId"/>
+      <button class="btn btn-danger col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="margin-left: 5px; margin-top: 5px"
+              (click)="removeUser()">Выполнить
+      </button>
+    </div>
+    <div class="m-2">
+      <h2>Добавить пользователя в приют</h2>
+      <div class="">
+        <div>
+          <div class="row">
+            <label for="user-input" class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">Пользователь</label>
+            <input id="user-input" class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6" type="number"
+                   [(ngModel)]="addUserId"/>
+          </div>
+          <div class="row">
+            <label for="shelter-input" class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">Приют</label>
+            <input id="shelter-input" class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-6" type="number"
+                   [(ngModel)]="addShelterId"/>
+          </div>
         </div>
-        <div class="row">
-          <label for="shelter-input" class="col-sm-3">Приют</label>
-          <input id="shelter-input" class="col-sm-1" type="number" [(ngModel)]="addShelterId"/>
-        </div>
+        <button class="btn btn-danger col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="margin-top: 5px"
+                (click)="addUserToShelter()">Выполнить
+        </button>
       </div>
-      <button class="btn btn-danger col-sm-4" style="margin-top: 5px" (click)="addUserToShelter()">Выполнить</button>
     </div>
   </div>
 </div>
