@@ -16,6 +16,9 @@ import {
   CanActivateShelterModeratorPanelGuard
 } from "../shared/activator";
 import {ModeratorToolsComponent} from "./moderator-tools/moderator-tools.component";
+import {AdvertComponent} from "./advert/advert.component";
+import {PrefixNot} from "@angular/compiler";
+import {PreviewComponent} from "./preview/preview.component";
 import {SheltersComponent} from "./shelters/shelters.component";
 import {EditShelterComponent} from "./edit-shelter/edit-shelter.component";
 import {AdvertComponent} from "./advert/advert.component";
@@ -29,6 +32,8 @@ const routes: Routes = [
   {path: 'animalAdverts', component: AnimalAdvertsComponent},
   {path: 'animalAdvert', component: AnimalAdvertComponent},
   {path: 'adverts', component: AdvertsComponent},
+  {path: 'advert', component: AdvertComponent},
+  {path: 'preview', component: PreviewComponent},
   {path: 'shelter', component: ShelterComponent},
   {path: 'admin', component: AdminPanelComponent, canActivate: [CanActivateAdminPanelGuard]},
   {path: 'moderator', component: ModeratorToolsComponent, canActivate: [CanActivateModeratorPanelGuard]},
