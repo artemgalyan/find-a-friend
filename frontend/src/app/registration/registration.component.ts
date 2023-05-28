@@ -61,7 +61,7 @@ export class RegistrationComponent implements OnInit {
     } else {
       emailInput.classList.remove('is-invalid')
     }
-    if (this.phoneNumber.length < 7) {
+    if (this.phoneNumber.length < 7 || !this.isValidPhone(this.phoneNumber)) {
       valid = false;
       phoneInput.classList.add('is-invalid');
     } else {
@@ -110,6 +110,17 @@ export class RegistrationComponent implements OnInit {
     loginInput.oninput = validator(loginInput)
     passwordInput.oninput = validator(passwordInput, 8)
     emailInput.oninput = validator(emailInput, 3)
-    phoneInput.oninput = validator(phoneInput, 7)
+    phoneInput.oninput = (e) => {
+      if (this.isValidPhone(this.phoneNumber)) {
+        phoneInput.classList.remove('is-invalid')
+      } else {
+        phoneInput.classList.add('is-invalid')
+      }
+    }
+  }
+
+  isValidPhone(phone: string) : boolean {
+    const first = /^375\d{9}$/i
+    return phone.match(first) !== null
   }
 }

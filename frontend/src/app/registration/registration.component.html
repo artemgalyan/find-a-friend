@@ -41,9 +41,9 @@
       <label for="phoneInput" class="form-label">Номер телефона</label>
       <input type="text" [(ngModel)]="phoneNumber" class="form-control" id="phoneInput" required>
       <span class="invalid-feedback position-relative">
-        Введите номер телефона
+        Введите номер телефона (начинается с 375)
       </span>
     </div>
-    <button type="submit" class="btn btn-primary mb-3 w-100" (click)="onButtonClicked()">Зарегистрироваться</button>
+    <button type="submit" class="btn btn-primary mb-3 w-100" style="margin-top: 10px" (click)="onButtonClicked()">Зарегистрироваться</button>
   </div>
 </div>
