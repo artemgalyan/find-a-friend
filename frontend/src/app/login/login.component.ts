@@ -18,13 +18,21 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   onButtonClicked() {
+    const passwordInput = document.getElementById('password-input')!;
+    const loginInput = document.getElementById('login-input')!;
+    if (this.login.length === 0) {
+      loginInput.classList.add('is-invalid')
+      return
+    } else {
+      loginInput.classList.remove('is-invalid')
+    }
     this.httpClient.get<any>(Constants.api + 'auth/signIn?login=' + this.login + '&password=' + this.password, {
       headers: {
         'Content-type': 'text/plain'
       }
     }).subscribe((r) => {
       if (r === null) {
-        alert('Неверное имя пользователя или пароль.')
+        passwordInput!.classList.add('is-invalid')
         return
       }
 
@@ -33,6 +41,8 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('role', r.role)
       localStorage.setItem('shelter_id', r.shelterId)
       this.router.navigate(['animalAdverts']);
+    }, error => {
+      alert('Произошла ошибка.')
     })
   }
 }

@@ -1,12 +1,18 @@
 <div class="h-75 d-flex align-content-center justify-content-center">
   <div class="forms d-flex flex-column align-content-center justify-content-center" style="margin: auto" (keydown.enter)="onButtonClicked()">
     <div class="mb-3">
-      <label for="nameInput" class="form-label">Логин</label>
-      <input type="text" [(ngModel)]="login" class="form-control" id="nameInput" placeholder="Ваш логин">
+      <label for="login-input" class="form-label">Логин</label>
+      <input type="text" [(ngModel)]="login" class="form-control" id="login-input" placeholder="Ваш логин" required>
+      <div class="invalid-feedback position-relative is-invalid">
+        Введите логин
+      </div>
     </div>
     <div class="mb-3">
-      <label for="surnameInput" class="form-label">Пароль</label>
-      <input type="password" [(ngModel)]="password" class="form-control" id="surnameInput" placeholder="Ваш пароль">
+      <label for="password-input" class="form-label">Пароль</label>
+      <input type="password" [(ngModel)]="password" class="form-control" id="password-input" placeholder="Ваш пароль" required>
+      <div class="invalid-feedback position-relative is-invalid">
+        Неправильный логин или пароль
+      </div>
     </div>
     <a class="w-100 mb-1" href="registration" style="text-align: center">Ещё не зарегистрированы?</a>
     <button type="submit" class="btn btn-primary mb-3 w-100" (click)="onButtonClicked()" (keydown.enter)="onButtonClicked()">Войти</button>

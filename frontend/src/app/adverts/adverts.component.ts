@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Advert, Place} from "../../shared/models";
+import {Advert, Place, Roles} from "../../shared/models";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {Constants} from "../constants";
@@ -36,7 +36,7 @@ export class AdvertsComponent implements OnInit {
   openAdvert(advertId: number) {
     this.router.navigate(['advert'], {
       queryParams: {
-        'advertId': advertId
+        'id': advertId
       }
     });
   }

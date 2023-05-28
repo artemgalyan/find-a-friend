@@ -1,4 +1,4 @@
-<h1 style="text-align: center">{{ advert?.title ?? 'Название' }}</h1>
+<h1 style="text-align: center; margin-top: 15px">{{ advert?.title ?? 'Название' }}</h1>
 <div class="d-flex p-2 flex-row flex-wrap" style="justify-content: space-between">
   <div id="carousel" class="p-1 col-12 col-sm-12 col-md-4 col-lg-4 col-xl-3">
     <div class="d-flex flex-row justify-content-between m-1" *ngIf="photos.length > 0">
@@ -23,8 +23,8 @@
       <div class="form-group row w-100">
         <label for="animalDescription" class="col-4 col-sm-4 col-md-4 col-lg-3 col-xl-3 col-form-label">Описание</label>
         <div class="col-8 col-sm-8 col-md-8 col-lg-9 col-xl-9">
-          <textarea readonly class="form-control" id="animalDescription" style="resize: none; border: none"
-                    rows="5">{{advert.description}}</textarea>
+          <textarea readonly class="form-control" id="animalDescription" style="resize: none; border: none; font-size: 13px"
+                    rows="10">{{advert.description}}</textarea>
         </div>
       </div>
       <div class="form-group row">
@@ -40,7 +40,7 @@
         </div>
       </div>
       <div class="form-group row">
-        <label for="place" class="col-4 col-sm-4 col-md-4 col-lg-3 col-xl-3 col-form-label">Местонахождение</label>
+        <label for="place" class="col-4 col-sm-4 col-md-4 col-lg-3 col-xl-3 col-form-label">Где находится</label>
         <div class="col-8 col-sm-8 col-md-8 col-lg-9 col-xl-9">
           <input type="text" readonly class="form-control-plaintext" id="place"
                  [value]="advert.place.city + ', ' + advert.place.district">
@@ -71,9 +71,9 @@
   </div>
   <div class="d-flex align-content-center flex-column p-1 col-12 col-sm-12 col-md-12 col-lg-4 col-xl-3">
     <h2>Автор</h2>
-    <div *ngIf="authorIsShelter()">
+    <div *ngIf="authorIsShelter()" class="w-100">
       <p>Приют "{{advert.shelterName}}"</p>
-      <button class="btn btn-primary" (click)="showAdvert(advert)">Открыть приют</button>
+      <button class="btn btn-primary w-100" (click)="showAdvert(advert)">Открыть приют</button>
     </div>
     <div *ngIf="!authorIsShelter()">
       <div *ngIf="user === null" class="alert alert-danger" role="alert">
@@ -82,21 +82,21 @@
       <div *ngIf="user !== null" class="d-flex flex-column">
         <form>
           <div class="form-group row">
-            <label for="name" class="col-sm-6 col-form-label">Имя</label>
-            <div class="col-sm-6">
+            <label for="name" class="col-4 col-sm-4 col-md-4 col-lg-3 col-xl-3 col-form-label">Имя</label>
+            <div class="col-8 col-sm-8 col-md-8 col-lg-9 col-xl-9">
               <input type="text" readonly class="form-control-plaintext" id="name"
                      value="{{user.surname}} {{user.name}}">
             </div>
           </div>
           <div class="form-group row">
-            <label for="email" class="col-sm-6 col-form-label">Email</label>
-            <div class="col-sm-6">
+            <label for="email" class="col-4 col-sm-4 col-md-4 col-lg-3 col-xl-3 col-form-label">Email</label>
+            <div class="col-8 col-sm-8 col-md-8 col-lg-9 col-xl-9">
               <input type="text" readonly class="form-control-plaintext" id="email" value="{{user.email}}">
             </div>
           </div>
           <div class="form-group row">
-            <label for="phone-number" class="col-sm-6 col-form-label">Номер телефона</label>
-            <div class="col-sm-6">
+            <label for="phone-number" class="col-4 col-sm-4 col-md-4 col-lg-3 col-xl-3 col-form-label">Номер телефона</label>
+            <div class="col-8 col-sm-8 col-md-8 col-lg-9 col-xl-9">
               <input type="text" readonly class="form-control-plaintext" id="phone-number" value="{{user.phoneNumber}}">
             </div>
           </div>
@@ -108,7 +108,7 @@
       </div>
     </div>
     <button *ngIf="canDeleteAdvert()" (click)="deleteAdvert()" class="btn btn-danger"
-            style="margin-top: 5px; word-wrap: break-word; max-width: 90%">Удалить
+            style="margin-top: 5px; word-wrap: break-word; max-width: 100%">Удалить
       объявление
     </button>
   </div>

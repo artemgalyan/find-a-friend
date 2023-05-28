@@ -26,6 +26,7 @@ import {AdminPanelComponent} from "./admin-panel/admin-panel.component";
 import {ModeratorToolsComponent} from './moderator-tools/moderator-tools.component';
 import {SheltersComponent} from './shelters/shelters.component';
 import { EditShelterComponent } from './edit-shelter/edit-shelter.component';
+import { AdvertComponent } from './advert/advert.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { EditShelterComponent } from './edit-shelter/edit-shelter.component';
     AdminPanelComponent,
     ModeratorToolsComponent,
     SheltersComponent,
-    EditShelterComponent
+    EditShelterComponent,
+    AdvertComponent
   ],
   imports: [
     BrowserModule,
