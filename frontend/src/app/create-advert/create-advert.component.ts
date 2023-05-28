@@ -56,29 +56,38 @@ export class CreateAdvertComponent implements OnInit {
   }
 
   createAdvert() {
+    let valid = true;
     let titleInput = document.querySelector('#titleInput') as HTMLInputElement
     let descriptionInput = document.querySelector('#descriptionInput') as HTMLInputElement
-    let advertTypeInput = document.querySelector('#advertTypeInput') as HTMLInputElement
-    let placeIdInput = document.querySelector('#placeIdInput') as HTMLInputElement
+    let advertTypeInput = document.querySelector('#type-selector') as HTMLInputElement
+    let placeIdInput = document.querySelector('#place-picker') as HTMLInputElement
     if (this.title.length === 0) {
       titleInput.classList.add('is-invalid')
+      valid = false
     } else {
       titleInput.classList.remove('is-invalid')
     }
     if (this.description.length === 0) {
       descriptionInput.classList.add('is-invalid');
+      valid = false
     } else {
       descriptionInput.classList.remove('is-invalid')
     }
     if (this.advertType.length === 0) {
       advertTypeInput.classList.add('is-invalid');
+      valid = false
     } else {
       advertTypeInput.classList.remove('is-invalid')
     }
-    if (this.placeId === -1) {
+    if (this.placeSelector.selectedPlace?.id === undefined || this.placeSelector.selectedPlace?.id === null) {
       placeIdInput.classList.add('is-invalid');
+      valid = false
     } else {
       placeIdInput.classList.remove('is-invalid')
+    }
+
+    if (!valid) {
+      return
     }
 
     this.httpClient.post(Constants.api + 'adverts/create?token=' + localStorage.getItem('jwt'), {
