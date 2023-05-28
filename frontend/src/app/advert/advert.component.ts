@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {Advert, Roles, User} from "../../shared/models";
 import {Constants} from "../constants";
+import {dateToString} from "../../shared/utils";
 
 @Component({
   selector: 'app-advert',
@@ -40,16 +41,7 @@ export class AdvertComponent implements OnInit {
     if (type === undefined || type === null) {
       return 'Загрузка..'
     }
-    return type == 'V' ? 'Волонтёр' : 'Ситтер'
-  }
-
-
-  dateToString(d?: string): string {
-    if (d === null) {
-      return ""
-    }
-    let date = new Date(d as string)
-    return date.getDay().toString().padStart(2, '0') + '.' + date.getMonth().toString().padStart(2, '0') + '.' + date.getFullYear()
+    return type == 'VOLUNTEER' ? 'Волонтёр' : 'Ситтер'
   }
 
 
@@ -57,8 +49,6 @@ export class AdvertComponent implements OnInit {
     let id = Number(localStorage.getItem('id'));
     let role = localStorage.getItem('role');
     let ownerId = this.advert!.ownerId
-    console.log(this.advert)
-    console.log(id)
     return role === Roles.Administrator || role === Roles.Moderator
       || id === ownerId;
   }
@@ -70,4 +60,6 @@ export class AdvertComponent implements OnInit {
         this.router.navigate(['adverts'])
       }, e => console.log(e));
   }
+
+  readonly dateToString = dateToString;
 }

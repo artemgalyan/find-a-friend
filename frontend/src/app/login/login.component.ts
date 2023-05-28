@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('id', r.userId)
       localStorage.setItem('role', r.role)
       localStorage.setItem('shelter_id', r.shelterId)
-      this.router.navigate(['animalAdverts']);
+      this.router.navigate(['']);
     }, error => {
       alert('Произошла ошибка.')
     })

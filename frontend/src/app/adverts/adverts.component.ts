@@ -3,6 +3,7 @@ import {Advert, Place, Roles} from "../../shared/models";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {Constants} from "../constants";
+import {placeToString} from "../../shared/utils";
 
 @Component({
   selector: 'app-adverts',
@@ -22,7 +23,6 @@ export class AdvertsComponent implements OnInit {
     this.httpClient.get<Advert[]>(Constants.api + 'adverts/getAll')
       .subscribe(r => {
         this.adverts = r
-        console.log(r)
       });
   }
 
@@ -41,14 +41,11 @@ export class AdvertsComponent implements OnInit {
     });
   }
 
-
-  placeToString(p: Place) : string {
-    return p.city + ', ' + p.district;
-  }
-
   getAdvertType(a: Advert) {
     return a.advertType == "VOLUNTEER"
       ? 'Волонтёр'
       : 'Ситтер'
   }
+
+  readonly placeToString = placeToString;
 }

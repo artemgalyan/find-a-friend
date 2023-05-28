@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {AnimalAdvert, Photo, Roles, User} from "../../shared/models";
 import {HttpClient} from "@angular/common/http";
 import {Constants} from "../constants";
+import {dateToString} from "../../shared/utils";
 
 @Component({
   selector: 'app-animal-advert',
@@ -42,14 +43,6 @@ export class AnimalAdvertComponent implements OnInit {
     })
   }
 
-  dateToString(d: string): string {
-    if (d === null) {
-      return ""
-    }
-    let date = new Date(d)
-    return date.getDay().toString().padStart(2, '0') + '.' + date.getMonth().toString().padStart(2, '0') + '.' + date.getFullYear()
-  }
-
   next() {
     this.currentPhoto = (this.currentPhoto + 1) % this.photos.length;
   }
@@ -85,4 +78,6 @@ export class AnimalAdvertComponent implements OnInit {
         this.router.navigate(['animalAdverts'])
       }, e => console.log(e));
   }
+
+  readonly dateToString = dateToString;
 }
