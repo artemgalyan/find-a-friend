@@ -46,10 +46,9 @@ public class Application {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
+
         EndpointInfo endpoint = endpointInfos.get(request.getPathInfo());
-
         var sp = globalServiceProvider.getRequestServiceProvider();
-
         var pipeline = new PipelineSender(pipelineHandlers);
         HandleResult result = pipeline.handle(request, response, sp, endpoint, null);
         response.setStatus(result.getCode());
@@ -57,6 +56,5 @@ public class Application {
             ServletUtils.writeResponse(result.getResponseObject().get(), response.getOutputStream());
         }
         logger.trace("Finished request " + request.getContextPath() + " processing from " + request.getLocalAddr());
-
     }
 }

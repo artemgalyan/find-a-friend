@@ -10,8 +10,9 @@ public class UpdateUserCommand extends Request<Boolean> {
     public String password;
     public String phoneNumber;
     public String email;
+    public String providedPassword;
 
-    public UpdateUserCommand(int userId, String name, String surname, String login, String password, String phoneNumber, String email) {
+    public UpdateUserCommand(int userId, String name, String surname, String login, String password, String phoneNumber, String email, String providedPassword) {
         this.userId = userId;
         this.name = name;
         this.surname = surname;
@@ -19,5 +20,6 @@ public class UpdateUserCommand extends Request<Boolean> {
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.email = email;
+        this.providedPassword = providedPassword;
     }
 }

@@ -16,7 +16,8 @@ public class UsersSetup extends Setup {
                 .registerHandler(DeleteUserHandler.class, DeleteUserCommand.class)
                 .registerHandler(UpdateUserHandler.class, UpdateUserCommand.class)
                 .registerHandler(GetUsersHandler.class, GetUsersQuery.class)
-                .registerHandler(GetUserByIdHandler.class, GetUserByIdQuery.class);
+                .registerHandler(GetUserByIdHandler.class, GetUserByIdQuery.class)
+                .registerHandler(SetUserRoleHandler.class, SetUserRoleCommand.class);
         builder.mapController(UserController.class);
     }
 }

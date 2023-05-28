@@ -88,9 +88,7 @@ public class DispatcherServlet extends HttpServlet {
             }
             var tokenDao = scopedServiceProvider.getRequiredService(ValidTokensDao.class);
             int userId = Integer.parseInt(authData.getClaim("id"));
-            if (!tokenDao.isValidToken(authData.getToken(), userId)) {
-                authData.setValid(false);
-            }
+            authData.setValid(tokenDao.isValidToken(authData.getToken(), userId));
             return next.handle(request, response, scopedServiceProvider, endpointInfo, null);
         };
     }
