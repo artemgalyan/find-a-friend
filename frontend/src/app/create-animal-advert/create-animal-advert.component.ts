@@ -34,9 +34,29 @@ export class CreateAnimalAdvertComponent implements OnInit {
       this.router.navigate(['login'])
       return
     }
+    let titleInput = document.querySelector('#titleInput') as HTMLInputElement
+    let descriptionInput = document.querySelector('#descriptionInput') as HTMLInputElement
+    let animalTypeInput = document.querySelector('#type-selector') as HTMLInputElement
+    let placeIdInput = document.querySelector('#place-picker') as HTMLInputElement
+    let birthdateInput = document.querySelector('#startDate') as HTMLInputElement
+    let sexInput = document.querySelector('#sex-selector') as HTMLInputElement
+
+    let validator = (element: HTMLInputElement, minSize: number = 1) => (e: Event) => {
+      if (element.value.length < minSize) {
+        element.classList.add('is-invalid')
+      } else {
+        element.classList.remove('is-invalid')
+      }
+    }
+    titleInput.oninput = validator(titleInput);
+    descriptionInput.oninput = validator(descriptionInput);
+    animalTypeInput.oninput = validator(animalTypeInput);
+    placeIdInput.oninput = validator(placeIdInput);
+    birthdateInput.oninput = validator(birthdateInput);
+    sexInput.oninput = validator(sexInput);
   }
 
-  isLoggedIn() : boolean {
+  isLoggedIn(): boolean {
     return localStorage.getItem('jwt') !== null && localStorage.getItem('jwt') !== undefined
   }
 
@@ -60,6 +80,56 @@ export class CreateAnimalAdvertComponent implements OnInit {
   }
 
   createAdvert() {
+
+    let valid = true;
+    let titleInput = document.querySelector('#titleInput') as HTMLInputElement
+    let descriptionInput = document.querySelector('#descriptionInput') as HTMLInputElement
+    let animalTypeInput = document.querySelector('#type-selector') as HTMLInputElement
+    let placeIdInput = document.querySelector('#place-picker') as HTMLInputElement
+    let birthdateInput = document.querySelector('#startDate') as HTMLInputElement
+    let sexInput = document.querySelector('#sex-selector') as HTMLInputElement
+
+
+    if (this.title.length === 0) {
+      titleInput.classList.add('is-invalid')
+      valid = false
+    } else {
+      titleInput.classList.remove('is-invalid')
+    }
+    if (this.description.length === 0) {
+      descriptionInput.classList.add('is-invalid');
+      valid = false
+    } else {
+      descriptionInput.classList.remove('is-invalid')
+    }
+    if (this.animalType.length === 0) {
+      animalTypeInput.classList.add('is-invalid');
+      valid = false
+    } else {
+      animalTypeInput.classList.remove('is-invalid')
+    }
+    if (this.placeSelector.selectedPlace?.id === undefined || this.placeSelector.selectedPlace?.id === null) {
+      placeIdInput.classList.add('is-invalid');
+      valid = false
+    } else {
+      placeIdInput.classList.remove('is-invalid')
+    }
+    if (this.birthdate === null) {
+      birthdateInput.classList.add('is-invalid');
+      valid = false
+    } else {
+      birthdateInput.classList.remove('is-invalid')
+    }
+    if (this.sex.length === 0) {
+      sexInput.classList.add('is-invalid');
+      valid = false
+    } else {
+      sexInput.classList.remove('is-invalid')
+    }
+
+    if (!valid) {
+      return
+    }
     this.httpClient.post(Constants.api + 'animalAdverts/create?token=' + localStorage.getItem('jwt'), {
       'title': this.title,
       'description': this.description,
@@ -76,7 +146,7 @@ export class CreateAnimalAdvertComponent implements OnInit {
     }).subscribe(r => this.router.navigate(['animalAdverts']))
   }
 
-  getSex(s: string) : string {
+  getSex(s: string): string {
     if (s === 'F') {
       return 'Ж';
     }
