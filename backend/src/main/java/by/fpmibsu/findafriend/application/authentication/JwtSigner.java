@@ -1,4 +1,4 @@
-package by.fpmibsu.findafriend.services;
+package by.fpmibsu.findafriend.application.authentication;
 
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.jws.JsonWebSignature;

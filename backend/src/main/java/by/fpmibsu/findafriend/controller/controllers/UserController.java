@@ -65,7 +65,7 @@ public class UserController extends Controller {
 
     @RequireAuthentication
     @Endpoint(path = "/delete", method = HttpMethod.DELETE)
-    public HandleResult deleteUserById(@WebToken(parameterName = "id") int id, @WebToken(parameterName = "id") int userId,
+    public HandleResult deleteUserById(@FromQuery(parameterName = "id") int id, @WebToken(parameterName = "id") int userId,
                                        @WebToken(parameterName = "role") String role) {
         if (userId != id && !AuthUtils.allowRoles(role, User.Role.ADMINISTRATOR)) {
             Logging.warnNonAuthorizedAccess(this.request, logger);

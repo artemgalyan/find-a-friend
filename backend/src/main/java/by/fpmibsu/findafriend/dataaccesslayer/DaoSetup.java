@@ -7,6 +7,8 @@ import by.fpmibsu.findafriend.dataaccesslayer.advert.AdvertDao;
 import by.fpmibsu.findafriend.dataaccesslayer.advert.DbAdvertDao;
 import by.fpmibsu.findafriend.dataaccesslayer.animaladvert.AnimalAdvertDao;
 import by.fpmibsu.findafriend.dataaccesslayer.animaladvert.DbAnimalAdvertDao;
+import by.fpmibsu.findafriend.dataaccesslayer.validtokens.DbValidTokensDao;
+import by.fpmibsu.findafriend.dataaccesslayer.validtokens.ValidTokensDao;
 import by.fpmibsu.findafriend.dataaccesslayer.photo.DbPhotoDao;
 import by.fpmibsu.findafriend.dataaccesslayer.photo.PhotoDao;
 import by.fpmibsu.findafriend.dataaccesslayer.place.DbPlaceDao;
@@ -30,6 +32,7 @@ public class DaoSetup extends Setup {
                 .addService(PlaceDao.class, SERVICE_LIFETIME, DbPlaceDao.class)
                 .addService(ShelterDao.class, SERVICE_LIFETIME, DbShelterDao.class)
                 .addService(UserDao.class, SERVICE_LIFETIME, DbUserDao.class)
-                .addService(UserShelterDao.class, SERVICE_LIFETIME, DbUserShelterDao.class);
+                .addService(UserShelterDao.class, SERVICE_LIFETIME, DbUserShelterDao.class)
+                .addService(ValidTokensDao.class, SERVICE_LIFETIME, DbValidTokensDao.class);
     }
 }

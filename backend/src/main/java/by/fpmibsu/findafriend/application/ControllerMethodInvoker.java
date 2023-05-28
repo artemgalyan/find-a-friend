@@ -1,6 +1,8 @@
 package by.fpmibsu.findafriend.application;
 
+import by.fpmibsu.findafriend.application.authentication.AuthenticationData;
 import by.fpmibsu.findafriend.application.controller.*;
+import by.fpmibsu.findafriend.application.requestpipeline.PipelineHandler;
 import by.fpmibsu.findafriend.application.serviceproviders.ScopedServiceProvider;
 import by.fpmibsu.findafriend.application.utils.ObjectConstructor;
 import by.fpmibsu.findafriend.controller.ServletUtils;
@@ -27,10 +29,10 @@ public class ControllerMethodInvoker {
         controller.setServiceProvider(sp);
         var method = endpointInfo.method();
         if (method.isAnnotationPresent(RequireAuthentication.class) &&
-                !sp.getRequiredService(Application.AuthenticationData.class).isTokenValid()) {
+                !sp.getRequiredService(AuthenticationData.class).isValid()) {
             return new HandleResult(HttpServletResponse.SC_FORBIDDEN);
         }
-        var claims = sp.getRequiredService(Application.AuthenticationData.class).claims();
+        var claims = sp.getRequiredService(AuthenticationData.class).getClaims();
         var parameters = method.getParameters();
         var methodParams = new Object[parameters.length];
         for (int i = 0; i < parameters.length; ++i) {
@@ -110,5 +112,10 @@ public class ControllerMethodInvoker {
 
         logger.fatal("No mapping for type " + type.getName());
         throw new RuntimeException("Unreachable");
+    }
+
+    public static PipelineHandler asPipelineHandler() {
+        return (request, response, scopedServiceProvider, endpointInfo, next)
+                -> invoke(request, response, endpointInfo, scopedServiceProvider);
     }
 }

@@ -2,10 +2,14 @@ package by.fpmibsu.findafriend.controller;
 
 import by.fpmibsu.findafriend.application.Application;
 import by.fpmibsu.findafriend.application.ApplicationBuilder;
+import by.fpmibsu.findafriend.application.HandleResult;
 import by.fpmibsu.findafriend.application.Setup;
+import by.fpmibsu.findafriend.application.authentication.AuthenticationData;
+import by.fpmibsu.findafriend.application.requestpipeline.PipelineHandler;
 import by.fpmibsu.findafriend.controller.setups.*;
 import by.fpmibsu.findafriend.dataaccesslayer.DaoSetup;
 import by.fpmibsu.findafriend.dataaccesslayer.pool.ConnectionPool;
+import by.fpmibsu.findafriend.dataaccesslayer.validtokens.ValidTokensDao;
 import by.fpmibsu.findafriend.services.HashPasswordHasher;
 import by.fpmibsu.findafriend.services.PasswordHasher;
 import by.fpmibsu.findafriend.services.SimplePasswordHasher;
@@ -24,7 +28,8 @@ import java.util.Properties;
 
 @WebServlet("/*")
 public class DispatcherServlet extends HttpServlet {
-    static final Logger rootLogger = LogManager.getLogger();
+    private static final Logger rootLogger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger(DispatcherServlet.class);
     private Application application;
     private ConnectionPool connectionPool;
     private static final List<Setup> setups = List.of(
@@ -55,6 +60,8 @@ public class DispatcherServlet extends HttpServlet {
                 : HashPasswordHasher.class;
         var builder = new ApplicationBuilder();
         builder.readKeys("../conf/");
+        builder.addAuthentication();
+        builder.addPipelineHandler(checkTokenHandler());
         setups.forEach(s -> s.applyTo(builder));
         builder.services()
                 .addSingleton(ConnectionPool.class, () -> connectionPool)
@@ -71,5 +78,20 @@ public class DispatcherServlet extends HttpServlet {
     @Override
     public void destroy() {
         connectionPool.destroy();
+    }
+
+    private PipelineHandler checkTokenHandler() {
+        return (request, response, scopedServiceProvider, endpointInfo, next) -> {
+            var authData = scopedServiceProvider.getRequiredService(AuthenticationData.class);
+            if (!authData.isValid()) {
+                return next.handle(request, response, scopedServiceProvider, endpointInfo, null);
+            }
+            var tokenDao = scopedServiceProvider.getRequiredService(ValidTokensDao.class);
+            int userId = Integer.parseInt(authData.getClaim("id"));
+            if (!tokenDao.isValidToken(authData.getToken(), userId)) {
+                authData.setValid(false);
+            }
+            return next.handle(request, response, scopedServiceProvider, endpointInfo, null);
+        };
     }
 }
