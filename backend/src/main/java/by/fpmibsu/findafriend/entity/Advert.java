@@ -97,11 +97,24 @@ public class Advert extends Entity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Advert advert = (Advert) o;
-        return id == advert.id && creationDate.equals(advert.creationDate);
+        return Objects.equals(title, advert.title) && Objects.equals(description, advert.description) && Objects.equals(creationDate, advert.creationDate) && Objects.equals(place, advert.place) && Objects.equals(owner, advert.owner) && advertType == advert.advertType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, creationDate);
+        return Objects.hash(title, description, creationDate, place, owner, advertType);
+    }
+
+    @Override
+    public String toString() {
+        return "Advert{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", creationDate=" + creationDate +
+                ", place=" + place +
+                ", owner=" + owner +
+                ", advertType=" + advertType +
+                ", id=" + id +
+                '}';
     }
 }

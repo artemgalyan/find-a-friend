@@ -6,9 +6,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Shelter extends Entity {
-    private final Logger logger = LogManager.getLogger();
     private String name;
     private List<User> administrators;
     private List<AnimalAdvert> animalAdverts;
@@ -86,12 +86,26 @@ public class Shelter extends Entity {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Shelter shelter = (Shelter) o;
+        return Objects.equals(name, shelter.name) && Objects.equals(place, shelter.place) && Objects.equals(address, shelter.address) && Objects.equals(website, shelter.website);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, place, address, website);
+    }
+
+    @Override
     public String toString() {
-        try {
-            return new ObjectMapper().writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            logger.error(e.toString());
-            throw new RuntimeException(e);
-        }
+        return "Shelter{" +
+                "name='" + name + '\'' +
+                ", place=" + place +
+                ", address='" + address + '\'' +
+                ", website='" + website + '\'' +
+                ", id=" + id +
+                '}';
     }
 }

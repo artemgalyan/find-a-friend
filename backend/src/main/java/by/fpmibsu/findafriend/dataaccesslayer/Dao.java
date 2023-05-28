@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-public interface Dao<K, T extends Entity> {
+public interface Dao<K, T extends Entity> extends DaoBase {
     public final Logger logger = LogManager.getLogger(Dao.class);
     List<T> getAll() throws DaoException;
 

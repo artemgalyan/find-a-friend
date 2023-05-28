@@ -3,6 +3,9 @@ package by.fpmibsu.findafriend.entity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 public class Photo extends Entity {
     private byte[] data;
     private int advertId;
@@ -32,11 +35,25 @@ public class Photo extends Entity {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Photo photo = (Photo) o;
+        return advertId == photo.advertId && Arrays.equals(data, photo.data);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(advertId);
+        result = 31 * result + Arrays.hashCode(data);
+        return result;
+    }
+
+    @Override
     public String toString() {
-        try {
-            return new ObjectMapper().writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+        return "Photo{" +
+                "advertId=" + advertId +
+                ", id=" + id +
+                '}';
     }
 }

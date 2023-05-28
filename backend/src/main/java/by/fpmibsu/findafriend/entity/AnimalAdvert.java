@@ -2,6 +2,7 @@ package by.fpmibsu.findafriend.entity;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class AnimalAdvert extends Entity {
     private String title;
@@ -130,5 +131,34 @@ public class AnimalAdvert extends Entity {
 
     public void setCastrated(boolean castrated) {
         isCastrated = castrated;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AnimalAdvert that = (AnimalAdvert) o;
+        return isCastrated == that.isCastrated && Objects.equals(title, that.title) && Objects.equals(description, that.description) && Objects.equals(animalType, that.animalType) && Objects.equals(owner, that.owner) && Objects.equals(creationDate, that.creationDate) && Objects.equals(place, that.place) && Objects.equals(birthdate, that.birthdate) && sex == that.sex;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, description, animalType, owner, creationDate, place, birthdate, sex, isCastrated);
+    }
+
+    @Override
+    public String toString() {
+        return "AnimalAdvert{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", animalType='" + animalType + '\'' +
+                ", owner=" + owner +
+                ", creationDate=" + creationDate +
+                ", place=" + place +
+                ", birthdate=" + birthdate +
+                ", sex=" + sex +
+                ", isCastrated=" + isCastrated +
+                ", id=" + id +
+                '}';
     }
 }

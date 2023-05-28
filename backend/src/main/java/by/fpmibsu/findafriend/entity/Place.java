@@ -1,5 +1,7 @@
 package by.fpmibsu.findafriend.entity;
 
+import java.util.Objects;
+
 public class Place extends Entity {
     private String country;
     private String region;
@@ -54,6 +56,19 @@ public class Place extends Entity {
 
     public void setDistrict(String district) {
         this.district = district;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Place place = (Place) o;
+        return Objects.equals(country, place.country) && Objects.equals(region, place.region) && Objects.equals(city, place.city) && Objects.equals(district, place.district);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(country, region, city, district);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package by.fpmibsu.findafriend.dataaccesslayer.usershelter;
 
+import by.fpmibsu.findafriend.dataaccesslayer.DaoBase;
 import by.fpmibsu.findafriend.dataaccesslayer.DaoException;
 
 import java.sql.Connection;
@@ -7,7 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-public interface UserShelterDao {
+public interface UserShelterDao extends DaoBase {
     class Pair {
         private int shelterId;
         private int userId;
