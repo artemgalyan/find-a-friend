@@ -1,6 +1,7 @@
 package by.fpmibsu.findafriend.controller.controllers;
 
 import by.fpmibsu.findafriend.application.HandleResult;
+import by.fpmibsu.findafriend.application.authentication.AuthenticationData;
 import by.fpmibsu.findafriend.application.controller.*;
 import by.fpmibsu.findafriend.application.mediatr.Mediatr;
 import by.fpmibsu.findafriend.controller.AuthUtils;
@@ -12,6 +13,7 @@ import by.fpmibsu.findafriend.controller.queries.animalAdverts.GetAnimalAdvertsB
 import by.fpmibsu.findafriend.controller.queries.animalAdverts.GetAnimalAdvertQuery;
 import by.fpmibsu.findafriend.controller.queries.animalAdverts.GetAnimalAdvertsByUserIdQuery;
 import by.fpmibsu.findafriend.dataaccesslayer.animaladvert.AnimalAdvertDao;
+import by.fpmibsu.findafriend.dataaccesslayer.usershelter.UserShelterDao;
 import by.fpmibsu.findafriend.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,14 +39,23 @@ public class AnimalAdvertsController extends Controller {
 
     @RequireAuthentication
     @Endpoint(path = "/delete", method = HttpMethod.DELETE)
-    public HandleResult delete(@FromQuery(parameterName = "id") int id, @WebToken(parameterName = "id") int userId,
+    public HandleResult delete(@FromQuery(parameterName = "id") int id,
+                               @WebToken(parameterName = "id") int userId,
                                @WebToken(parameterName = "role") String role) {
         var animalAdvertDao = serviceProvider.getRequiredService(AnimalAdvertDao.class);
         if (!AuthUtils.allowRoles(role, User.Role.ADMINISTRATOR, User.Role.MODERATOR)) {
             var advert = animalAdvertDao.getEntityById(id);
-            if (advert.getOwner().getId() != userId) {
+            if (AuthUtils.allowRoles(role, User.Role.USER) && advert.getOwner().getId() != userId) {
                 Logging.warnNonAuthorizedAccess(this.request, logger);
                 return notAuthorized();
+            } else if (AuthUtils.allowRoles(role, User.Role.SHELTER_ADMINISTRATOR)) {
+                var userShelterDao = serviceProvider.getRequiredService(UserShelterDao.class);
+                int shelterId = userShelterDao.getShelterId(advert.getOwner().getId());
+                int myShelterId = Integer.parseInt(serviceProvider.getRequiredService(AuthenticationData.class)
+                        .getClaim("shelter_id"));
+                if (shelterId != myShelterId) {
+                    return notAuthorized();
+                }
             }
         }
         animalAdvertDao.delete(id);

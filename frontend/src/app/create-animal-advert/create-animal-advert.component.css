@@ -1,24 +1,10 @@
-.image-wrap {
-  max-width: 200px;
-  max-height: 200px;
-  border-radius: 10px;
-  border: whitesmoke 1px solid;
-}
-
-.image-upload {
-  min-height: 200px;
-  max-height: 200px;
-  border-radius: 10px;
-}
-
 .remove-image-button {
   position: relative;
   text-align: center;
 }
 
 .image-upload-button {
-  height: 200px;
-  width: 200px;
+  aspect-ratio: 1;
   text-align: center;
   background: ghostwhite;
   font-size: 25px;

@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {PlacePickerComponent} from "../placepicker/place-picker.component";
 import {HttpClient} from "@angular/common/http";
 import {Constants} from "../constants";
+import {Roles} from "../../shared/models";
 
 @Component({
   selector: 'app-admin-panel',
@@ -76,4 +77,5 @@ export class AdminPanelComponent {
       .subscribe(r => {},
                 e => console.log(e))
   }
+
 }

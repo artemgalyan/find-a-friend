@@ -1,6 +1,7 @@
 package by.fpmibsu.findafriend.controller.commands.animaladverts;
 
 import by.fpmibsu.findafriend.application.Application;
+import by.fpmibsu.findafriend.application.authentication.AuthenticationData;
 import by.fpmibsu.findafriend.application.mediatr.RequestHandler;
 import by.fpmibsu.findafriend.dataaccesslayer.animaladvert.AnimalAdvertDao;
 import by.fpmibsu.findafriend.dataaccesslayer.photo.PhotoDao;
@@ -17,9 +18,9 @@ import java.util.Date;
 public class CreateAnimalAdvertsHandler extends RequestHandler<Boolean, CreateAnimalAdvertCommand> {
     private final AnimalAdvertDao animalAdvertDao;
     private final PhotoDao photoDao;
-    private final Application.AuthenticationData authenticationData;
+    private final AuthenticationData authenticationData;
 
-    public CreateAnimalAdvertsHandler(AnimalAdvertDao animalAdvertDao, PhotoDao photoDao, Application.AuthenticationData authenticationData) {
+    public CreateAnimalAdvertsHandler(AnimalAdvertDao animalAdvertDao, PhotoDao photoDao, AuthenticationData authenticationData) {
         this.animalAdvertDao = animalAdvertDao;
         this.photoDao = photoDao;
         this.authenticationData = authenticationData;
@@ -27,7 +28,7 @@ public class CreateAnimalAdvertsHandler extends RequestHandler<Boolean, CreateAn
 
     @Override
     public Boolean handle(CreateAnimalAdvertCommand command) throws Exception {
-        int userId = Integer.parseInt(authenticationData.claims().getClaimValueAsString("id"));
+        int userId = Integer.parseInt(authenticationData.getClaim("id"));
         var place = new Place();
         place.setId(command.placeId);
         var u = new User();

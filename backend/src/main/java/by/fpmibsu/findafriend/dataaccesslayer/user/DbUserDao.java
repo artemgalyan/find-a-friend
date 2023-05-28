@@ -17,6 +17,12 @@ public class DbUserDao implements UserDao, AutoCloseable {
             SELECT user_id, [user].name, surname, email, phone_number, login, password, role.role_id, role.name
             FROM [user]
                 LEFT JOIN role ON [user].role_id = role.role_id""";
+
+    private static final String SQL_UPDATE_ROLE = """
+            UPDATE [user]
+            SET role_id = ?
+            WHERE user_id = ?;
+            """;
     private static final String SQL_SELECT_BY_ID = """
             SELECT user_id, [user].name, surname, email, phone_number, login, password, role.role_id, role.name
             FROM [user]
@@ -188,6 +194,22 @@ public class DbUserDao implements UserDao, AutoCloseable {
             return EntityProducer.makeUser(resultSet);
         } catch (SQLException e) {
             logger.error(e.getMessage());
+            throw new DaoException(e);
+        } finally {
+            close(statement);
+        }
+    }
+
+    @Override
+    public void updateRole(int userId, User.Role newRole) {
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement(SQL_UPDATE_ROLE);
+            statement.setInt(1, newRole.toInt());
+            statement.setInt(2, userId);
+            statement.executeUpdate();
+            int result = statement.executeUpdate();
+        } catch (SQLException e) {
             throw new DaoException(e);
         } finally {
             close(statement);

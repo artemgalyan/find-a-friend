@@ -1,5 +1,5 @@
 import {Component, OnInit, Sanitizer} from '@angular/core';
-import {AnimalAdvert, Place, Shelter} from "../../shared/models";
+import {AnimalAdvert, Place, Roles, Shelter} from "../../shared/models";
 import {HttpClient} from "@angular/common/http";
 import {Constants} from "../constants";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -16,10 +16,12 @@ export class ShelterComponent implements OnInit {
   shelter?: Shelter;
   adverts: AnimalAdvert[] = [];
   mapsURL: SafeResourceUrl = 'Минск'
+
   constructor(private httpClient: HttpClient,
               private route: ActivatedRoute,
               private router: Router,
-              private sanitizer: DomSanitizer) {}
+              private sanitizer: DomSanitizer) {
+  }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -38,14 +40,14 @@ export class ShelterComponent implements OnInit {
     })
   }
 
-  placeToString(p?: Place) : string {
+  placeToString(p?: Place): string {
     if (p === null || p === undefined) {
       return 'Не загружено'
     }
     return p.city + ', ' + p.district;
   }
 
-  mapsLink(address: string) : SafeResourceUrl {
+  mapsLink(address: string): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(
       `https://maps.google.com/maps?q=${address}&t=&z=20&ie=UTF8&iwloc=&output=embed`
     );
@@ -54,5 +56,27 @@ export class ShelterComponent implements OnInit {
   scrollDown() {
     const view = document.getElementById('adverts')
     view?.scrollIntoView(true)
+  }
+
+
+  canChangeInfo(): boolean {
+    const role = localStorage.getItem('role')
+    if (role == Roles.Moderator || role == Roles.Administrator) {
+      return true;
+    }
+    let shelterId = localStorage.getItem('shelter_id')
+    if (shelterId === null) {
+      return false;
+    }
+    let sh = Number(shelterId);
+    return role == Roles.ShelterAdministrator && sh === this.shelter?.id
+  }
+
+  editShelter() {
+    this.router.navigate(['editShelter'], {
+      queryParams: {
+        'id': this.shelter?.id
+      }
+    })
   }
 }

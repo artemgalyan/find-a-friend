@@ -1,6 +1,7 @@
 package by.fpmibsu.findafriend.controller.commands.adverts;
 
 import by.fpmibsu.findafriend.application.Application;
+import by.fpmibsu.findafriend.application.authentication.AuthenticationData;
 import by.fpmibsu.findafriend.application.mediatr.RequestHandler;
 import by.fpmibsu.findafriend.dataaccesslayer.advert.AdvertDao;
 import by.fpmibsu.findafriend.entity.Advert;
@@ -12,9 +13,9 @@ import java.time.Instant;
 
 public class CreateAdvertHandler extends RequestHandler<Boolean, CreateAdvertCommand> {
     private final AdvertDao advertDao;
-    private final Application.AuthenticationData authenticationData;
+    private final AuthenticationData authenticationData;
 
-    public CreateAdvertHandler(AdvertDao advertDao, Application.AuthenticationData authenticationData) {
+    public CreateAdvertHandler(AdvertDao advertDao, AuthenticationData authenticationData) {
         this.advertDao = advertDao;
         this.authenticationData = authenticationData;
     }
@@ -25,7 +26,7 @@ public class CreateAdvertHandler extends RequestHandler<Boolean, CreateAdvertCom
             var place = new Place();
             place.setId(request.placeId);
             var u = new User();
-            u.setId(Integer.parseInt(authenticationData.claims().getClaimValueAsString("id")));
+            u.setId(Integer.parseInt(authenticationData.getClaim("id")));
             var advert = new Advert(0, request.title, request.description, Date.from(Instant.now()), place, u, Advert.AdvertType.fromValue(request.advertType));
             advertDao.create(advert);
             return true;

@@ -1,0 +1,75 @@
+<div class="p-2">
+  <div class="d-flex flex-row flex-wrap">
+    <div class="p-1 col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+      <form class="col-20 p-2">
+        <h3>{{ advert?.title ?? 'Загрузка...' }}</h3>
+        <div class="form-group row w-100">
+          <label for="description"
+                 class="col-4 col-sm-4 col-md-4 col-lg-3 col-xl-3 col-form-label">Описание</label>
+          <div class="col-8 col-sm-8 col-md-8 col-lg-9 col-xl-9">
+          <textarea readonly class="form-control" id="description" style="resize: none; border: none; font-size: 13px"
+                    rows="10">{{advert?.description ?? 'Загрузка..'}}</textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="type" class="col-4 col-sm-4 col-md-4 col-lg-3 col-xl-3 col-form-label">Тип</label>
+          <div class="col-8 col-sm-8 col-md-8 col-lg-9 col-xl-9">
+            <input type="text" readonly class="form-control-plaintext" id="type"
+                   [value]="typeToString(advert?.advertType)">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="place" class="col-4 col-sm-4 col-md-4 col-lg-3 col-xl-3 col-form-label">Место</label>
+          <div class="col-8 col-sm-8 col-md-8 col-lg-9 col-xl-9">
+            <input type="text" readonly class="form-control-plaintext" id="place"
+                   [value]="advert?.place?.city ?? 'Загрузка' + ', ' + advert?.place?.district ?? 'Загрузка'">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="creation-date" class="col-4 col-sm-4 col-md-4 col-lg-3 col-xl-3 col-form-label">Дата
+            размещения</label>
+          <div class="col-8 col-sm-8 col-md-8 col-lg-9 col-xl-9">
+            <input type="text" readonly class="form-control-plaintext" id="creation-date"
+                   [value]="dateToString(advert?.creationDate)">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="p-4 col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+      <div *ngIf="user === null" class="alert alert-danger" role="alert">
+        Войдите, чтобы просмотреть контакты создателя объявления
+      </div>
+      <div *ngIf="user !== null" class="d-flex flex-column">
+        <form>
+          <div class="form-group row">
+            <label for="name" class="col-4 col-sm-4 col-md-4 col-lg-3 col-xl-3 col-form-label">Имя</label>
+            <div class="col-8 col-sm-8 col-md-8 col-lg-9 col-xl-9">
+              <input type="text" readonly class="form-control-plaintext" id="name"
+                     value="{{user?.surname ?? 'Загрузка..'}} {{user?.name ?? 'Загрузка..'}}">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="email" class="col-4 col-sm-4 col-md-4 col-lg-3 col-xl-3 col-form-label">Email</label>
+            <div class="col-8 col-sm-8 col-md-8 col-lg-9 col-xl-9">
+              <input type="text" readonly class="form-control-plaintext" id="email" value="{{user?.email ?? 'Загрузка..'}}">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="phone-number" class="col-4 col-sm-4 col-md-4 col-lg-3 col-xl-3 col-form-label">Номер телефона</label>
+            <div class="col-8 col-sm-8 col-md-8 col-lg-9 col-xl-9">
+              <input type="text" readonly class="form-control-plaintext" id="phone-number" value="{{user?.phoneNumber ?? 'Загрузка..'}}">
+            </div>
+          </div>
+        </form>
+        <div class="alert alert-warning" role="alert" style="word-wrap: break-word; max-width: 90%">
+          Пожалуйста, звоните в промежутке с 9:00 до 21:00. Если автор не отвечает, то перезванивать ему не надо. Он вам
+          перезвонит сам.
+        </div>
+        <button *ngIf="canDeleteAdvert()" (click)="deleteAdvert()" class="btn btn-danger"
+                style="margin-top: 5px; word-wrap: break-word; max-width: 100%">Удалить
+          объявление
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

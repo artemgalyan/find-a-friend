@@ -1,9 +1,10 @@
 package by.fpmibsu.findafriend.application;
 
 import by.fpmibsu.findafriend.application.controller.EndpointInfo;
+import by.fpmibsu.findafriend.application.requestpipeline.PipelineHandler;
+import by.fpmibsu.findafriend.application.requestpipeline.PipelineSender;
 import by.fpmibsu.findafriend.application.serviceproviders.GlobalServiceProvider;
 import by.fpmibsu.findafriend.controller.ServletUtils;
-import by.fpmibsu.findafriend.services.JwtSigner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jose4j.jwa.AlgorithmConstraints;
@@ -19,31 +20,23 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class Application {
-    public record AuthenticationData(JwtClaims claims, boolean isTokenValid) {
-    }
+    private static final Logger logger = LogManager.getLogger(Application.class);
 
     public record Keys(RSAPublicKey publicKey, RSAPrivateKey privateKey) {
     }
 
     private final GlobalServiceProvider globalServiceProvider;
     private final Map<String, EndpointInfo> endpointInfos;
-    private final JwtConsumer consumer;
-
-    private final Logger logger = LogManager.getLogger();
+    private final List<PipelineHandler> pipelineHandlers;
 
 
-    public Application(GlobalServiceProvider globalServiceProvider, Map<String, EndpointInfo> endpointInfos, Keys keys) {
+
+    public Application(GlobalServiceProvider globalServiceProvider, Map<String, EndpointInfo> endpointInfos, Keys keys, List<PipelineHandler> pipelineHandlers) {
         this.globalServiceProvider = globalServiceProvider;
         this.endpointInfos = endpointInfos;
-        consumer = new JwtConsumerBuilder()
-                .setVerificationKey(keys.publicKey())
-                .setJwsAlgorithmConstraints(
-                        AlgorithmConstraints.ConstraintType.PERMIT, AlgorithmIdentifiers.RSA_USING_SHA256)
-                .build();
-        globalServiceProvider.addSingleton(JwtSigner.class, () -> new JwtSigner(keys.privateKey()));
+        this.pipelineHandlers = pipelineHandlers;
     }
 
     public void send(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -56,24 +49,14 @@ public class Application {
         EndpointInfo endpoint = endpointInfos.get(request.getPathInfo());
 
         var sp = globalServiceProvider.getRequestServiceProvider();
-        AuthenticationData authData = parseToken(request.getParameter("token"));
-        sp.addScoped(AuthenticationData.class, authData);
-        HandleResult result = ControllerMethodInvoker.invoke(
-                request, response, endpoint, sp
-        );
+
+        var pipeline = new PipelineSender(pipelineHandlers);
+        HandleResult result = pipeline.handle(request, response, sp, endpoint, null);
         response.setStatus(result.getCode());
         if (result.getResponseObject().isPresent()) {
             ServletUtils.writeResponse(result.getResponseObject().get(), response.getOutputStream());
         }
         logger.trace("Finished request " + request.getContextPath() + " processing from " + request.getLocalAddr());
 
-    }
-
-    private AuthenticationData parseToken(String token) {
-        try {
-            return new AuthenticationData(consumer.processToClaims(token), true);
-        } catch (Exception e) {
-            return new AuthenticationData(new JwtClaims(), false);
-        }
     }
 }

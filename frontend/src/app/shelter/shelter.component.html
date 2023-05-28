@@ -17,7 +17,12 @@
           </div>
         </div>
       </form>
-      <button class="btn btn-primary w-100 p-4" style="font-size: 30px" (click)="scrollDown()">Объявления</button>
+      <div class="w-100 p-4">
+        <button class="btn-primary btn w-100" style="margin-bottom: 10px"
+                *ngIf="canChangeInfo()" (click)="editShelter()">Изменить информацию о приюте
+        </button>
+        <button class="btn btn-primary w-100" style="font-size: 30px" (click)="scrollDown()">Объявления</button>
+      </div>
     </div>
     <iframe class="col-sm-6 align-s"
             [src]='mapsURL' style="height: 600px"

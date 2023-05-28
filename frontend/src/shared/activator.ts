@@ -18,3 +18,13 @@ export class CanActivateModeratorPanelGuard implements CanActivate {
   }
 
 }
+
+@Injectable()
+export class CanActivateShelterModeratorPanelGuard implements CanActivate {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    const role = localStorage.getItem('role');
+    return role === Roles.Administrator || role === Roles.Moderator || role === Roles.ShelterAdministrator;
+  }
+
+}
+

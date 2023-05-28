@@ -5,9 +5,9 @@
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
             <!--            <GELFLayout></GELFLayout>-->
         </Console>
-        <File name="file-appender" fileName="logs/log.txt" bufferedIO="true">
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
-        </File>
+<!--        <File name="file-appender" fileName="logs/log.txt" bufferedIO="true">-->
+<!--            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>-->
+<!--        </File>-->
     </Appenders>
     <Loggers>
         <Root level="all">

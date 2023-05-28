@@ -68,7 +68,8 @@ public class AdvertController extends Controller {
 
     @RequireAuthentication
     @Endpoint(path = "/delete", method = HttpMethod.DELETE)
-    public HandleResult deleteAdvertById(@FromQuery(parameterName = "id") int id, @WebToken(parameterName = "id") int userId,
+    public HandleResult deleteAdvertById(@FromQuery(parameterName = "id") int id,
+                                         @WebToken(parameterName = "id") int userId,
                                          @WebToken(parameterName = "role") String role) {
         if (!AuthUtils.allowRoles(role, User.Role.ADMINISTRATOR, User.Role.MODERATOR)) {
             var advertDao = serviceProvider.getRequiredService(AdvertDao.class);

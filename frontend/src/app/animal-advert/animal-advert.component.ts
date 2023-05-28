@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {AnimalAdvert, Photo, User} from "../../shared/models";
+import {AnimalAdvert, Photo, Roles, User} from "../../shared/models";
 import {HttpClient} from "@angular/common/http";
 import {Constants} from "../constants";
 
@@ -67,5 +67,22 @@ export class AnimalAdvertComponent implements OnInit {
 
   showAdvert(advert: AnimalAdvert) {
     this.router.navigate(['shelter'], {queryParams: {'id': advert.shelterId}})
+  }
+
+  canDeleteAdvert() : boolean {
+    let shelterId = Number(localStorage.getItem('shelter_id'));
+    let id = Number(localStorage.getItem('id'));
+    let role = localStorage.getItem('role');
+    return (this.authorIsShelter() && shelterId === this.advert.shelterId && role === Roles.ShelterAdministrator)
+      || role === Roles.Administrator || role === Roles.Moderator
+      || (role === Roles.User && id === this.advert.userId);
+  }
+
+  deleteAdvert() {
+    this.httpClient.delete(Constants.api + 'animalAdverts/delete?id=' + this.advert.advertId + '&token=' + localStorage.getItem('jwt'))
+      .subscribe(_ => {
+        alert('Удалено')
+        this.router.navigate(['animalAdverts'])
+      }, e => console.log(e));
   }
 }
