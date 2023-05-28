@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {Constants} from "../constants";
 import {PlacePickerComponent} from "../placepicker/place-picker.component";
 import {Router} from "@angular/router";
@@ -13,9 +13,8 @@ import {Router} from "@angular/router";
 export class CreateAdvertComponent implements OnInit {
   title: string = '';
   description: string = '';
-  creationDate: string = '';
   advertType: string = '';
-  placeId: number = 1;
+  placeId: number = -1;
   readonly advertTypes: string[] = ['V', 'S'];
 
   @ViewChild(PlacePickerComponent)
@@ -25,7 +24,7 @@ export class CreateAdvertComponent implements OnInit {
               private router: Router) {
   }
 
-  typeToString(type: string) : string {
+  typeToString(type: string): string {
     return type == 'V' ? 'Волонтёр' : 'Ситтер'
   }
 
@@ -34,13 +33,54 @@ export class CreateAdvertComponent implements OnInit {
       this.router.navigate(['login'])
       return
     }
+
+    let titleInput = document.querySelector('#titleInput') as HTMLInputElement
+    let descriptionInput = document.querySelector('#descriptionInput') as HTMLInputElement
+    let advertTypeInput = document.querySelector('#advertTypeInput') as HTMLInputElement
+    let placeIdInput = document.querySelector('#placeIdInput') as HTMLInputElement
+    let validator = (element: HTMLInputElement, minSize: number = 1) => (e: Event) => {
+      if (element.value.length < minSize) {
+        element.classList.add('is-invalid')
+      } else {
+        element.classList.remove('is-invalid')
+      }
+    }
+    titleInput.oninput = validator(titleInput)
+    descriptionInput.oninput = validator(descriptionInput)
+    advertTypeInput.oninput = validator(advertTypeInput)
+    placeIdInput.oninput = validator(placeIdInput)
   }
 
-  isLoggedIn() : boolean {
+  isLoggedIn(): boolean {
     return localStorage.getItem('jwt') !== null && localStorage.getItem('jwt') !== undefined
   }
 
   createAdvert() {
+    let titleInput = document.querySelector('#titleInput') as HTMLInputElement
+    let descriptionInput = document.querySelector('#descriptionInput') as HTMLInputElement
+    let advertTypeInput = document.querySelector('#advertTypeInput') as HTMLInputElement
+    let placeIdInput = document.querySelector('#placeIdInput') as HTMLInputElement
+    if (this.title.length === 0) {
+      titleInput.classList.add('is-invalid')
+    } else {
+      titleInput.classList.remove('is-invalid')
+    }
+    if (this.description.length === 0) {
+      descriptionInput.classList.add('is-invalid');
+    } else {
+      descriptionInput.classList.remove('is-invalid')
+    }
+    if (this.advertType.length === 0) {
+      advertTypeInput.classList.add('is-invalid');
+    } else {
+      advertTypeInput.classList.remove('is-invalid')
+    }
+    if (this.placeId === -1) {
+      placeIdInput.classList.add('is-invalid');
+    } else {
+      placeIdInput.classList.remove('is-invalid')
+    }
+
     this.httpClient.post(Constants.api + 'adverts/create?token=' + localStorage.getItem('jwt'), {
       'advertType': this.advertType,
       'title': this.title,
