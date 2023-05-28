@@ -1,4 +1,4 @@
-CREATE DATABASE find_a_friend;
+-- CREATE DATABASE find_a_friend;
 
 USE find_a_friend;
 
@@ -24,7 +24,7 @@ CREATE TABLE [user]
     surname      VARCHAR(max) NOT NULL,
     email        VARCHAR(max) NOT NULL,
     phone_number VARCHAR(max),
-    login        VARCHAR(max) NOT NULL UNIQUE,
+    login        VARCHAR(max) NOT NULL,
     password     VARCHAR(max) NOT NULL,
     role_id      INT          NOT NULL REFERENCES role (role_id)
 );
@@ -34,7 +34,9 @@ CREATE TABLE shelter
     shelter_id INT PRIMARY KEY IDENTITY (1, 1),
     place_id   INT          NOT NULL,
     name       VARCHAR(max) NOT NULL,
-    FOREIGN KEY (place_id) REFERENCES place (place_id)
+    FOREIGN KEY (place_id) REFERENCES place (place_id),
+    address    VARCHAR(MAX) NOT NULL,
+    website    VARCHAR(MAX) NOT NULL,
 );
 
 CREATE TABLE user_shelter

@@ -21,43 +21,6 @@ import java.util.Properties;
 
 public class Runner {
     public static void main(String[] args) {
-        test();
-        if (true) {
-            return;
-        }
-        var properties = new Properties();
-        try {
-            properties.load(new FileReader("config/config.properties"));
-        } catch (IOException exception) {
-            System.err.println("Failed to start the app, cannot read config");
-            exception.printStackTrace();
-            return;
-        }
-        var dbPath = (String) properties.getProperty("database_url");
-        Connection connection;
-        try {
-            connection = DriverManager.getConnection(dbPath);
-            var user = new DbUserDao(connection).getAll().get(3);
-            var place = new DbPlaceDao(connection).getAll().get(0);
-            var advert = new AnimalAdvert(1, "title", "descr", "cat", new ArrayList<>(), user, Date.from(Instant.now()), place, Date.from(Instant.now()), AnimalAdvert.Sex.MALE, false);
-            new DbAnimalAdvertDao(connection).create(advert);
-            var photo = new Photo("what a cool text".getBytes(), 16);
-            new DbPhotoDao(connection).create(photo);
-
-        } catch (Exception e) {
-            System.err.println("Failed to connect to the database.");
-            e.printStackTrace();
-            return;
-        }
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            System.err.println("Failed to closed db connection");
-            return;
-        }
-    }
-
-    private static void test() {
         RsaJsonWebKey keyPair;
         var utils = new RsaKeyUtil();
         try {
@@ -73,13 +36,5 @@ public class Runner {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-//        try {
-//            var s = new ObjectInputStream(new FileInputStream("keys"));
-//            var o = (KeyPair) s.readObject();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        } catch (ClassNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
     }
 }
