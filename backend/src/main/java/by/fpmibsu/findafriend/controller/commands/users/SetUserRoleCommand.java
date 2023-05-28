@@ -10,4 +10,7 @@ public class SetUserRoleCommand extends Request<Void> {
         this.userId = userId;
         this.newRole = newRole;
     }
+
+    public SetUserRoleCommand() {
+    }
 }

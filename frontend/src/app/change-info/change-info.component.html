@@ -1,0 +1,36 @@
+<div class="p-2 d-flex justify-content-center align-content-center" style="height: 90%">
+  <div class="d-flex flex-column justify-content-center align-content-center">
+    <div class="d-flex flex-column">
+      <div class="mb-1">
+        <label for="nameInput" class="form-label">Имя</label>
+        <input type="text" [(ngModel)]="name" class="form-control" id="nameInput" placeholder="Иван" required>
+        <span class="invalid-feedback position-relative">
+        Введите имя
+      </span>
+      </div>
+      <div class="mb-1">
+        <label for="surnameInput" class="form-label">Фамилия</label>
+        <input type="text" [(ngModel)]="surname" class="form-control" id="surnameInput" placeholder="Иванов" required>
+        <span class="invalid-feedback position-relative">
+        Введите фамилию
+      </span>
+      </div>
+      <div class="mb-1">
+        <label for="emailInput" class="form-label">Электронная почта</label>
+        <input type="email" [(ngModel)]="email" class="form-control" id="emailInput" required>
+        <span class="invalid-feedback position-relative">
+        Введите электронную почту
+      </span>
+      </div>
+
+      <div class="mb-1">
+        <label for="phoneInput" class="form-label">Номер телефона</label>
+        <input type="text" [(ngModel)]="phoneNumber" class="form-control" id="phoneInput" required>
+        <span class="invalid-feedback position-relative">
+        Введите номер телефона (начинается с 375)
+      </span>
+      </div>
+      <button class="btn btn-primary" style="text-align: center" (click)="update()">Обновить</button>
+    </div>
+  </div>
+</div>

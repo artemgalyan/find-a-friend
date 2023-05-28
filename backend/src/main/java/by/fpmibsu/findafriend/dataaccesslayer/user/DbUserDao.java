@@ -48,6 +48,7 @@ public class DbUserDao implements UserDao, AutoCloseable {
                 login=?,
                 password=?,
                 role_id=?
+            WHERE user_id=?
             """;
 
     private static final String SQL_FIND_BY_USERNAME = """
@@ -161,7 +162,8 @@ public class DbUserDao implements UserDao, AutoCloseable {
                     instance.getContacts().getPhoneNumber(),
                     instance.getLogin(),
                     instance.getPassword(),
-                    instance.getRole().toInt()
+                    instance.getRole().toInt(),
+                    instance.getId()
             );
             int result = statement.executeUpdate();
         } catch (SQLException e) {

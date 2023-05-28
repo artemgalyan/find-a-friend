@@ -36,4 +36,11 @@ export class AccountComponent implements OnInit {
   onCreateNewClicked() {
     this.router.navigate(['createAnimalAdvert'])
   }
+
+  updateSelf() {
+    this.router.navigate(['editAccount'])
+  }
+  updatePassword() {
+    this.router.navigate(['updateLoginAndPassword'])
+  }
 }

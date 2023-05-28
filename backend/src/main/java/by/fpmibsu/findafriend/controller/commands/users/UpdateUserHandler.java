@@ -53,6 +53,6 @@ public class UpdateUserHandler extends RequestHandler<Boolean, UpdateUserCommand
         if (invalidated) {
             tokensDao.invalidateTokens(user.getId());
         }
-        return true;
+        return invalidated;
     }
 }

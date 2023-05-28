@@ -28,6 +28,8 @@ import {AdvertComponent} from './advert/advert.component';
 import {PreviewComponent} from './preview/preview.component';
 import {SheltersComponent} from './shelters/shelters.component';
 import {EditShelterComponent} from './edit-shelter/edit-shelter.component';
+import { ChangeInfoComponent } from './change-info/change-info.component';
+import { UpdatePasswordComponent } from './update-password/update-password.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,9 @@ import {EditShelterComponent} from './edit-shelter/edit-shelter.component';
     ModeratorToolsComponent,
     SheltersComponent,
     EditShelterComponent,
-    AdvertComponent
+    AdvertComponent,
+    ChangeInfoComponent,
+    UpdatePasswordComponent
   ],
   imports: [
     BrowserModule,

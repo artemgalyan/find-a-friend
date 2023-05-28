@@ -11,6 +11,7 @@ import by.fpmibsu.findafriend.controller.commands.users.DeleteUserCommand;
 import by.fpmibsu.findafriend.controller.commands.users.SetUserRoleCommand;
 import by.fpmibsu.findafriend.controller.commands.users.UpdateUserCommand;
 import by.fpmibsu.findafriend.controller.queries.users.GetUserByIdQuery;
+import by.fpmibsu.findafriend.controller.queries.users.GetUserIdAndLoginQuery;
 import by.fpmibsu.findafriend.controller.queries.users.GetUsersQuery;
 import by.fpmibsu.findafriend.dataaccesslayer.user.UserDao;
 import by.fpmibsu.findafriend.entity.User;
@@ -56,7 +57,8 @@ public class UserController extends Controller {
 
     @RequireAuthentication
     @Endpoint(path = "/update", method = HttpMethod.PUT)
-    public HandleResult updateUser(@FromBody UpdateUserCommand request, @WebToken(parameterName = "id") int userId,
+    public HandleResult updateUser(@FromBody UpdateUserCommand request,
+                                   @WebToken(parameterName = "id") int userId,
                                    @WebToken(parameterName = "role") String role) {
         if (userId != request.userId && !AuthUtils.allowRoles(role, User.Role.ADMINISTRATOR)) {
             Logging.warnNonAuthorizedAccess(this.request, logger);
@@ -103,6 +105,12 @@ public class UserController extends Controller {
             return notAuthorized();
         }
         return ok(mediatr.send(command));
+    }
+
+    @RequireAuthentication
+    @Endpoint(path = "/getId", method = HttpMethod.GET)
+    public HandleResult getSelfId(@WebToken(parameterName = "id") int id) {
+        return ok(mediatr.send(new GetUserIdAndLoginQuery(id)));
     }
 
     private static boolean isAnyEmpty(String... strings) {

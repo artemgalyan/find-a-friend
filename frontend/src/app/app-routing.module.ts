@@ -20,6 +20,8 @@ import {PreviewComponent} from "./preview/preview.component";
 import {SheltersComponent} from "./shelters/shelters.component";
 import {EditShelterComponent} from "./edit-shelter/edit-shelter.component";
 import {AdvertComponent} from "./advert/advert.component";
+import {ChangeInfoComponent} from "./change-info/change-info.component";
+import {UpdatePasswordComponent} from "./update-password/update-password.component";
 
 const routes: Routes = [
   {path: '', component: PreviewComponent},
@@ -37,7 +39,9 @@ const routes: Routes = [
   {path: 'moderator', component: ModeratorToolsComponent, canActivate: [CanActivateModeratorPanelGuard]},
   {path: 'shelters', component: SheltersComponent},
   {path: 'editShelter', component: EditShelterComponent, canActivate: [CanActivateShelterModeratorPanelGuard]},
-  {path: 'advert', component: AdvertComponent}
+  {path: 'advert', component: AdvertComponent},
+  {path: 'editAccount', component: ChangeInfoComponent},
+  {path: 'updateLoginAndPassword', component: UpdatePasswordComponent}
 ];
 
 @NgModule({
