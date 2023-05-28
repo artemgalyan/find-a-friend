@@ -1,23 +1,13 @@
 package by.fpmibsu.findafriend.controller;
 
-import by.fpmibsu.findafriend.dataaccesslayer.animaladvert.DbAnimalAdvertDao;
-import by.fpmibsu.findafriend.dataaccesslayer.photo.DbPhotoDao;
-import by.fpmibsu.findafriend.dataaccesslayer.place.DbPlaceDao;
-import by.fpmibsu.findafriend.dataaccesslayer.user.DbUserDao;
-import by.fpmibsu.findafriend.entity.*;
 import org.jose4j.jwk.RsaJsonWebKey;
 import org.jose4j.jwk.RsaJwkGenerator;
 import org.jose4j.keys.RsaKeyUtil;
 import org.jose4j.lang.JoseException;
 
-import java.io.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Properties;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 public class Runner {
     public static void main(String[] args) {

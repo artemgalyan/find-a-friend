@@ -2,7 +2,6 @@ package by.fpmibsu.findafriend.controller.queries.adverts;
 
 import by.fpmibsu.findafriend.application.mediatr.RequestHandler;
 import by.fpmibsu.findafriend.controller.models.AdvertModel;
-import by.fpmibsu.findafriend.controller.models.AnimalAdvertModel;
 import by.fpmibsu.findafriend.dataaccesslayer.DaoException;
 import by.fpmibsu.findafriend.dataaccesslayer.advert.AdvertDao;
 import by.fpmibsu.findafriend.dataaccesslayer.place.PlaceDao;

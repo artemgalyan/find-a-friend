@@ -2,7 +2,6 @@ package by.fpmibsu.findafriend.controller.commands.adverts;
 
 import by.fpmibsu.findafriend.application.mediatr.Request;
 import by.fpmibsu.findafriend.controller.ParsingUtils;
-import by.fpmibsu.findafriend.controller.commands.adverts.DeleteAdvertCommand;
 
 import java.util.Map;
 import java.util.Optional;

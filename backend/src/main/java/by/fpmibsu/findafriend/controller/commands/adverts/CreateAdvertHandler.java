@@ -1,6 +1,5 @@
 package by.fpmibsu.findafriend.controller.commands.adverts;
 
-import by.fpmibsu.findafriend.application.Application;
 import by.fpmibsu.findafriend.application.authentication.AuthenticationData;
 import by.fpmibsu.findafriend.application.mediatr.RequestHandler;
 import by.fpmibsu.findafriend.dataaccesslayer.advert.AdvertDao;

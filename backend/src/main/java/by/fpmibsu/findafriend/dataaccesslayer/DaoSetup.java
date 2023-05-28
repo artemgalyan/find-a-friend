@@ -7,8 +7,6 @@ import by.fpmibsu.findafriend.dataaccesslayer.advert.AdvertDao;
 import by.fpmibsu.findafriend.dataaccesslayer.advert.DbAdvertDao;
 import by.fpmibsu.findafriend.dataaccesslayer.animaladvert.AnimalAdvertDao;
 import by.fpmibsu.findafriend.dataaccesslayer.animaladvert.DbAnimalAdvertDao;
-import by.fpmibsu.findafriend.dataaccesslayer.validtokens.DbValidTokensDao;
-import by.fpmibsu.findafriend.dataaccesslayer.validtokens.ValidTokensDao;
 import by.fpmibsu.findafriend.dataaccesslayer.photo.DbPhotoDao;
 import by.fpmibsu.findafriend.dataaccesslayer.photo.PhotoDao;
 import by.fpmibsu.findafriend.dataaccesslayer.place.DbPlaceDao;
@@ -19,6 +17,8 @@ import by.fpmibsu.findafriend.dataaccesslayer.user.DbUserDao;
 import by.fpmibsu.findafriend.dataaccesslayer.user.UserDao;
 import by.fpmibsu.findafriend.dataaccesslayer.usershelter.DbUserShelterDao;
 import by.fpmibsu.findafriend.dataaccesslayer.usershelter.UserShelterDao;
+import by.fpmibsu.findafriend.dataaccesslayer.validtokens.DbValidTokensDao;
+import by.fpmibsu.findafriend.dataaccesslayer.validtokens.ValidTokensDao;
 
 public class DaoSetup extends Setup {
     public static final GlobalServiceProvider.ServiceType SERVICE_LIFETIME = GlobalServiceProvider.ServiceType.SCOPED;

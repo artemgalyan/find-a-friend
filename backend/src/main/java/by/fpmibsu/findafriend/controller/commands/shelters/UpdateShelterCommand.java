@@ -1,7 +1,6 @@
 package by.fpmibsu.findafriend.controller.commands.shelters;
 
 import by.fpmibsu.findafriend.application.mediatr.Request;
-import by.fpmibsu.findafriend.entity.Place;
 
 public class UpdateShelterCommand extends Request<Boolean> {
     public int shelterId;

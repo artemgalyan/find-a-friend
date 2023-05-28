@@ -3,7 +3,7 @@ package by.fpmibsu.findafriend.dataaccesslayer.shelter;
 import by.fpmibsu.findafriend.dataaccesslayer.DaoException;
 import by.fpmibsu.findafriend.dataaccesslayer.EntityProducer;
 import by.fpmibsu.findafriend.dataaccesslayer.StatementBuilder;
-import by.fpmibsu.findafriend.entity.*;
+import by.fpmibsu.findafriend.entity.Shelter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

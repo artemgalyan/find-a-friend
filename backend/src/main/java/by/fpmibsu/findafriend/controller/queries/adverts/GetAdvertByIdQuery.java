@@ -3,7 +3,6 @@ package by.fpmibsu.findafriend.controller.queries.adverts;
 import by.fpmibsu.findafriend.application.mediatr.Request;
 import by.fpmibsu.findafriend.controller.ParsingUtils;
 import by.fpmibsu.findafriend.controller.models.AdvertModel;
-import by.fpmibsu.findafriend.controller.queries.adverts.GetAdvertByIdQuery;
 
 import java.util.Map;
 import java.util.Optional;

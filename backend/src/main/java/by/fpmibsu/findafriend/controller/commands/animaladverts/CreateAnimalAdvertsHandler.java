@@ -1,6 +1,5 @@
 package by.fpmibsu.findafriend.controller.commands.animaladverts;
 
-import by.fpmibsu.findafriend.application.Application;
 import by.fpmibsu.findafriend.application.authentication.AuthenticationData;
 import by.fpmibsu.findafriend.application.mediatr.RequestHandler;
 import by.fpmibsu.findafriend.dataaccesslayer.animaladvert.AnimalAdvertDao;
@@ -9,10 +8,10 @@ import by.fpmibsu.findafriend.entity.AnimalAdvert;
 import by.fpmibsu.findafriend.entity.Photo;
 import by.fpmibsu.findafriend.entity.Place;
 import by.fpmibsu.findafriend.entity.User;
-import java.util.Base64;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 
 public class CreateAnimalAdvertsHandler extends RequestHandler<Boolean, CreateAnimalAdvertCommand> {

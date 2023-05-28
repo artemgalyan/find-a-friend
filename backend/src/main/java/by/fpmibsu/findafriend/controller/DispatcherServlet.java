@@ -2,7 +2,6 @@ package by.fpmibsu.findafriend.controller;
 
 import by.fpmibsu.findafriend.application.Application;
 import by.fpmibsu.findafriend.application.ApplicationBuilder;
-import by.fpmibsu.findafriend.application.HandleResult;
 import by.fpmibsu.findafriend.application.Setup;
 import by.fpmibsu.findafriend.application.authentication.AuthenticationData;
 import by.fpmibsu.findafriend.application.requestpipeline.PipelineHandler;

@@ -1,11 +1,11 @@
 package by.fpmibsu.findafriend.controller.commands.auth;
 
+import by.fpmibsu.findafriend.application.authentication.JwtSigner;
 import by.fpmibsu.findafriend.application.mediatr.RequestHandler;
-import by.fpmibsu.findafriend.dataaccesslayer.validtokens.ValidTokensDao;
 import by.fpmibsu.findafriend.dataaccesslayer.user.UserDao;
 import by.fpmibsu.findafriend.dataaccesslayer.usershelter.UserShelterDao;
+import by.fpmibsu.findafriend.dataaccesslayer.validtokens.ValidTokensDao;
 import by.fpmibsu.findafriend.entity.User;
-import by.fpmibsu.findafriend.application.authentication.JwtSigner;
 import by.fpmibsu.findafriend.services.PasswordHasher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

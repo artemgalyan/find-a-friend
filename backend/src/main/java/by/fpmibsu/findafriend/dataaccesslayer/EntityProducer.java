@@ -4,7 +4,6 @@ import by.fpmibsu.findafriend.entity.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class EntityProducer {
     public static Advert makeAdvert(ResultSet set) throws SQLException {

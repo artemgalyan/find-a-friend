@@ -1,7 +1,5 @@
 package by.fpmibsu.findafriend.application.controller;
 
-import java.lang.reflect.Method;
-
 /**
  * @param controller / класс с информацией об эндпоинте: класс контроллера, метод и адрес эндпоинта
  */

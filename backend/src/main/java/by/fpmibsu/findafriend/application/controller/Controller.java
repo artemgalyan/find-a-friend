@@ -2,7 +2,6 @@ package by.fpmibsu.findafriend.application.controller;
 
 import by.fpmibsu.findafriend.application.HandleResult;
 import by.fpmibsu.findafriend.application.serviceproviders.ServiceProvider;
-import org.apache.logging.log4j.LogManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -1,8 +1,5 @@
 package by.fpmibsu.findafriend.entity;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.util.Date;
 import java.util.Objects;
 
