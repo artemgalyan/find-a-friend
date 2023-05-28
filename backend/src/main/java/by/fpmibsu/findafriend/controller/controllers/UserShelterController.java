@@ -7,8 +7,6 @@ import by.fpmibsu.findafriend.controller.AuthUtils;
 import by.fpmibsu.findafriend.controller.Logging;
 import by.fpmibsu.findafriend.controller.commands.usershelter.AddUserToShelterCommand;
 import by.fpmibsu.findafriend.controller.commands.usershelter.RemoveUserFromShelterCommand;
-import by.fpmibsu.findafriend.dataaccesslayer.user.UserDao;
-import by.fpmibsu.findafriend.dataaccesslayer.usershelter.UserShelterDao;
 import by.fpmibsu.findafriend.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

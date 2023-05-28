@@ -33,12 +33,6 @@ export class AccountComponent implements OnInit {
       .subscribe(r => this.adverts = r);
   }
 
-  placeToString(p: Place) : string {
-    return p.city + ', ' + p.district;
-  }
-
-  showAdvert(advertId: number) {}
-
   onCreateNewClicked() {
     this.router.navigate(['createAnimalAdvert'])
   }

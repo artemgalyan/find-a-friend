@@ -5,8 +5,10 @@ import by.fpmibsu.findafriend.application.controller.*;
 import by.fpmibsu.findafriend.application.mediatr.Mediatr;
 import by.fpmibsu.findafriend.controller.AuthUtils;
 import by.fpmibsu.findafriend.controller.Logging;
+import by.fpmibsu.findafriend.controller.Validation;
 import by.fpmibsu.findafriend.controller.commands.users.CreateUserCommand;
 import by.fpmibsu.findafriend.controller.commands.users.DeleteUserCommand;
+import by.fpmibsu.findafriend.controller.commands.users.SetUserRoleCommand;
 import by.fpmibsu.findafriend.controller.commands.users.UpdateUserCommand;
 import by.fpmibsu.findafriend.controller.queries.users.GetUserByIdQuery;
 import by.fpmibsu.findafriend.controller.queries.users.GetUsersQuery;
@@ -78,6 +80,29 @@ public class UserController extends Controller {
     @Endpoint(path = "/getSelfInfo", method = HttpMethod.GET)
     public HandleResult getSelfInfo(@WebToken(parameterName = "id") int userId) {
         return getById(userId);
+    }
+
+    @RequireAuthentication
+    @Endpoint(path = "/setRole", method = HttpMethod.PUT)
+    public HandleResult updateRole(@FromBody SetUserRoleCommand command,
+                                   @WebToken(parameterName = "role") String role) {
+        if (!Validation.in(command.newRole, User.Role.USER.toString(), User.Role.MODERATOR.toString(),
+                User.Role.SHELTER_ADMINISTRATOR.toString(), User.Role.ADMINISTRATOR.toString())) {
+            return badRequest();
+        }
+        if (!AuthUtils.allowRoles(role, User.Role.ADMINISTRATOR)
+                || AuthUtils.allowRoles(command.newRole, User.Role.ADMINISTRATOR)) {
+            return notAuthorized();
+        }
+
+        var user = serviceProvider.getRequiredService(UserDao.class).getEntityById(command.userId);
+        if (user == null) {
+            return badRequest();
+        }
+        if (User.Role.ADMINISTRATOR.equals(user.getRole())) {
+            return notAuthorized();
+        }
+        return ok(mediatr.send(command));
     }
 
     private static boolean isAnyEmpty(String... strings) {

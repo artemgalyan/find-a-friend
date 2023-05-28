@@ -5,16 +5,12 @@ import by.fpmibsu.findafriend.dataaccesslayer.photo.DbPhotoDao;
 import by.fpmibsu.findafriend.dataaccesslayer.place.DbPlaceDao;
 import by.fpmibsu.findafriend.dataaccesslayer.user.DbUserDao;
 import by.fpmibsu.findafriend.entity.*;
-import by.fpmibsu.findafriend.services.HashPasswordHasher;
 import org.jose4j.jwk.RsaJsonWebKey;
 import org.jose4j.jwk.RsaJwkGenerator;
-import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.keys.RsaKeyUtil;
 import org.jose4j.lang.JoseException;
 
 import java.io.*;
-import java.security.KeyPair;
-import java.security.interfaces.RSAPrivateKey;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -43,7 +39,7 @@ public class Runner {
             connection = DriverManager.getConnection(dbPath);
             var user = new DbUserDao(connection).getAll().get(3);
             var place = new DbPlaceDao(connection).getAll().get(0);
-            var advert = new AnimalAdvert(1,  "title", "descr", "cat", new ArrayList<>(), user, Date.from(Instant.now()), place, Date.from(Instant.now()), AnimalAdvert.Sex.MALE, false);
+            var advert = new AnimalAdvert(1, "title", "descr", "cat", new ArrayList<>(), user, Date.from(Instant.now()), place, Date.from(Instant.now()), AnimalAdvert.Sex.MALE, false);
             new DbAnimalAdvertDao(connection).create(advert);
             var photo = new Photo("what a cool text".getBytes(), 16);
             new DbPhotoDao(connection).create(photo);

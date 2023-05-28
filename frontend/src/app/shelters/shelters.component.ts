@@ -3,6 +3,7 @@ import {Place, Shelter} from "../../shared/models";
 import {HttpClient} from "@angular/common/http";
 import {Constants} from "../constants";
 import {Router} from "@angular/router";
+import {placeToString} from "../../shared/utils";
 
 @Component({
   selector: 'app-shelters',
@@ -21,10 +22,6 @@ export class SheltersComponent implements OnInit {
       .subscribe(r => this.shelters = r);
   }
 
-  placeToString(p: Place): string {
-    return p.city + ', ' + p.district;
-  }
-
   viewShelter(id: number) {
     this.router.navigate(['shelter'], {
       queryParams: {
@@ -32,4 +29,6 @@ export class SheltersComponent implements OnInit {
       }
     })
   }
+
+  readonly placeToString = placeToString;
 }

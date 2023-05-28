@@ -3,10 +3,8 @@ package by.fpmibsu.findafriend.controller.controllers;
 import by.fpmibsu.findafriend.application.HandleResult;
 import by.fpmibsu.findafriend.application.controller.*;
 import by.fpmibsu.findafriend.application.mediatr.Mediatr;
-import by.fpmibsu.findafriend.controller.models.PhotoModel;
 import by.fpmibsu.findafriend.controller.queries.photos.GetAdvertPreviewRequest;
 import by.fpmibsu.findafriend.controller.queries.photos.GetPhotosByAdvertIdQuery;
-import by.fpmibsu.findafriend.dataaccesslayer.photo.PhotoDao;
 
 @ControllerRoute(route = "/photos")
 public class PhotoController extends Controller {

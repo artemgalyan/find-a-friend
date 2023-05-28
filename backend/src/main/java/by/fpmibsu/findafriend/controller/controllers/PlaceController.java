@@ -9,7 +9,6 @@ import by.fpmibsu.findafriend.controller.commands.places.DeletePlaceCommand;
 import by.fpmibsu.findafriend.controller.commands.places.UpdatePlaceCommand;
 import by.fpmibsu.findafriend.controller.queries.places.GetPlaceByIdQuery;
 import by.fpmibsu.findafriend.controller.queries.places.GetPlacesQuery;
-import by.fpmibsu.findafriend.entity.Place;
 import by.fpmibsu.findafriend.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
