@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.LinkedBlockingQueue;
 
 final public class ConnectionPool implements AutoCloseable {
-	private static Logger logger = LogManager.getLogger(ConnectionPool.class);
+	private static final Logger logger = LogManager.getLogger(ConnectionPool.class);
 
     private final String connectionString;
     private int maxSize;

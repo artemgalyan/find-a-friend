@@ -39,12 +39,12 @@ public class UpdateUserHandler extends RequestHandler<Boolean, UpdateUserCommand
         if (request.login != null || request.password != null) {
             boolean passwordIsValid = passwordHasher.verifyPassword(user, request.providedPassword) != PasswordHasher.PasswordVerificationResult.FAILED;
             if (passwordIsValid && request.login != null) {
-                invalidated |= request.login.equals(user.getLogin());
+                invalidated |= !request.login.equals(user.getLogin());
                 user.setLogin(request.login);
             }
             if (passwordIsValid && request.password != null) {
                 var hashedPassword = passwordHasher.hashPassword(request.password);
-                invalidated |= user.getPassword().equals(hashedPassword);
+                invalidated |= !user.getPassword().equals(hashedPassword);
                 user.setPassword(hashedPassword);
             }
         }
