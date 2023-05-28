@@ -41,11 +41,13 @@ public class DbUserDao implements UserDao, AutoCloseable {
 
     private static final String SQL_UPDATE = """
             UPDATE [user]
-            SET contacts=?,
-                region=?,
-                city=?,
-                district=?
-            WHERE place_id=?
+            SET name=?,
+                surname=?,
+                email=?,
+                phone_number=?,
+                login=?,
+                password=?,
+                role_id=?
             """;
 
     private static final String SQL_FIND_BY_USERNAME = """
@@ -151,13 +153,16 @@ public class DbUserDao implements UserDao, AutoCloseable {
     public User update(User instance) throws DaoException {
         PreparedStatement statement = null;
         try {
-            statement = statementBuilder.prepareStatement(SQL_UPDATE,
-                    instance.getContacts(),
-                    instance.getAnimalAdverts(),
-                    instance.getAdverts(),
-                    instance.getRole(),
+            statement = statementBuilder.prepareStatement(
+                    SQL_UPDATE,
+                    instance.getContacts().getName(),
+                    instance.getContacts().getSurname(),
+                    instance.getContacts().getEmail(),
+                    instance.getContacts().getPhoneNumber(),
                     instance.getLogin(),
-                    instance.getPassword());
+                    instance.getPassword(),
+                    instance.getRole().toInt()
+            );
             int result = statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);

@@ -20,6 +20,7 @@ public class UpdateUserHandler extends RequestHandler<Boolean, UpdateUserCommand
             return false;
         }
 
+        boolean invalidated = false;
         if (request.name != null) {
             user.getContacts().setName(request.name);
         }
@@ -27,10 +28,12 @@ public class UpdateUserHandler extends RequestHandler<Boolean, UpdateUserCommand
             user.getContacts().setSurname(request.surname);
         }
         if (request.login != null) {
+            invalidated |= request.login.equals(user.getLogin());
             user.setLogin(request.login);
         }
         if (request.password != null) {
             var hashedPassword = passwordHasher.hashPassword(request.password);
+            
             user.setPassword(hashedPassword);
         }
         if (request.email != null) {
