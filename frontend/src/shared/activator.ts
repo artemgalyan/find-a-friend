@@ -28,3 +28,10 @@ export class CanActivateShelterModeratorPanelGuard implements CanActivate {
 
 }
 
+@Injectable()
+export class CanActivateIfAuthenticated implements CanActivate {
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    return localStorage.getItem('role') !== null;
+  }
+
+}

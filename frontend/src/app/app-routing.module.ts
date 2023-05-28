@@ -11,7 +11,7 @@ import {ShelterComponent} from "./shelter/shelter.component";
 import {CreateAdvertComponent} from "./create-advert/create-advert.component";
 import {AdminPanelComponent} from "./admin-panel/admin-panel.component";
 import {
-  CanActivateAdminPanelGuard,
+  CanActivateAdminPanelGuard, CanActivateIfAuthenticated,
   CanActivateModeratorPanelGuard,
   CanActivateShelterModeratorPanelGuard
 } from "../shared/activator";
@@ -27,9 +27,9 @@ const routes: Routes = [
   {path: '', component: PreviewComponent},
   {path: 'registration', component: RegistrationComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'account', component: AccountComponent},
-  {path: 'createAnimalAdvert', component: CreateAnimalAdvertComponent},
-  {path: 'createAdvert', component: CreateAdvertComponent},
+  {path: 'account', component: AccountComponent, canActivate: [CanActivateIfAuthenticated]},
+  {path: 'createAnimalAdvert', component: CreateAnimalAdvertComponent, canActivate: [CanActivateIfAuthenticated]},
+  {path: 'createAdvert', component: CreateAdvertComponent, canActivate: [CanActivateIfAuthenticated]},
   {path: 'animalAdverts', component: AnimalAdvertsComponent},
   {path: 'animalAdvert', component: AnimalAdvertComponent},
   {path: 'adverts', component: AdvertsComponent},
@@ -40,8 +40,8 @@ const routes: Routes = [
   {path: 'shelters', component: SheltersComponent},
   {path: 'editShelter', component: EditShelterComponent, canActivate: [CanActivateShelterModeratorPanelGuard]},
   {path: 'advert', component: AdvertComponent},
-  {path: 'editAccount', component: ChangeInfoComponent},
-  {path: 'updateLoginAndPassword', component: UpdatePasswordComponent}
+  {path: 'editAccount', component: ChangeInfoComponent, canActivate: [CanActivateIfAuthenticated]},
+  {path: 'updateLoginAndPassword', component: UpdatePasswordComponent, canActivate: [CanActivateIfAuthenticated]}
 ];
 
 @NgModule({

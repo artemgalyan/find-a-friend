@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from "@angular/router";
+import {quitAccount} from "../../shared/utils";
 
 @Component({
   selector: 'app-header',
@@ -31,8 +32,8 @@ export class HeaderComponent implements OnInit {
   }
 
   onExit() {
-    localStorage.removeItem('jwt')
-    // this.router.navigate(['login'])
+    quitAccount();
+    this.router.navigate(['login'])
   }
 
   ngOnInit(): void {}

@@ -3,6 +3,7 @@ import {HttpClient, HttpErrorResponse, HttpResponse} from "@angular/common/http"
 import {Router} from "@angular/router";
 import {Constants} from "../constants";
 import {User} from "../../shared/models";
+import {quitAccount} from "../../shared/utils";
 
 @Component({
   selector: 'app-update-password',
@@ -86,7 +87,7 @@ export class UpdatePasswordComponent implements OnInit {
       alert('Обновлено')
       console.log(r)
       if (r) {
-        localStorage.removeItem('jwt')
+        quitAccount();
         this.router.navigate(['login'])
         return
       }

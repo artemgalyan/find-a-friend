@@ -18,7 +18,7 @@ import {AdvertsComponent} from './adverts/adverts.component';
 import {ShelterComponent} from './shelter/shelter.component';
 import {CreateAdvertComponent} from './create-advert/create-advert.component';
 import {
-  CanActivateAdminPanelGuard,
+  CanActivateAdminPanelGuard, CanActivateIfAuthenticated,
   CanActivateModeratorPanelGuard,
   CanActivateShelterModeratorPanelGuard
 } from "../shared/activator";
@@ -62,7 +62,7 @@ import { UpdatePasswordComponent } from './update-password/update-password.compo
     FormsModule,
     HttpClientModule
   ],
-  providers: [CanActivateAdminPanelGuard, CanActivateModeratorPanelGuard, CanActivateShelterModeratorPanelGuard],
+  providers: [CanActivateAdminPanelGuard, CanActivateModeratorPanelGuard, CanActivateShelterModeratorPanelGuard, CanActivateIfAuthenticated],
   bootstrap: [AppComponent]
 })
 export class AppModule {
