@@ -16,8 +16,6 @@ import {
   CanActivateShelterModeratorPanelGuard
 } from "../shared/activator";
 import {ModeratorToolsComponent} from "./moderator-tools/moderator-tools.component";
-import {AdvertComponent} from "./advert/advert.component";
-import {PrefixNot} from "@angular/compiler";
 import {PreviewComponent} from "./preview/preview.component";
 import {SheltersComponent} from "./shelters/shelters.component";
 import {EditShelterComponent} from "./edit-shelter/edit-shelter.component";
@@ -39,7 +37,8 @@ const routes: Routes = [
   {path: 'moderator', component: ModeratorToolsComponent, canActivate: [CanActivateModeratorPanelGuard]},
   {path: 'shelters', component: SheltersComponent},
   {path: 'editShelter', component: EditShelterComponent, canActivate: [CanActivateShelterModeratorPanelGuard]},
-  {path: 'advert', component: AdvertComponent}
+  {path: 'advert', component: AdvertComponent},
+  {path: '', component: PreviewComponent}
 ];
 
 @NgModule({

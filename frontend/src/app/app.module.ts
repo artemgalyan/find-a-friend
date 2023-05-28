@@ -23,13 +23,11 @@ import {
   CanActivateShelterModeratorPanelGuard
 } from "../shared/activator";
 import {AdminPanelComponent} from "./admin-panel/admin-panel.component";
-import { ModeratorToolsComponent } from './moderator-tools/moderator-tools.component';
-import { AdvertComponent } from './advert/advert.component';
-import { PreviewComponent } from './preview/preview.component';
 import {ModeratorToolsComponent} from './moderator-tools/moderator-tools.component';
+import {AdvertComponent} from './advert/advert.component';
+import {PreviewComponent} from './preview/preview.component';
 import {SheltersComponent} from './shelters/shelters.component';
-import { EditShelterComponent } from './edit-shelter/edit-shelter.component';
-import { AdvertComponent } from './advert/advert.component';
+import {EditShelterComponent} from './edit-shelter/edit-shelter.component';
 
 @NgModule({
   declarations: [
