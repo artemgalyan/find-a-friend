@@ -19,8 +19,8 @@
 # Техническое задание
 [ТЗ.docx](https://github.com/ShTatti/find-a-friend/files/11590986/default.docx)
 
-# Диаграмма классов
-
+# Диаграмма классов и Swagger
+https://github.com/ShTatti/find-a-friend/blob/main/backend/documentation/class-diagram.png
 # Диаграмма пакетов
 ![image](https://github.com/ShTatti/find-a-friend/assets/66832707/efe4bb15-aad6-4417-99b6-edd5a5d00bc0)
 
