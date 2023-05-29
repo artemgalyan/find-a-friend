@@ -11,8 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DbAdvertDao implements AdvertDao, AutoCloseable {
-    private final Logger logger = LogManager.getLogger();
+public class DbAdvertDao implements AdvertDao {
     private static final String SQL_SELECT_ALL_ADVERTS = """
             SELECT * FROM advert;
             """;
@@ -67,8 +66,6 @@ public class DbAdvertDao implements AdvertDao, AutoCloseable {
             throw new DaoException("", e);
         } finally {
             close(statement);
-
-
         }
         return adverts;
     }
@@ -84,7 +81,6 @@ public class DbAdvertDao implements AdvertDao, AutoCloseable {
             }
             return null;
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -109,7 +105,6 @@ public class DbAdvertDao implements AdvertDao, AutoCloseable {
             throw new DaoException(e);
         } finally {
             close(statement);
-
         }
         return true;
     }
@@ -128,7 +123,6 @@ public class DbAdvertDao implements AdvertDao, AutoCloseable {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -150,7 +144,6 @@ public class DbAdvertDao implements AdvertDao, AutoCloseable {
             statement.executeUpdate();
             return instance;
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -165,7 +158,6 @@ public class DbAdvertDao implements AdvertDao, AutoCloseable {
             statement = statementBuilder.prepareStatement(SQL_DELETE_BY_ID, id);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -181,7 +173,6 @@ public class DbAdvertDao implements AdvertDao, AutoCloseable {
             statement = statementBuilder.prepareStatement(SQL_DELETE_ADVERT_BY_USER_ID, id);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -201,17 +192,11 @@ public class DbAdvertDao implements AdvertDao, AutoCloseable {
                 adverts.add(EntityProducer.makeAdvert(resultSet));
             }
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
 
         }
         return adverts;
-    }
-
-    @Override
-    public void close() throws Exception {
-        close(connection);
     }
 }

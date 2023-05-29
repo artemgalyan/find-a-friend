@@ -25,12 +25,8 @@ public class CreateUserHandler extends RequestHandler<Boolean, CreateUserCommand
         var contacts = new Contacts(request.name, request.surname, request.phoneNumber, request.email);
         var hashedPassword = passwordHasher.hashPassword(request.password);
         var user = new User(0, contacts, new ArrayList<>(), new ArrayList<>(), User.Role.USER, request.login, hashedPassword);
-        try {
-            userDao.create(user);
-            logger.info(String.format("User %s just registered", request.login));
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        userDao.create(user);
+        logger.info(String.format("User %s just registered", request.login));
+        return true;
     }
 }

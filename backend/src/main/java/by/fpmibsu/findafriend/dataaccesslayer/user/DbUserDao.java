@@ -11,8 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DbUserDao implements UserDao, AutoCloseable {
-    private final Logger logger = LogManager.getLogger();
+public class DbUserDao implements UserDao {
     private static final String SQL_SELECT_ALL_USERS = """
             SELECT user_id, [user].name, surname, email, phone_number, login, password, role.role_id, role.name
             FROM [user]
@@ -76,7 +75,6 @@ public class DbUserDao implements UserDao, AutoCloseable {
                 users.add(EntityProducer.makeUser(resultSet));
             }
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -97,8 +95,7 @@ public class DbUserDao implements UserDao, AutoCloseable {
             }
             return EntityProducer.makeUser(resultSet);
         } catch (SQLException e) {
-            logger.error(e.getMessage());
-            throw new DaoException("", e);
+            throw new DaoException(e);
         } finally {
             close(statement);
 
@@ -117,7 +114,6 @@ public class DbUserDao implements UserDao, AutoCloseable {
             statement = statementBuilder.prepareStatement(SQL_DELETE_BY_ID, value);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -141,7 +137,6 @@ public class DbUserDao implements UserDao, AutoCloseable {
                     instance.getRole().toInt());
             int result = statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -181,7 +176,6 @@ public class DbUserDao implements UserDao, AutoCloseable {
             statement = statementBuilder.prepareStatement(SQL_DELETE_BY_ID, id);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -200,7 +194,6 @@ public class DbUserDao implements UserDao, AutoCloseable {
             }
             return EntityProducer.makeUser(resultSet);
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -221,10 +214,5 @@ public class DbUserDao implements UserDao, AutoCloseable {
         } finally {
             close(statement);
         }
-    }
-
-    @Override
-    public void close() throws Exception {
-        close(connection);
     }
 }

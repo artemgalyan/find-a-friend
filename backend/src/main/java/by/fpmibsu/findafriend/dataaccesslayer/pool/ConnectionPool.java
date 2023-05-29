@@ -44,13 +44,16 @@ final public class ConnectionPool implements AutoCloseable {
                     logger.error("The limit of number of database connections is exceeded");
                     throw new DaoException("The limit of number of db connections is exceeded");
                 }
+                if (connection != null) {
+                    connection.setAutoCommit(false);
+                }
             } catch (InterruptedException | SQLException e) {
                 logger.error("It is impossible to connect to a database", e);
                 throw new DaoException(e);
             }
         }
         usedConnections.add(connection);
-        logger.debug(String.format("Connection was received from pool. Current pool size: %d used connections; %d free connection", usedConnections.size(), freeConnections.size()));
+        logger.debug(String.format("Connection was received from pool. Current pool size: %d used connections; %d free connection", usedConnections.size(), freeConnections.size()));;
         return connection;
     }
 

@@ -2,12 +2,15 @@ package by.fpmibsu.findafriend.controller.commands.animaladverts;
 
 import by.fpmibsu.findafriend.application.authentication.AuthenticationData;
 import by.fpmibsu.findafriend.application.mediatr.RequestHandler;
+import by.fpmibsu.findafriend.dataaccesslayer.DaoException;
 import by.fpmibsu.findafriend.dataaccesslayer.animaladvert.AnimalAdvertDao;
 import by.fpmibsu.findafriend.dataaccesslayer.photo.PhotoDao;
 import by.fpmibsu.findafriend.entity.AnimalAdvert;
 import by.fpmibsu.findafriend.entity.Photo;
 import by.fpmibsu.findafriend.entity.Place;
 import by.fpmibsu.findafriend.entity.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -15,6 +18,7 @@ import java.util.Base64;
 import java.util.Date;
 
 public class CreateAnimalAdvertsHandler extends RequestHandler<Boolean, CreateAnimalAdvertCommand> {
+    private final Logger logger = LogManager.getLogger(CreateAnimalAdvertsHandler.class);
     private final AnimalAdvertDao animalAdvertDao;
     private final PhotoDao photoDao;
     private final AuthenticationData authenticationData;
@@ -34,10 +38,7 @@ public class CreateAnimalAdvertsHandler extends RequestHandler<Boolean, CreateAn
         u.setId(userId);
         var advert = new AnimalAdvert(0, command.title, command.description, command.animalType, new ArrayList<>(),
                 u, Date.from(Instant.now()), place, command.birthdate, AnimalAdvert.Sex.fromValue(command.sex), command.isCastrated);
-        boolean result = animalAdvertDao.create(advert);
-        if (!result) {
-            return false;
-        }
+        animalAdvertDao.create(advert);
         var photos = command.photos.stream()
                 .map(p -> new Photo(Base64.getEncoder().encode(p.getBytes()), advert.getId()))
                 .toList();

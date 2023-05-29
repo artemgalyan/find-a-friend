@@ -20,7 +20,7 @@ public class ControllerMethodInvoker {
     private final static Logger logger = LogManager.getLogger();
 
     public static HandleResult invoke(HttpServletRequest request, HttpServletResponse response,
-                                      EndpointInfo endpointInfo, ScopedServiceProvider sp) {
+                                      EndpointInfo endpointInfo, ScopedServiceProvider sp) throws Exception {
 
         var controller = ObjectConstructor.createInstance(endpointInfo.controller(), sp);
         logger.trace("Created controller " + endpointInfo.controller().getName());
@@ -56,11 +56,6 @@ public class ControllerMethodInvoker {
         }
         try (sp) {
             return (HandleResult) method.invoke(controller, methodParams);
-        } catch (Exception e) {
-            logger.error(String.format("Error during request handling path: %s, method: %s, query: %s, exception: %s",
-                    request.getContextPath(), request.getMethod(), request.getQueryString(), e.getMessage())
-            );
-            return new HandleResult(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 

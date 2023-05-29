@@ -12,8 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class DbShelterDao implements ShelterDao, AutoCloseable {
-    final private Logger logger = LogManager.getLogger();
+public class DbShelterDao implements ShelterDao {
     private static final String SQL_SELECT_ALL_SHELTERS = """
             SELECT shelter_id, name, place_id, address, website
             FROM shelter""";
@@ -62,7 +61,6 @@ public class DbShelterDao implements ShelterDao, AutoCloseable {
                 shelters.add(EntityProducer.makeShelter(resultSet));
             }
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -82,7 +80,6 @@ public class DbShelterDao implements ShelterDao, AutoCloseable {
             }
             return EntityProducer.makeShelter(resultSet);
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -101,7 +98,6 @@ public class DbShelterDao implements ShelterDao, AutoCloseable {
             statement = statementBuilder.prepareStatement(SQL_DELETE_BY_ID, value);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -120,7 +116,6 @@ public class DbShelterDao implements ShelterDao, AutoCloseable {
                     instance.getWebsite());
             int result = statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -140,7 +135,6 @@ public class DbShelterDao implements ShelterDao, AutoCloseable {
                     instance.getId());
             int result = statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -155,7 +149,6 @@ public class DbShelterDao implements ShelterDao, AutoCloseable {
             statement = statementBuilder.prepareStatement(SQL_DELETE_BY_PLACE_SHELTER, id);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -170,16 +163,10 @@ public class DbShelterDao implements ShelterDao, AutoCloseable {
             statement = statementBuilder.prepareStatement(SQL_DELETE_BY_ID, id);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
         }
         return true;
-    }
-
-    @Override
-    public void close() throws Exception {
-        close(connection);
     }
 }

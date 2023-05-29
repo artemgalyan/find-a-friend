@@ -32,7 +32,7 @@ public interface Dao<K, T extends Entity> extends DaoBase {
                 statement.close();
             }
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            logger.error(e);
         }
     }
 
@@ -43,7 +43,7 @@ public interface Dao<K, T extends Entity> extends DaoBase {
         try {
             connection.close();
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            logger.error(e);
         }
     }
 }

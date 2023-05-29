@@ -45,7 +45,13 @@ public class Application {
         EndpointInfo endpoint = endpointInfos.get(request.getPathInfo());
         var sp = globalServiceProvider.getRequestServiceProvider();
         var pipeline = new PipelineSender(pipelineHandlers);
-        HandleResult result = pipeline.handle(request, response, sp, endpoint, null);
+        HandleResult result;
+        try {
+            result = pipeline.handle(request, response, sp, endpoint, null);
+        } catch (Exception e) {
+            logger.error(String.format("An exception occurred during request processing %s: ", request.getPathInfo()) + e);
+            result = new HandleResult(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
         response.setStatus(result.getCode());
         if (result.getResponseObject().isPresent()) {
             ServletUtils.writeResponse(result.getResponseObject().get(), response.getOutputStream());

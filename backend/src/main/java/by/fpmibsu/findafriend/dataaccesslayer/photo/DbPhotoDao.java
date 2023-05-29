@@ -11,8 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DbPhotoDao implements PhotoDao, AutoCloseable {
-    private final Logger logger = LogManager.getLogger();
+public class DbPhotoDao implements PhotoDao {
     private static final String SQL_SELECT_ALL_PHOTO = """
             SELECT photo_id, data, animal_advert_id
             FROM photo""";
@@ -62,7 +61,6 @@ public class DbPhotoDao implements PhotoDao, AutoCloseable {
                 photo.add(EntityProducer.makePhoto(resultSet));
             }
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -81,7 +79,6 @@ public class DbPhotoDao implements PhotoDao, AutoCloseable {
             resultSet.next();
             return EntityProducer.makePhoto(resultSet);
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -101,7 +98,6 @@ public class DbPhotoDao implements PhotoDao, AutoCloseable {
             statement = statementBuilder.prepareStatement(SQL_DELETE_PHOTO_BY_ID, value);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -118,7 +114,6 @@ public class DbPhotoDao implements PhotoDao, AutoCloseable {
                     instance.getData(), instance.getAdvertId());
             int result = statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -135,7 +130,6 @@ public class DbPhotoDao implements PhotoDao, AutoCloseable {
                     instance.getData(), instance.getId());
             int result = statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -151,11 +145,9 @@ public class DbPhotoDao implements PhotoDao, AutoCloseable {
             statement = statementBuilder.prepareStatement(SQL_DELETE_PHOTO_BY_ANIMAL_ADVERT_ID, id);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
-
         }
         return true;
     }
@@ -173,11 +165,9 @@ public class DbPhotoDao implements PhotoDao, AutoCloseable {
             }
             return photos;
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
-
         }
     }
 
@@ -198,17 +188,6 @@ public class DbPhotoDao implements PhotoDao, AutoCloseable {
             throw new DaoException(e);
         } finally {
             close(statement);
-            try {
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-
-            }
-
         }
-    }
-
-    @Override
-    public void close() throws Exception {
-        close(connection);
     }
 }

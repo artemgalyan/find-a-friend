@@ -11,8 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DbPlaceDao implements PlaceDao, AutoCloseable {
-    private final Logger logger = LogManager.getLogger();
+public class DbPlaceDao implements PlaceDao {
     private static final String SQL_SELECT_ALL_PLACES = """
             SELECT place_id, country, region, city, district
             FROM place""";
@@ -51,7 +50,6 @@ public class DbPlaceDao implements PlaceDao, AutoCloseable {
                 places.add(EntityProducer.makePlace(resultSet));
             }
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -72,7 +70,6 @@ public class DbPlaceDao implements PlaceDao, AutoCloseable {
             }
             return EntityProducer.makePlace(resultSet);
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -92,11 +89,9 @@ public class DbPlaceDao implements PlaceDao, AutoCloseable {
             statement = statementBuilder.prepareStatement(SQL_DELETE_BY_ID, value);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
-            
         }
         return true;
     }
@@ -112,7 +107,6 @@ public class DbPlaceDao implements PlaceDao, AutoCloseable {
                     instance.getDistrict());
             int result = statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -133,17 +127,10 @@ public class DbPlaceDao implements PlaceDao, AutoCloseable {
                     instance.getId());
             int result = statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
-            
         }
         return instance;
-    }
-
-    @Override
-    public void close() throws Exception {
-        close(connection);
     }
 }

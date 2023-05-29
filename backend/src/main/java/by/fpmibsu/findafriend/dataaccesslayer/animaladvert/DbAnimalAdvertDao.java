@@ -11,8 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DbAnimalAdvertDao implements AnimalAdvertDao, AutoCloseable {
-    private final Logger logger = LogManager.getLogger();
+public class DbAnimalAdvertDao implements AnimalAdvertDao {
     private static final String SQL_SELECT_ALL_ANIMALADVERTS = """
             SELECT *
             FROM animal_advert
@@ -79,11 +78,9 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao, AutoCloseable {
                 adverts.add(EntityProducer.makeAnimalAdvert(resultSet));
             }
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
-            
         }
         return adverts;
     }
@@ -104,7 +101,6 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao, AutoCloseable {
                 return null;
             }
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -124,7 +120,6 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao, AutoCloseable {
             statement = statementBuilder.prepareStatement(SQL_DELETE_ANIMALADVERT, value);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -159,7 +154,6 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao, AutoCloseable {
             }
             return true;
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -185,7 +179,6 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao, AutoCloseable {
             statement.executeUpdate();
             return instance;
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -200,7 +193,6 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao, AutoCloseable {
             statement = statementBuilder.prepareStatement(SQL_DELETE_BY_USER_ID, id);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -220,17 +212,10 @@ public class DbAnimalAdvertDao implements AnimalAdvertDao, AutoCloseable {
                 adverts.add(EntityProducer.makeAnimalAdvert(resultSet));
             }
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
-            
         }
         return adverts;
-    }
-
-    @Override
-    public void close() throws Exception {
-        close(connection);
     }
 }

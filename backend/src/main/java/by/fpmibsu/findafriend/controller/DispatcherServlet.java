@@ -6,6 +6,7 @@ import by.fpmibsu.findafriend.application.Setup;
 import by.fpmibsu.findafriend.application.authentication.AuthenticationData;
 import by.fpmibsu.findafriend.application.requestpipeline.PipelineHandler;
 import by.fpmibsu.findafriend.controller.setups.*;
+import by.fpmibsu.findafriend.dataaccesslayer.DaoException;
 import by.fpmibsu.findafriend.dataaccesslayer.DaoSetup;
 import by.fpmibsu.findafriend.dataaccesslayer.pool.ConnectionPool;
 import by.fpmibsu.findafriend.dataaccesslayer.validtokens.ValidTokensDao;
@@ -43,8 +44,7 @@ public class DispatcherServlet extends HttpServlet {
         try {
             properties.load(new FileReader("../conf/config.properties"));
         } catch (IOException exception) {
-            System.err.println("Failed to start the app, cannot read config");
-            exception.printStackTrace();
+            logger.fatal("Failed to start the app, cannot read config. Exception: " + exception);
             return;
         }
         var dbPath = (String) properties.getProperty("database_url");
@@ -59,13 +59,14 @@ public class DispatcherServlet extends HttpServlet {
                 : HashPasswordHasher.class;
         var builder = new ApplicationBuilder();
         builder.readKeys("../conf/");
+        builder.addPipelineHandler(daoExceptionHandler());
         builder.addAuthentication();
         builder.addPipelineHandler(checkTokenHandler());
         setups.forEach(s -> s.applyTo(builder));
         builder.services()
                 .addSingleton(ConnectionPool.class, () -> connectionPool)
                 .addSingleton(PasswordHasher.class, passwordHasher)
-                .addTransient(Connection.class, (d) -> d.getRequiredService(ConnectionPool.class).getConnection());
+                .addScoped(Connection.class, (d) -> d.getRequiredService(ConnectionPool.class).getConnection());
         application = builder.build();
     }
 
@@ -90,5 +91,18 @@ public class DispatcherServlet extends HttpServlet {
             authData.setValid(tokenDao.isValidToken(authData.getToken(), userId));
             return next.handle(request, response, scopedServiceProvider, endpointInfo, null);
         };
+    }
+
+    private PipelineHandler daoExceptionHandler() {
+        return ((request, response, scopedServiceProvider, endpointInfo, next) -> {
+            try {
+                return next.handle(request, response, scopedServiceProvider, endpointInfo, null);
+            } catch (DaoException e) {
+                logger.error("Caught DaoException. Rollbacking changes. Exception: " + e.getMessage());
+                var connection = scopedServiceProvider.getRequiredService(Connection.class);
+                connection.rollback();
+                throw e;
+            }
+        });
     }
 }

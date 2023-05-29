@@ -50,7 +50,7 @@ public class ApplicationBuilder {
                 logger.info(String.format("Handled request %s in %d ms", request.getPathInfo(), end - start));
                 return result;
             } catch (Exception e) {
-                logger.error(e);
+                logger.error(String.format("An exception occurred during request processing %s: ", request.getPathInfo()) + e);
                 return new HandleResult(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             }
         });
@@ -75,6 +75,7 @@ public class ApplicationBuilder {
             input.close();
             keys = new Application.Keys(publicKey, privateKey);
         } catch (IOException | ClassNotFoundException e) {
+            logger.fatal("Unable to read keys (public and private) from " + path + ". Make sure there are files named public and private which are serialized Java keys");
             throw new RuntimeException(e);
         }
         return this;

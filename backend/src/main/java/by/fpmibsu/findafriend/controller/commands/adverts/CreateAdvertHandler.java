@@ -6,11 +6,14 @@ import by.fpmibsu.findafriend.dataaccesslayer.advert.AdvertDao;
 import by.fpmibsu.findafriend.entity.Advert;
 import by.fpmibsu.findafriend.entity.Place;
 import by.fpmibsu.findafriend.entity.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Date;
 import java.time.Instant;
 
 public class CreateAdvertHandler extends RequestHandler<Boolean, CreateAdvertCommand> {
+    private final Logger logger = LogManager.getLogger(CreateAdvertHandler.class);
     private final AdvertDao advertDao;
     private final AuthenticationData authenticationData;
 
@@ -21,16 +24,12 @@ public class CreateAdvertHandler extends RequestHandler<Boolean, CreateAdvertCom
 
     @Override
     public Boolean handle(CreateAdvertCommand request) {
-        try {
-            var place = new Place();
-            place.setId(request.placeId);
-            var u = new User();
-            u.setId(Integer.parseInt(authenticationData.getClaim("id")));
-            var advert = new Advert(0, request.title, request.description, Date.from(Instant.now()), place, u, Advert.AdvertType.fromValue(request.advertType));
-            advertDao.create(advert);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        var place = new Place();
+        place.setId(request.placeId);
+        var u = new User();
+        u.setId(Integer.parseInt(authenticationData.getClaim("id")));
+        var advert = new Advert(0, request.title, request.description, Date.from(Instant.now()), place, u, Advert.AdvertType.fromValue(request.advertType));
+        advertDao.create(advert);
+        return true;
     }
 }

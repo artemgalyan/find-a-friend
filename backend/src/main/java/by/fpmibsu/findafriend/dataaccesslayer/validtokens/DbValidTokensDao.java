@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class DbValidTokensDao implements ValidTokensDao, AutoCloseable {
+public class DbValidTokensDao implements ValidTokensDao {
     private final String SQL_DELETE_TOKENS = """
                 DELETE
                 FROM valid_tokens
@@ -37,7 +37,6 @@ public class DbValidTokensDao implements ValidTokensDao, AutoCloseable {
             var result = statement.executeQuery();
             return result.next();
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -52,7 +51,6 @@ public class DbValidTokensDao implements ValidTokensDao, AutoCloseable {
             statement.setInt(1, userId);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
@@ -68,15 +66,9 @@ public class DbValidTokensDao implements ValidTokensDao, AutoCloseable {
             statement.setInt(2, userId);
             int result = statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error(e.getMessage());
             throw new DaoException(e);
         } finally {
             close(statement);
         }
-    }
-
-    @Override
-    public void close() throws Exception {
-        close(connection);
     }
 }

@@ -31,7 +31,6 @@ public abstract class Controller {
         return new HandleResult(HttpServletResponse.SC_OK);
     }
 
-    // TODO: Добавить подобные
     protected static HandleResult notAuthorized() {
         return new HandleResult(HttpServletResponse.SC_FORBIDDEN);
     }

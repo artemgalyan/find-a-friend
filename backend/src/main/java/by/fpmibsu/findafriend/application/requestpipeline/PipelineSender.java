@@ -19,7 +19,7 @@ public class PipelineSender implements PipelineHandler {
     @Override
     public HandleResult handle(HttpServletRequest request, HttpServletResponse response,
                                ScopedServiceProvider scopedServiceProvider,
-                               EndpointInfo endpointInfo, PipelineHandler next) {
+                               EndpointInfo endpointInfo, PipelineHandler next) throws Exception {
         var handler = handlers.get(index);
         ++index;
         return handler.handle(request, response, scopedServiceProvider, endpointInfo, this);

@@ -24,7 +24,7 @@ public interface ValidTokensDao extends DaoBase {
                 statement.close();
             }
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            logger.error(e);
         }
     }
 
@@ -35,7 +35,7 @@ public interface ValidTokensDao extends DaoBase {
         try {
             connection.close();
         } catch (SQLException e) {
-            logger.error(e.getMessage());
+            logger.error(e);
         }
     }
 }

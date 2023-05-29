@@ -10,5 +10,5 @@ import javax.servlet.http.HttpServletResponse;
 public interface PipelineHandler {
     HandleResult handle(HttpServletRequest request, HttpServletResponse response,
                         ScopedServiceProvider scopedServiceProvider, EndpointInfo endpointInfo,
-                        PipelineHandler next);
+                        PipelineHandler next) throws Exception;
 }
