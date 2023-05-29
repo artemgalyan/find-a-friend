@@ -17,7 +17,7 @@ public interface GlobalServiceProvider extends ServiceProvider {
     ScopedServiceProvider getRequestServiceProvider();
 
     default <T> GlobalServiceProvider addService(Class<T> registeredClazz, ServiceType type, Class<? extends T> realClazz) {
-        return addService(registeredClazz, type, () -> ObjectConstructor.createInstance(realClazz, this));
+        return addService(registeredClazz, type, (d) -> ObjectConstructor.createInstance(realClazz, d));
     }
 
     default <T> GlobalServiceProvider addService(Class<T> clazz, ServiceType type, Supplier<? extends T> supplier) {
@@ -77,9 +77,4 @@ public interface GlobalServiceProvider extends ServiceProvider {
     default <T> GlobalServiceProvider addTransient(Class<T> registeredClass, Class<? extends T> actualClass) {
         return addService(registeredClass, ServiceType.TRANSIENT, actualClass);
     }
-
-    private static <T> void add(Class<T> registeredClass, ServiceType serviceType, Function<ServiceProvider, ? extends T> supplier, ServiceProvider sp) {
-
-    }
-
 }

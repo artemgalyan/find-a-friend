@@ -99,7 +99,7 @@ public class DispatcherServlet extends HttpServlet {
                 return next.handle(request, response, scopedServiceProvider, endpointInfo, null);
             } catch (Exception e) {
                 if (e.getCause() != null && e.getCause() instanceof DaoException de) {
-                    logger.error("Caught DaoException. Rollbacking changes. Exception: " + de);
+                    logger.error("Caught DaoException. Rolling back changes. Exception: " + de);
                     var connection = scopedServiceProvider.getRequiredService(Connection.class);
                     connection.rollback();
                 }
