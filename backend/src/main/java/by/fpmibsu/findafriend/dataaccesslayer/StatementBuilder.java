@@ -45,7 +45,7 @@ public class StatementBuilder {
             return;
         }
         if (o instanceof Boolean b) {
-            statement.setInt(index, b ? 'T' : 'F');
+            statement.setString(index, b ? "T" : "F");
             return;
         }
         if (o instanceof Character ch) {

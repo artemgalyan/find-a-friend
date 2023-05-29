@@ -54,17 +54,23 @@ public class HashPasswordHasher extends PasswordHasher {
     @Override
     public PasswordVerificationResult verifyPassword(User user, String providedPassword) {
         var decoder = Base64.getDecoder();
-        var decodedUserPassword = decoder.decode(user.getPassword());
-        if (decodedUserPassword.length != byteArrayForPasswordSize) {
-            return providedPassword.equals(user.getPassword())
+        try {
+            var decodedUserPassword = decoder.decode(user.getPassword());
+            if (decodedUserPassword.length != byteArrayForPasswordSize) {
+                return providedPassword.equals(user.getPassword())
+                        ? PasswordVerificationResult.SUCCESS_NEEDS_TO_BE_REHASHED
+                        : PasswordVerificationResult.FAILED;
+            }
+            var salt = Arrays.copyOfRange(decodedUserPassword, bytePasswordPrefix.length, bytePasswordPrefix.length + saltSize);
+            var hash = Arrays.copyOfRange(decodedUserPassword, bytePasswordPrefix.length + saltSize, decodedUserPassword.length);
+            byte[] passwordHash = hash(providedPassword, salt);
+            return Arrays.equals(passwordHash, hash)
+                    ? PasswordVerificationResult.SUCCESS
+                    : PasswordVerificationResult.FAILED;
+        } catch (Exception e) {
+            return new SimplePasswordHasher().verifyPassword(user, providedPassword).equals(PasswordVerificationResult.SUCCESS)
                     ? PasswordVerificationResult.SUCCESS_NEEDS_TO_BE_REHASHED
                     : PasswordVerificationResult.FAILED;
         }
-        var salt = Arrays.copyOfRange(decodedUserPassword, bytePasswordPrefix.length, bytePasswordPrefix.length + saltSize);
-        var hash = Arrays.copyOfRange(decodedUserPassword, bytePasswordPrefix.length + saltSize, decodedUserPassword.length);
-        byte[] passwordHash = hash(providedPassword, salt);
-        return Arrays.equals(passwordHash, hash)
-                ? PasswordVerificationResult.SUCCESS
-                : PasswordVerificationResult.FAILED;
     }
 }

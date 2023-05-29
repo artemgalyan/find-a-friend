@@ -25,7 +25,7 @@ public class UserShelterController extends Controller {
     public HandleResult addUserToShelter(@FromQuery(parameterName = "shelterId") int shelterId,
                                          @FromQuery(parameterName = "userId") int userId,
                                          @WebToken(parameterName = "role") String role) throws Exception {
-        if (AuthUtils.allowRoles(role, User.Role.MODERATOR, User.Role.ADMINISTRATOR)) {
+        if (!AuthUtils.allowRoles(role, User.Role.MODERATOR, User.Role.ADMINISTRATOR)) {
             Logging.warnNonAuthorizedAccess(this.request, logger);
             return notAuthorized();
         }
@@ -37,7 +37,7 @@ public class UserShelterController extends Controller {
     @Endpoint(path = "/removeUserFromShelter", method = HttpMethod.POST)
     public HandleResult removeFromShelter(@FromQuery(parameterName = "userId") int userId,
                                           @WebToken(parameterName = "role") String role) throws Exception {
-        if (AuthUtils.allowRoles(role, User.Role.MODERATOR, User.Role.ADMINISTRATOR)) {
+        if (!AuthUtils.allowRoles(role, User.Role.MODERATOR, User.Role.ADMINISTRATOR)) {
             Logging.warnNonAuthorizedAccess(this.request, logger);
             return notAuthorized();
         }

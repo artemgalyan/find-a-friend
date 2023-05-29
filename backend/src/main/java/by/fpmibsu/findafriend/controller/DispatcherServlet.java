@@ -97,10 +97,12 @@ public class DispatcherServlet extends HttpServlet {
         return ((request, response, scopedServiceProvider, endpointInfo, next) -> {
             try {
                 return next.handle(request, response, scopedServiceProvider, endpointInfo, null);
-            } catch (DaoException e) {
-                logger.error("Caught DaoException. Rollbacking changes. Exception: " + e.getMessage());
-                var connection = scopedServiceProvider.getRequiredService(Connection.class);
-                connection.rollback();
+            } catch (Exception e) {
+                if (e.getCause() != null && e.getCause() instanceof DaoException de) {
+                    logger.error("Caught DaoException. Rollbacking changes. Exception: " + de);
+                    var connection = scopedServiceProvider.getRequiredService(Connection.class);
+                    connection.rollback();
+                }
                 throw e;
             }
         });
