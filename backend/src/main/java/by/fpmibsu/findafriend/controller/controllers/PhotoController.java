@@ -15,12 +15,12 @@ public class PhotoController extends Controller {
     }
 
     @Endpoint(path = "/getByAdvertId", method = HttpMethod.GET)
-    public HandleResult getByAdvertId(@FromQuery(parameterName = "id") int advertId) {
+    public HandleResult getByAdvertId(@FromQuery(parameterName = "id") int advertId) throws Exception {
         return ok(mediatr.send(new GetPhotosByAdvertIdQuery(advertId)));
     }
 
     @Endpoint(path = "/getPreview", method = HttpMethod.GET)
-    public HandleResult getPreview(@FromQuery(parameterName = "id") int advertId) {
+    public HandleResult getPreview(@FromQuery(parameterName = "id") int advertId) throws Exception {
         response.setContentType("data:image/jpeg;charset=utf-8;base64");
         return ok(mediatr.send(new GetAdvertPreviewRequest(advertId)));
     }

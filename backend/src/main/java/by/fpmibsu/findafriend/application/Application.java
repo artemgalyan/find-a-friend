@@ -35,7 +35,7 @@ public class Application {
     }
 
     public void send(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        logger.trace("Started request " + request.getContextPath() + " processing from " + request.getLocalAddr());
+        logger.trace("Started request " + request.getPathInfo() + " processing from " + request.getLocalAddr());
         ServletUtils.setResponseHeaders(response);
         if (!endpointInfos.containsKey(request.getPathInfo())) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -52,10 +52,15 @@ public class Application {
             logger.error(String.format("An exception occurred during request processing %s: ", request.getPathInfo()) + e);
             result = new HandleResult(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
+        try {
+            sp.close();
+        } catch (Exception e) {
+            logger.error("Error while destroying scoped service provider: " + e);
+        }
         response.setStatus(result.getCode());
         if (result.getResponseObject().isPresent()) {
             ServletUtils.writeResponse(result.getResponseObject().get(), response.getOutputStream());
         }
-        logger.trace("Finished request " + request.getContextPath() + " processing from " + request.getLocalAddr());
+        logger.trace("Finished request " + request.getPathInfo() + " processing from " + request.getLocalAddr());
     }
 }

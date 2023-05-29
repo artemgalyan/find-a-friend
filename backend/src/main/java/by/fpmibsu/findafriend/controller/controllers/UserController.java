@@ -30,18 +30,18 @@ public class UserController extends Controller {
     }
 
     @Endpoint(path = "/getAll", method = HttpMethod.GET)
-    public HandleResult getAll() {
+    public HandleResult getAll() throws Exception {
         return ok(mediatr.send(new GetUsersQuery()));
     }
 
     @RequireAuthentication
     @Endpoint(path = "/getById", method = HttpMethod.GET)
-    public HandleResult getById(@FromQuery(parameterName = "id") int id) {
+    public HandleResult getById(@FromQuery(parameterName = "id") int id) throws Exception {
         return ok(mediatr.send(new GetUserByIdQuery(id)));
     }
 
     @Endpoint(path = "/create", method = HttpMethod.POST)
-    public HandleResult createUser(@FromBody CreateUserCommand request) {
+    public HandleResult createUser(@FromBody CreateUserCommand request) throws Exception {
         if (isAnyEmpty(request.name, request.surname, request.login, request.password, request.email, request.phoneNumber)) {
             return badRequest();
         }
@@ -59,7 +59,7 @@ public class UserController extends Controller {
     @Endpoint(path = "/update", method = HttpMethod.PUT)
     public HandleResult updateUser(@FromBody UpdateUserCommand request,
                                    @WebToken(parameterName = "id") int userId,
-                                   @WebToken(parameterName = "role") String role) {
+                                   @WebToken(parameterName = "role") String role) throws Exception {
         if (userId != request.userId && !AuthUtils.allowRoles(role, User.Role.ADMINISTRATOR)) {
             Logging.warnNonAuthorizedAccess(this.request, logger);
             return notAuthorized();
@@ -70,7 +70,7 @@ public class UserController extends Controller {
     @RequireAuthentication
     @Endpoint(path = "/delete", method = HttpMethod.DELETE)
     public HandleResult deleteUserById(@FromQuery(parameterName = "id") int id, @WebToken(parameterName = "id") int userId,
-                                       @WebToken(parameterName = "role") String role) {
+                                       @WebToken(parameterName = "role") String role) throws Exception {
         if (userId != id && !AuthUtils.allowRoles(role, User.Role.ADMINISTRATOR)) {
             Logging.warnNonAuthorizedAccess(this.request, logger);
             return notAuthorized();
@@ -80,14 +80,14 @@ public class UserController extends Controller {
 
     @RequireAuthentication
     @Endpoint(path = "/getSelfInfo", method = HttpMethod.GET)
-    public HandleResult getSelfInfo(@WebToken(parameterName = "id") int userId) {
+    public HandleResult getSelfInfo(@WebToken(parameterName = "id") int userId) throws Exception {
         return getById(userId);
     }
 
     @RequireAuthentication
     @Endpoint(path = "/setRole", method = HttpMethod.PUT)
     public HandleResult updateRole(@FromBody SetUserRoleCommand command,
-                                   @WebToken(parameterName = "role") String role) {
+                                   @WebToken(parameterName = "role") String role) throws Exception {
         if (!Validation.in(command.newRole, User.Role.USER.toString(), User.Role.MODERATOR.toString(),
                 User.Role.SHELTER_ADMINISTRATOR.toString(), User.Role.ADMINISTRATOR.toString())) {
             return badRequest();
@@ -109,7 +109,7 @@ public class UserController extends Controller {
 
     @RequireAuthentication
     @Endpoint(path = "/getId", method = HttpMethod.GET)
-    public HandleResult getSelfId(@WebToken(parameterName = "id") int id) {
+    public HandleResult getSelfId(@WebToken(parameterName = "id") int id) throws Exception {
         return ok(mediatr.send(new GetUserIdAndLoginQuery(id)));
     }
 

@@ -3,6 +3,7 @@ package by.fpmibsu.findafriend.application.serviceproviders;
 import by.fpmibsu.findafriend.application.mediatr.HandlersDataList;
 import by.fpmibsu.findafriend.application.mediatr.Mediatr;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -37,12 +38,16 @@ public class DefaultGlobalServiceProvider implements GlobalServiceProvider {
 
     @Override
     public <T> T getRequiredService(Class<T> clazz) {
-        var entry = tryGetObject(clazz);
+        return getRequiredService(clazz, this);
+    }
+
+    private <T> T getRequiredService(Class<T> clazz, ServiceProvider sp) {
+        var entry = tryGetObject(clazz, sp);
         if (entry.isEmpty()) {
             throw new ServiceNotFoundException("Can't find service of type " + clazz.getName());
         }
         var type = entries.get(clazz).type;
-        if (type == ServiceType.SINGLETON) {
+        if (type.equals(ServiceType.SINGLETON)) {
             singletons.put(clazz, new ConstructedObject<>(clazz, entry.get()));
         }
         return entry.get();
@@ -72,13 +77,13 @@ public class DefaultGlobalServiceProvider implements GlobalServiceProvider {
         return Optional.ofNullable(entries.get(clazz));
     }
 
-    private <T> Optional<T> tryGetObject(Class<T> clazz) {
+    private <T> Optional<T> tryGetObject(Class<T> clazz, ServiceProvider sp) {
         if (singletons.containsKey(clazz)) {
             return Optional.of((T) singletons.get(clazz).instance);
         }
         if (entries.containsKey(clazz)) {
             return Optional.of(
-                    (T) entries.get(clazz).producer.apply(this)
+                    (T) entries.get(clazz).producer.apply(sp)
             );
         }
         return Optional.empty();
@@ -107,8 +112,8 @@ public class DefaultGlobalServiceProvider implements GlobalServiceProvider {
             }
 
             var e = entry.get();
-            var result = DefaultGlobalServiceProvider.this.getRequiredService(clazz);
-            if (e.type == ServiceType.SCOPED) {
+            var result = DefaultGlobalServiceProvider.this.getRequiredService(clazz, RequestServiceProvider.this);
+            if (ServiceType.SCOPED.equals(e.type)) {
                 scoped.put(clazz, new ConstructedObject<>(clazz, result));
             }
             return result;
@@ -130,11 +135,19 @@ public class DefaultGlobalServiceProvider implements GlobalServiceProvider {
 
         @Override
         public void close() throws Exception {
+            var exceptions = new ArrayList<Throwable>();
             for (ConstructedObject<?> entry : scoped.values()) {
                 var instance = entry.instance;
                 if (instance != this && instance instanceof AutoCloseable ac) {
-                    ac.close();
+                    try {
+                        ac.close();
+                    } catch (Exception e) {
+                        exceptions.add(e);
+                    }
                 }
+            }
+            if (exceptions.size() != 0) {
+                throw new AggregateException(exceptions);
             }
         }
     }

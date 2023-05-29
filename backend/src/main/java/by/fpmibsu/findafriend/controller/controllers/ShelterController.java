@@ -24,18 +24,18 @@ public class ShelterController extends Controller {
     }
 
     @Endpoint(path = "/getAll", method = HttpMethod.GET)
-    public HandleResult getAll() {
+    public HandleResult getAll() throws Exception {
         return ok(mediatr.send(new GetSheltersQuery()));
     }
 
     @Endpoint(path = "/getById", method = HttpMethod.GET)
-    public HandleResult getById(@FromQuery(parameterName = "id") int id) {
+    public HandleResult getById(@FromQuery(parameterName = "id") int id) throws Exception {
         return ok(mediatr.send(new GetShelterByIdQuery(id)));
     }
 
     @RequireAuthentication
     @Endpoint(path = "/create", method = HttpMethod.POST)
-    public HandleResult createShelter(@FromBody CreateShelterCommand request, @WebToken(parameterName = "role") String role) {
+    public HandleResult createShelter(@FromBody CreateShelterCommand request, @WebToken(parameterName = "role") String role) throws Exception {
         if (!AuthUtils.allowRoles(role, User.Role.ADMINISTRATOR)) {
             Logging.warnNonAuthorizedAccess(this.request, logger);
             return notAuthorized();
@@ -47,7 +47,7 @@ public class ShelterController extends Controller {
     @Endpoint(path = "/update", method = HttpMethod.PUT)
     public HandleResult updateShelter(@FromBody UpdateShelterCommand request,
                                       @WebToken(parameterName = "role") String role,
-                                      @WebToken(parameterName = "shelter_id") int shelterId) {
+                                      @WebToken(parameterName = "shelter_id") int shelterId) throws Exception {
         if (User.Role.SHELTER_ADMINISTRATOR.toString().equals(role)) {
             if (shelterId != request.shelterId) {
                 Logging.warnNonAuthorizedAccess(this.request, logger);
@@ -62,7 +62,7 @@ public class ShelterController extends Controller {
 
     @RequireAuthentication
     @Endpoint(path = "/delete", method = HttpMethod.DELETE)
-    public HandleResult deleteShelterById(@FromQuery(parameterName = "id") int id, @WebToken(parameterName = "role") String role) {
+    public HandleResult deleteShelterById(@FromQuery(parameterName = "id") int id, @WebToken(parameterName = "role") String role) throws Exception {
         if (!AuthUtils.allowRoles(role, User.Role.ADMINISTRATOR)) {
             Logging.warnNonAuthorizedAccess(this.request, logger);
             return notAuthorized();

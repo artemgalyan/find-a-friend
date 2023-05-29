@@ -16,7 +16,7 @@ public class MediatrTests {
         }
     }
     @Test
-    public void registersHandlerAndSendsRequest() {
+    public void registersHandlerAndSendsRequest() throws Exception {
         var handlers = new HandlersDataList();
         handlers.registerHandler(TestHandler.class, TestRequest.class);
         var sp = Mockito.mock(ServiceProvider.class);
@@ -26,12 +26,14 @@ public class MediatrTests {
     }
 
     @Test(expectedExceptions = NoHandlerException.class)
-    public void throwsIfHandlerNotRegistered() {
+    public void throwsIfHandlerNotRegistered() throws Exception {
         var handlers = new HandlersDataList();
         var handler = new TestHandler();
         var sp = Mockito.mock(ServiceProvider.class);
-        Mockito.doReturn(handler).when(sp).getRequiredService(Mockito.any());
+        Mockito.doReturn(handler).when(sp)
+                .getRequiredService(Mockito.any());
         var mediatr = new Mediatr(sp, handlers);
         var result = mediatr.send(new TestRequest());
     }
+
 }

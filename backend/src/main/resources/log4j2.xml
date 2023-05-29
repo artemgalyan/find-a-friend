@@ -3,7 +3,6 @@
     <Appenders>
         <Console name="console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
-            <!--            <GELFLayout></GELFLayout>-->
         </Console>
         <RollingFile name = "file-rolling" fileName="logs/log-roll.txt" append = "true"
                      filePattern = "logs/${date:yyyy-MM-dd}/%d{yyyy-MM-dd_HH-mm}_%i.txt">

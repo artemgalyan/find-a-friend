@@ -25,7 +25,7 @@ public interface GlobalServiceProvider extends ServiceProvider {
     }
 
     default <T> GlobalServiceProvider addService(Class<T> clazz, ServiceType type) {
-        return addService(clazz, type, d -> ObjectConstructor.createInstance(clazz, this));
+        return addService(clazz, type, d -> ObjectConstructor.createInstance(clazz, d));
     }
 
     default <T> GlobalServiceProvider addScoped(Class<T> clazz, Function<ServiceProvider, ? extends T> supplier) {
@@ -37,7 +37,7 @@ public interface GlobalServiceProvider extends ServiceProvider {
     }
 
     default <T> GlobalServiceProvider addScoped(Class<T> clazz) {
-        return addScoped(clazz, (d) -> ObjectConstructor.createInstance(clazz, this));
+        return addScoped(clazz, (d) -> ObjectConstructor.createInstance(clazz, d));
     }
 
     default <T> GlobalServiceProvider addScoped(Class<T> registeredClass, Class<? extends T> actualClass) {
@@ -54,7 +54,7 @@ public interface GlobalServiceProvider extends ServiceProvider {
     }
 
     default <T> GlobalServiceProvider addSingleton(Class<T> clazz) {
-        return addSingleton(clazz, (d) -> ObjectConstructor.createInstance(clazz, this));
+        return addSingleton(clazz, (d) -> ObjectConstructor.createInstance(clazz, d));
     }
 
     default <T> GlobalServiceProvider addSingleton(Class<T> registeredClass, Class<? extends T> actualClass) {
@@ -71,10 +71,15 @@ public interface GlobalServiceProvider extends ServiceProvider {
     }
 
     default <T> GlobalServiceProvider addTransient(Class<T> clazz) {
-        return addTransient(clazz, (d) -> ObjectConstructor.createInstance(clazz, this));
+        return addTransient(clazz, (d) -> ObjectConstructor.createInstance(clazz, d));
     }
 
     default <T> GlobalServiceProvider addTransient(Class<T> registeredClass, Class<? extends T> actualClass) {
         return addService(registeredClass, ServiceType.TRANSIENT, actualClass);
     }
+
+    private static <T> void add(Class<T> registeredClass, ServiceType serviceType, Function<ServiceProvider, ? extends T> supplier, ServiceProvider sp) {
+
+    }
+
 }

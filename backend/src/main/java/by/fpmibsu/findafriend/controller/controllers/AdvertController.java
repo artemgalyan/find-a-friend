@@ -26,18 +26,18 @@ public class AdvertController extends Controller {
     }
 
     @Endpoint(path = "/getAll", method = HttpMethod.GET)
-    public HandleResult getAll() {
+    public HandleResult getAll() throws Exception {
         return ok(mediatr.send(new GetAdvertsQuery()));
     }
 
     @Endpoint(path = "/getById", method = HttpMethod.GET)
-    public HandleResult getById(@FromQuery(parameterName = "id") int id) {
+    public HandleResult getById(@FromQuery(parameterName = "id") int id) throws Exception {
         return ok(mediatr.send(new GetAdvertByIdQuery(id)));
     }
 
     @RequireAuthentication
     @Endpoint(path = "/create", method = HttpMethod.POST)
-    public HandleResult createAdvert(@FromBody CreateAdvertCommand request) {
+    public HandleResult createAdvert(@FromBody CreateAdvertCommand request) throws Exception {
         if (Validation.isAnyNullOrEmpty(request.advertType, request.description, request.title)
                 || !Validation.in(request.advertType, "V", "S")) {
             return badRequest();
@@ -48,7 +48,7 @@ public class AdvertController extends Controller {
     @RequireAuthentication
     @Endpoint(path = "/update", method = HttpMethod.PUT)
     public HandleResult updateAdvert(@FromBody UpdateAdvertCommand request, @WebToken(parameterName = "id") int userId,
-                                     @WebToken(parameterName = "role") String role) {
+                                     @WebToken(parameterName = "role") String role) throws Exception {
         if (Validation.isAnyNullOrEmpty(request.description, request.title)) {
             return badRequest();
         }
@@ -70,7 +70,7 @@ public class AdvertController extends Controller {
     @Endpoint(path = "/delete", method = HttpMethod.DELETE)
     public HandleResult deleteAdvertById(@FromQuery(parameterName = "id") int id,
                                          @WebToken(parameterName = "id") int userId,
-                                         @WebToken(parameterName = "role") String role) {
+                                         @WebToken(parameterName = "role") String role) throws Exception {
         if (!AuthUtils.allowRoles(role, User.Role.ADMINISTRATOR, User.Role.MODERATOR)) {
             var advertDao = serviceProvider.getRequiredService(AdvertDao.class);
             var advert = advertDao.getEntityById(id);

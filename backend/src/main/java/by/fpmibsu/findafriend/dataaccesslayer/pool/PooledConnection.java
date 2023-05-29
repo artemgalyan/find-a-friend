@@ -40,7 +40,7 @@ public class PooledConnection implements Connection, Comparable<PooledConnection
 
 	@Override
 	public void close() throws SQLException {
-		this.commit();
+		commit();
 		connectionPool.freeConnection(this);
 	}
 

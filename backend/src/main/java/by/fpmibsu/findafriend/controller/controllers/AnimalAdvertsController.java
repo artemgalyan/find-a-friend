@@ -28,12 +28,12 @@ public class AnimalAdvertsController extends Controller {
     }
 
     @Endpoint(path = "/getAll", method = HttpMethod.GET)
-    public HandleResult getAll() {
+    public HandleResult getAll() throws Exception {
         return ok(mediatr.send(new GetAllAnimalAdvertsQuery()));
     }
 
     @Endpoint(path = "/getById", method = HttpMethod.GET)
-    public HandleResult getById(@FromQuery(parameterName = "id") int id) {
+    public HandleResult getById(@FromQuery(parameterName = "id") int id) throws Exception {
         return ok(mediatr.send(new GetAnimalAdvertQuery(id)));
     }
 
@@ -41,7 +41,7 @@ public class AnimalAdvertsController extends Controller {
     @Endpoint(path = "/delete", method = HttpMethod.DELETE)
     public HandleResult delete(@FromQuery(parameterName = "id") int id,
                                @WebToken(parameterName = "id") int userId,
-                               @WebToken(parameterName = "role") String role) {
+                               @WebToken(parameterName = "role") String role) throws Exception {
         var animalAdvertDao = serviceProvider.getRequiredService(AnimalAdvertDao.class);
         if (!AuthUtils.allowRoles(role, User.Role.ADMINISTRATOR, User.Role.MODERATOR)) {
             var advert = animalAdvertDao.getEntityById(id);
@@ -64,7 +64,7 @@ public class AnimalAdvertsController extends Controller {
 
     @RequireAuthentication
     @Endpoint(path = "/create", method = HttpMethod.POST)
-    public HandleResult create(@FromBody CreateAnimalAdvertCommand command) {
+    public HandleResult create(@FromBody CreateAnimalAdvertCommand command) throws Exception {
         if (Validation.isAnyNullOrEmpty(command.animalType, command.description, command.sex, command.title)
                 || command.birthdate == null
                 || !Validation.in(command.sex, "M", "F")
@@ -75,18 +75,18 @@ public class AnimalAdvertsController extends Controller {
     }
 
     @Endpoint(path = "/getByUserId", method = HttpMethod.GET)
-    public HandleResult getByUserId(@FromQuery(parameterName = "id") int userId) {
+    public HandleResult getByUserId(@FromQuery(parameterName = "id") int userId) throws Exception {
         return ok(mediatr.send(new GetAnimalAdvertsByUserIdQuery(userId)));
     }
 
     @Endpoint(path = "/getByShelterId", method = HttpMethod.GET)
-    public HandleResult getByShelterId(@FromQuery(parameterName = "id") int id) {
+    public HandleResult getByShelterId(@FromQuery(parameterName = "id") int id) throws Exception {
         return ok(mediatr.send(new GetAnimalAdvertsByShelterIdQuery(id)));
     }
 
     @RequireAuthentication
     @Endpoint(path = "/getMine", method = HttpMethod.GET)
-    public HandleResult getMy(@WebToken(parameterName = "id") int id) {
+    public HandleResult getMy(@WebToken(parameterName = "id") int id) throws Exception {
         return getByUserId(id);
     }
 }

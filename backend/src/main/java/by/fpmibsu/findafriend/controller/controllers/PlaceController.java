@@ -23,18 +23,18 @@ public class PlaceController extends Controller {
     }
 
     @Endpoint(path = "/getAll", method = HttpMethod.GET)
-    public HandleResult getAll() {
+    public HandleResult getAll() throws Exception {
         return ok(mediatr.send(new GetPlacesQuery()));
     }
 
     @Endpoint(path = "/getById", method = HttpMethod.GET)
-    public HandleResult getById(@FromQuery(parameterName = "id") int id) {
+    public HandleResult getById(@FromQuery(parameterName = "id") int id) throws Exception {
         return ok(mediatr.send(new GetPlaceByIdQuery(id)));
     }
 
     @RequireAuthentication
     @Endpoint(path = "/create", method = HttpMethod.POST)
-    public HandleResult createPlace(@FromBody CreatePlaceCommand request, @WebToken(parameterName = "role") String role) {
+    public HandleResult createPlace(@FromBody CreatePlaceCommand request, @WebToken(parameterName = "role") String role) throws Exception {
         if (!User.Role.ADMINISTRATOR.toString().equals(role)) {
             Logging.warnNonAuthorizedAccess(this.request, logger);
             return notAuthorized();
@@ -44,7 +44,7 @@ public class PlaceController extends Controller {
 
     @RequireAuthentication
     @Endpoint(path = "/update", method = HttpMethod.PUT)
-    public HandleResult updatePlace(@FromBody UpdatePlaceCommand request, @WebToken(parameterName = "role") String role) {
+    public HandleResult updatePlace(@FromBody UpdatePlaceCommand request, @WebToken(parameterName = "role") String role) throws Exception {
         if (!User.Role.ADMINISTRATOR.toString().equals(role)) {
             Logging.warnNonAuthorizedAccess(this.request, logger);
             return notAuthorized();
@@ -54,7 +54,7 @@ public class PlaceController extends Controller {
 
     @RequireAuthentication
     @Endpoint(path = "/delete", method = HttpMethod.DELETE)
-    public HandleResult deletePlaceById(@FromQuery(parameterName = "id") int id, @WebToken(parameterName = "role") String role) {
+    public HandleResult deletePlaceById(@FromQuery(parameterName = "id") int id, @WebToken(parameterName = "role") String role) throws Exception {
         if (!User.Role.ADMINISTRATOR.toString().equals(role)) {
             Logging.warnNonAuthorizedAccess(this.request, logger);
             return notAuthorized();

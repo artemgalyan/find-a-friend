@@ -54,9 +54,7 @@ public class ControllerMethodInvoker {
                 return new HandleResult(HttpServletResponse.SC_BAD_REQUEST);
             }
         }
-        try (sp) {
-            return (HandleResult) method.invoke(controller, methodParams);
-        }
+        return (HandleResult) method.invoke(controller, methodParams);
     }
 
     private static Object readFromQuery(String key, HttpServletRequest request, Class<?> type) throws JsonProcessingException {

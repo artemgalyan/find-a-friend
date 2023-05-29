@@ -15,7 +15,7 @@ public class AuthController extends Controller {
 
     @Endpoint(path = "/signIn", method = HttpMethod.GET)
     public HandleResult signIn(@FromQuery(parameterName = "login") String login,
-                               @FromQuery(parameterName = "password") String password) {
+                               @FromQuery(parameterName = "password") String password) throws Exception {
         return ok(mediatr.send(new SignInCommand(login, password)));
     }
 }

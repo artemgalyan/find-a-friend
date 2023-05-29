@@ -20,19 +20,21 @@ import by.fpmibsu.findafriend.dataaccesslayer.usershelter.UserShelterDao;
 import by.fpmibsu.findafriend.dataaccesslayer.validtokens.DbValidTokensDao;
 import by.fpmibsu.findafriend.dataaccesslayer.validtokens.ValidTokensDao;
 
+import java.sql.Connection;
+
 public class DaoSetup extends Setup {
     public static final GlobalServiceProvider.ServiceType SERVICE_LIFETIME = GlobalServiceProvider.ServiceType.SCOPED;
 
     @Override
     public void applyTo(ApplicationBuilder builder) {
         builder.getServiceProvider()
-                .addService(AdvertDao.class, SERVICE_LIFETIME, DbAdvertDao.class)
-                .addService(AnimalAdvertDao.class, SERVICE_LIFETIME, DbAnimalAdvertDao.class)
-                .addService(PhotoDao.class, SERVICE_LIFETIME, DbPhotoDao.class)
-                .addService(PlaceDao.class, SERVICE_LIFETIME, DbPlaceDao.class)
-                .addService(ShelterDao.class, SERVICE_LIFETIME, DbShelterDao.class)
-                .addService(UserDao.class, SERVICE_LIFETIME, DbUserDao.class)
-                .addService(UserShelterDao.class, SERVICE_LIFETIME, DbUserShelterDao.class)
-                .addService(ValidTokensDao.class, SERVICE_LIFETIME, DbValidTokensDao.class);
+                .addService(AdvertDao.class, SERVICE_LIFETIME, (s) -> new DbAdvertDao(s.getRequiredService(Connection.class)))
+                .addService(AnimalAdvertDao.class, SERVICE_LIFETIME, (s) -> new DbAnimalAdvertDao(s.getRequiredService(Connection.class)))
+                .addService(PhotoDao.class, SERVICE_LIFETIME, (s) -> new DbPhotoDao(s.getRequiredService(Connection.class)))
+                .addService(PlaceDao.class, SERVICE_LIFETIME, (s) -> new DbPlaceDao(s.getRequiredService(Connection.class)))
+                .addService(ShelterDao.class, SERVICE_LIFETIME, (s) -> new DbShelterDao(s.getRequiredService(Connection.class)))
+                .addService(UserDao.class, SERVICE_LIFETIME, (s) -> new DbUserDao(s.getRequiredService(Connection.class)))
+                .addService(UserShelterDao.class, SERVICE_LIFETIME, (s) -> new DbUserShelterDao(s.getRequiredService(Connection.class)))
+                .addService(ValidTokensDao.class, SERVICE_LIFETIME, (s) -> new DbValidTokensDao(s.getRequiredService(Connection.class)));
     }
 }
