@@ -1,6 +1,0 @@
-12:15:46.313 [main] TRACE by.fpmibsu.findafriend.application.mediatr.Mediatr - Handling request of type test.fpmibsu.findafriend.application.mediatr.MediatrTests$TestRequest
-12:15:46.324 [main] INFO  by.fpmibsu.findafriend.application.mediatr.Mediatr - Handled request of type test.fpmibsu.findafriend.application.mediatr.MediatrTests$TestRequest in time: 0 ms
-12:15:46.357 [main] TRACE by.fpmibsu.findafriend.application.mediatr.Mediatr - Handling request of type test.fpmibsu.findafriend.application.mediatr.MediatrTests$TestRequest
-12:18:30.936 [main] TRACE by.fpmibsu.findafriend.application.mediatr.Mediatr - Handling request of type test.fpmibsu.findafriend.application.mediatr.MediatrTests$TestRequest
-12:18:30.961 [main] INFO  by.fpmibsu.findafriend.application.mediatr.Mediatr - Handled request of type test.fpmibsu.findafriend.application.mediatr.MediatrTests$TestRequest in time: 0 ms
-12:18:31.013 [main] TRACE by.fpmibsu.findafriend.application.mediatr.Mediatr - Handling request of type test.fpmibsu.findafriend.application.mediatr.MediatrTests$TestRequest
