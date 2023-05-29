@@ -20,7 +20,6 @@
 [ТЗ.docx](https://github.com/ShTatti/find-a-friend/files/11590986/default.docx)
 
 # Диаграмма классов
-![Uploading class-diagram.png…]()
 
 # Диаграмма пакетов
 ![image](https://github.com/ShTatti/find-a-friend/assets/66832707/efe4bb15-aad6-4417-99b6-edd5a5d00bc0)
