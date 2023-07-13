@@ -4,7 +4,7 @@
     <div class="border m-1 d-flex flex-row justify-content-between p-2" *ngFor="let shelter of shelters">
       <div>
         <h5 style="margin-bottom: 0">{{ shelter.name }}</h5>
-        <p style="margin-bottom: 2px">{{ placeToString(shelter.place) }}</p>
+        <p style="margin-bottom: 2px">{{ placeToString(this.loader.getPlace(shelter.placeId)) }}</p>
       </div>
       <button class="btn btn-primary" (click)="viewShelter(shelter.id)">Подробнее</button>
     </div>

@@ -38,8 +38,8 @@ public class AdvertController extends Controller {
     @RequireAuthentication
     @Endpoint(path = "/create", method = HttpMethod.POST)
     public HandleResult createAdvert(@FromBody CreateAdvertCommand request) throws Exception {
-        if (Validation.isAnyNullOrEmpty(request.advertType, request.description, request.title)
-                || !Validation.in(request.advertType, "V", "S")) {
+        if (Validation.isAnyNullOrEmpty(request.description, request.title)
+                || (request.advertType < 0 || request.advertType > 1)) {
             return badRequest();
         }
         return ok(mediatr.send(request));

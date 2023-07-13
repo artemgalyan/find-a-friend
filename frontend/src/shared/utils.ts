@@ -10,7 +10,7 @@ export function dateToString(d?: string): string {
   if (d === null) {
     return ""
   }
-  let date = new Date(Number(d as string))
+  let date = new Date(d as string)
   return date.getDate().toString().padStart(2, '0') + '.' + (date.getMonth() + 1).toString().padStart(2, '0') + '.' + date.getFullYear()
 }
 

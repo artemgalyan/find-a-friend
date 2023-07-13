@@ -30,11 +30,11 @@ export class ShelterComponent implements OnInit {
         this.router.navigate(['shelters'])
         return;
       }
-      this.httpClient.get<Shelter>(Constants.api + 'shelters/getById?id=' + shelterId)
+      this.httpClient.get<Shelter>(Constants.api + '/shelters/getById?id=' + shelterId)
         .subscribe(result => {
           this.shelter = result
           this.mapsURL = this.mapsLink(this.shelter.address)
-          this.httpClient.get<AnimalAdvert[]>(Constants.api + 'animalAdverts/getByShelterId?id=' + shelterId)
+          this.httpClient.get<AnimalAdvert[]>(Constants.api + '/animalAdverts/getByShelterId?id=' + shelterId)
             .subscribe(r => this.adverts = r);
         }, error => this.router.navigate(['shelters']))
     })

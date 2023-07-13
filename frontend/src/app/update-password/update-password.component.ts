@@ -35,7 +35,7 @@ export class UpdatePasswordComponent implements OnInit {
     login.oninput = validator(login)
     oldPassword.oninput = validator(oldPassword)
     newPassword.oninput = validator(newPassword, 8)
-    this.httpClient.get<any>(Constants.api + 'users/getId?token=' + localStorage.getItem('jwt'))
+    this.httpClient.get<any>(Constants.api + '/users/getId?token=' + localStorage.getItem('jwt'))
       .subscribe(r => {
         this.id = r.userId
         this.login = r.login

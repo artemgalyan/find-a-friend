@@ -10,17 +10,17 @@ public class AdvertModel implements Model<Advert> {
     public String title;
     public String description;
     public int ownerId;
-    public String advertType;
-    public Place place;
+    public int advertType;
+    public int placeId;
     public Date creationDate;
 
-    public AdvertModel(int id, String title, String description, int ownerId, String advertType, Place place, Date creationDate) {
+    public AdvertModel(int id, String title, String description, int ownerId, Advert.AdvertType advertType, Place place, Date creationDate) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.ownerId = ownerId;
-        this.advertType = advertType;
-        this.place = place;
+        this.advertType = advertType.toInt();
+        this.placeId = place.getId();
         this.creationDate = creationDate;
     }
 
@@ -28,6 +28,6 @@ public class AdvertModel implements Model<Advert> {
         if (a == null) {
             return null;
         }
-        return new AdvertModel(a.getId(), a.getTitle(), a.getDescription(), a.getOwner().getId(), a.getAdvertType().toString(), a.getPlace(), a.getCreationDate());
+        return new AdvertModel(a.getId(), a.getTitle(), a.getDescription(), a.getOwner().getId(), a.getAdvertType(), a.getPlace(), a.getCreationDate());
     }
 }

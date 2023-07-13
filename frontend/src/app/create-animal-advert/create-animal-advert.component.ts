@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Constants} from "../constants";
 import {PlacePickerComponent} from "../placepicker/place-picker.component";
 import {Router} from "@angular/router";
+import {AnimalSex} from "../../shared/models";
 
 @Component({
   selector: 'app-create-view-animal-advert',
@@ -20,7 +21,7 @@ export class CreateAnimalAdvertComponent implements OnInit {
   isCastrated: boolean = false;
 
   readonly animalTypes: string[] = ['Собака', 'Кот', 'Другое']
-  readonly sexes = ['M', 'F'];
+  readonly sexes = [AnimalSex.Male, AnimalSex.Female];
 
   @ViewChild(PlacePickerComponent)
   private placeSelector!: PlacePickerComponent;
@@ -51,7 +52,7 @@ export class CreateAnimalAdvertComponent implements OnInit {
     titleInput.oninput = validator(titleInput);
     descriptionInput.oninput = validator(descriptionInput);
     animalTypeInput.oninput = validator(animalTypeInput);
-    placeIdInput.oninput = validator(placeIdInput);
+    // placeIdInput.oninput = validator(placeIdInput);
     birthdateInput.oninput = validator(birthdateInput);
     sexInput.oninput = validator(sexInput);
   }
@@ -128,9 +129,10 @@ export class CreateAnimalAdvertComponent implements OnInit {
     }
 
     if (!valid) {
+      console.log('invalid')
       return
     }
-    this.httpClient.post(Constants.api + 'animalAdverts/create?token=' + localStorage.getItem('jwt'), {
+    this.httpClient.post(Constants.api + '/animalAdverts/create?token=' + localStorage.getItem('jwt'), {
       'title': this.title,
       'description': this.description,
       'animalType': this.animalType,
@@ -146,8 +148,8 @@ export class CreateAnimalAdvertComponent implements OnInit {
     }).subscribe(r => this.router.navigate(['animalAdverts']))
   }
 
-  getSex(s: string): string {
-    if (s === 'F') {
+  getSex(s: AnimalSex): string {
+    if (s === AnimalSex.Female) {
       return 'Ж';
     }
     return 'М';

@@ -17,6 +17,7 @@ public class Advert extends Entity {
         SITTER('S');
 
         private final char c;
+
         AdvertType(char c) {
             this.c = c;
         }
@@ -24,6 +25,7 @@ public class Advert extends Entity {
         public char getValue() {
             return c;
         }
+
         public static AdvertType fromValue(String s) {
             return switch (s) {
                 case "V" -> VOLUNTEER;
@@ -31,7 +33,24 @@ public class Advert extends Entity {
                 default -> throw new IllegalArgumentException("No advert type for " + s);
             };
         }
+
+        public int toInt() {
+            return switch (this) {
+                case VOLUNTEER -> 1;
+                case SITTER -> 0;
+                default -> throw new IllegalArgumentException();
+            };
+        }
+
+        public static AdvertType fromInt(int value) {
+            return switch (value) {
+                case 0 -> SITTER;
+                case 1 -> VOLUNTEER;
+                default -> throw new IllegalArgumentException();
+            };
+        }
     }
+
     private String title;
     private String description;
     private Date creationDate;

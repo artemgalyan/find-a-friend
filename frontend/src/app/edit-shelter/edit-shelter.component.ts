@@ -4,6 +4,7 @@ import {Shelter} from "../../shared/models";
 import {Constants} from "../constants";
 import {ActivatedRoute, Router} from "@angular/router";
 import {PlacePickerComponent} from "../placepicker/place-picker.component";
+import {PlaceService} from "../../shared/PlaceService";
 
 @Component({
   selector: 'app-edit-shelter',
@@ -20,7 +21,8 @@ export class EditShelterComponent implements OnInit {
   placePicker: PlacePickerComponent = null!;
   constructor(private httpClient: HttpClient,
               private route: ActivatedRoute,
-              private router: Router) { }
+              private router: Router,
+              private placeService: PlaceService) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(p => {
@@ -29,20 +31,20 @@ export class EditShelterComponent implements OnInit {
         this.router.navigate(['shelters'])
         return;
       }
-      this.httpClient.get<Shelter>(Constants.api + 'shelters/getById?id=' + id)
+      this.httpClient.get<Shelter>(Constants.api + '/shelters/getById?id=' + id)
         .subscribe(r => {
           this.shelter = r
           this.shelterName = r.name
           this.shelterAddress = r.address
           this.shelterWebsite = r.website
           this.shelterId = r.id
-          this.placePicker.selectedPlace = r.place
+          this.placePicker.setSelected(r.placeId)
         })
     })
   }
 
   update() {
-    this.httpClient.put(Constants.api + 'shelters/update?token=' + localStorage.getItem('jwt'), {
+    this.httpClient.put(Constants.api + '/shelters/update?token=' + localStorage.getItem('jwt'), {
       'shelterId': this.shelterId,
       'name': this.shelterName,
       'placeId': this.placePicker.selectedPlace.id,

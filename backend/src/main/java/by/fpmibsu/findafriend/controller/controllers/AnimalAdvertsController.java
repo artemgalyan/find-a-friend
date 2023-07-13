@@ -65,9 +65,9 @@ public class AnimalAdvertsController extends Controller {
     @RequireAuthentication
     @Endpoint(path = "/create", method = HttpMethod.POST)
     public HandleResult create(@FromBody CreateAnimalAdvertCommand command) throws Exception {
-        if (Validation.isAnyNullOrEmpty(command.animalType, command.description, command.sex, command.title)
+        if (Validation.isAnyNullOrEmpty(command.animalType, command.description, command.title)
                 || command.birthdate == null
-                || !Validation.in(command.sex, "M", "F")
+                || (command.sex < 0 || command.sex > 1)
                 || !Validation.in(command.animalType, "Кот", "Собака", "Другое")) {
             return badRequest();
         }

@@ -1,8 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpResponse} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {Constants} from "../constants";
 import {PlacePickerComponent} from "../placepicker/place-picker.component";
 import {Router} from "@angular/router";
+import {AdvertType} from "../../shared/models";
 
 @Component({
   selector: 'app-create-advert',
@@ -15,7 +16,7 @@ export class CreateAdvertComponent implements OnInit {
   description: string = '';
   advertType: string = '';
   placeId: number = -1;
-  readonly advertTypes: string[] = ['V', 'S'];
+  readonly advertTypes: AdvertType[] = [AdvertType.Sitter, AdvertType.Volunteer];
 
   @ViewChild(PlacePickerComponent)
   private placeSelector!: PlacePickerComponent;
@@ -24,8 +25,8 @@ export class CreateAdvertComponent implements OnInit {
               private router: Router) {
   }
 
-  typeToString(type: string): string {
-    return type == 'V' ? 'Волонтёр' : 'Ситтер'
+  typeToString(type: AdvertType): string {
+    return type == AdvertType.Volunteer ? 'Волонтёр' : 'Ситтер'
   }
 
   ngOnInit(): void {

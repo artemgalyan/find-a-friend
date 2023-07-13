@@ -4,6 +4,8 @@ import {HttpClient} from "@angular/common/http";
 import {Constants} from "../constants";
 import {Router} from "@angular/router";
 import {placeToString} from "../../shared/utils";
+import {PlaceLoader} from "../../shared/PlaceLoader";
+import {PlaceService} from "../../shared/PlaceService";
 
 @Component({
   selector: 'app-shelters',
@@ -12,13 +14,15 @@ import {placeToString} from "../../shared/utils";
 })
 export class SheltersComponent implements OnInit {
   shelters: Shelter[] = []
-
+  readonly loader: PlaceLoader
   constructor(private httpClient: HttpClient,
-              private router: Router) {
+              private router: Router,
+              private placeService: PlaceService) {
+    this.loader = new PlaceLoader(placeService);
   }
 
   ngOnInit(): void {
-    this.httpClient.get<Shelter[]>(Constants.api + 'shelters/getAll')
+    this.httpClient.get<Shelter[]>(Constants.api + '/shelters/getAll')
       .subscribe(r => this.shelters = r);
   }
 

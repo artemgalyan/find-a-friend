@@ -2,6 +2,7 @@ package by.fpmibsu.findafriend.controller.commands.adverts;
 
 import by.fpmibsu.findafriend.application.mediatr.RequestHandler;
 import by.fpmibsu.findafriend.dataaccesslayer.advert.AdvertDao;
+import by.fpmibsu.findafriend.entity.Advert;
 
 public class UpdateAdvertHandler extends RequestHandler<Boolean, UpdateAdvertCommand> {
     private final AdvertDao advertDao;
@@ -17,7 +18,7 @@ public class UpdateAdvertHandler extends RequestHandler<Boolean, UpdateAdvertCom
             return false;
         }
         if (request.advertType != null) {
-            advert.setAdvertType(request.advertType);
+            advert.setAdvertType(Advert.AdvertType.fromInt(request.advertType));
         }
         if (request.title != null) {
             advert.setTitle(request.title);

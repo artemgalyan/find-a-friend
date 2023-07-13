@@ -19,17 +19,17 @@ export class ModeratorToolsComponent {
 
 
   deleteAdvert() {
-    this.httpClient.delete(Constants.api + 'adverts/delete?id=' + this.advertId + '&token=' + this.token())
+    this.httpClient.delete(Constants.api + '/adverts/delete?id=' + this.advertId + '&token=' + this.token())
       .subscribe(r => console.log(r))
   }
 
   deleteAnimalAdvert() {
-    this.httpClient.delete(Constants.api + 'animalAdverts/delete?id=' + this.animalAdvertId + '&token=' + this.token())
+    this.httpClient.delete(Constants.api + '/animalAdverts/delete?id=' + this.animalAdvertId + '&token=' + this.token())
       .subscribe(r => console.log(r))
   }
 
   removeUser() {
-    this.httpClient.post(Constants.api + 'userShelter/removeUserFromShelter?userId=' + this.removeUserId + '&token=' + this.token(), {}, {
+    this.httpClient.post(Constants.api + '/userShelter/removeUserFromShelter?userId=' + this.removeUserId + '&token=' + this.token(), {}, {
       headers: {
         'Content-type': 'text/json; charset=UTF-8'
       }
@@ -38,7 +38,7 @@ export class ModeratorToolsComponent {
   }
 
   addUserToShelter() {
-    this.httpClient.post(Constants.api + 'userShelter/addUserToShelter?userId=' + this.addUserId + '&shelterId=' + this.addShelterId
+    this.httpClient.post(Constants.api + '/userShelter/addUserToShelter?userId=' + this.addUserId + '&shelterId=' + this.addShelterId
       + '&token=' + this.token(), {}, {
       headers: {
         'Content-type': 'text/json; charset=UTF-8'

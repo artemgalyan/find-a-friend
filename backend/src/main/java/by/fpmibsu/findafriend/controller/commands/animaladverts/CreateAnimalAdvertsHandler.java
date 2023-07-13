@@ -37,7 +37,7 @@ public class CreateAnimalAdvertsHandler extends RequestHandler<Boolean, CreateAn
         var u = new User();
         u.setId(userId);
         var advert = new AnimalAdvert(0, command.title, command.description, command.animalType, new ArrayList<>(),
-                u, Date.from(Instant.now()), place, command.birthdate, AnimalAdvert.Sex.fromValue(command.sex), command.isCastrated);
+                u, Date.from(Instant.now()), place, command.birthdate, AnimalAdvert.Sex.fromInt(command.sex), command.isCastrated);
         animalAdvertDao.create(advert);
         var photos = command.photos.stream()
                 .map(p -> new Photo(Base64.getEncoder().encode(p.getBytes()), advert.getId()))

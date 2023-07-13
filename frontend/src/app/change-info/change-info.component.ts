@@ -40,7 +40,7 @@ export class ChangeInfoComponent implements OnInit {
         phoneInput.classList.add('is-invalid')
       }
     }
-    this.httpClient.get<User>(Constants.api + 'users/getSelfInfo?token=' + localStorage.getItem('jwt'))
+    this.httpClient.get<User>(Constants.api + '/users/getSelfInfo?token=' + localStorage.getItem('jwt'))
       .subscribe(r => {
         this.user = r;
         this.email = r.email

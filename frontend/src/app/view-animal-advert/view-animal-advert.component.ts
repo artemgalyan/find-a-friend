@@ -4,6 +4,8 @@ import {HttpClient} from "@angular/common/http";
 import {Constants} from "../constants";
 import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {Router} from "@angular/router";
+import {PlaceService} from "../../shared/PlaceService";
+import {PlaceLoader} from "../../shared/PlaceLoader";
 
 @Component({
   selector: 'app-view-animal-advert',
@@ -16,17 +18,19 @@ export class ViewAnimalAdvertComponent implements OnInit {
 
   photo: SafeResourceUrl = '';
   defaultPhoto: SafeResourceUrl = '';
-
+  readonly loader: PlaceLoader;
   constructor(private httpClient: HttpClient,
               private sanitizer: DomSanitizer,
-              private router: Router) {
+              private router: Router,
+              private placeService: PlaceService) {
+    this.loader = new PlaceLoader(placeService);
   }
 
   ngOnInit(): void {
-    this.httpClient.get<Photo>(Constants.api + 'photos/getPreview?id=' + this.advert.advertId)
+    this.httpClient.get<Photo>(Constants.api + '/photos/getPreview?id=' + this.advert.id)
       .subscribe(res => {
         if (res !== null)
-          this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(res.base64content);
+          this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(res.base64Content);
         else {
           this.photo = null!;
         }
@@ -48,7 +52,7 @@ export class ViewAnimalAdvertComponent implements OnInit {
   showAdvert() {
     this.router.navigate(['animalAdvert'], {
       queryParams: {
-        'advertId': this.advert.advertId
+        'advertId': this.advert.id
       }
     })
   }

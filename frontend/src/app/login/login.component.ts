@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {Constants} from "../constants";
 import {Router} from "@angular/router";
+import {Roles} from "../../shared/models";
 
 @Component({
   selector: 'app-login',
@@ -26,7 +27,7 @@ export class LoginComponent implements OnInit {
     } else {
       loginInput.classList.remove('is-invalid')
     }
-    this.httpClient.get<any>(Constants.api + 'auth/signIn?login=' + this.login + '&password=' + this.password, {
+    this.httpClient.post<any>(Constants.api + '/auth/signIn?login=' + this.login + '&password=' + this.password, {
       headers: {
         'Content-type': 'text/plain'
       }
@@ -43,6 +44,7 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['']);
     }, error => {
       alert('Произошла ошибка.')
+      console.error(error)
     })
   }
 }

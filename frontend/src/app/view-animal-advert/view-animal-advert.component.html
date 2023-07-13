@@ -6,7 +6,7 @@
   </div>
   <div class="w-100">
     <h5 style="text-align: center; margin-bottom: 0">{{ advert.title }}</h5>
-    <div style="text-align: center; font-size: 12px; margin-bottom: 2px">{{placeToString(advert.place)}}</div>
+    <div style="text-align: center; font-size: 12px; margin-bottom: 2px">{{placeToString(this.loader.getPlace(advert.placeId))}}</div>
     <div
       style="text-align: center; font-size: 12px; margin-bottom: 2px">{{ advert.shelterName === null ? "Пользовательское" : advert.shelterName }}</div>
     <button class="btn btn-primary w-100" (click)="showAdvert()">
