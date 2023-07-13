@@ -8,13 +8,13 @@ import java.util.Date;
 
 public class UpdateAdvertCommand extends Request<Boolean> {
     public int advertId;
-    public Advert.AdvertType advertType;
+    public Integer advertType;
     public String title;
     public String description;
     public Date creationDate;
     public Place place;
 
-    public UpdateAdvertCommand(int advertId, Advert.AdvertType advertType, String title, String description, Date creationDate, Place place) {
+    public UpdateAdvertCommand(int advertId, Integer advertType, String title, String description, Date creationDate, Place place) {
         this.advertId = advertId;
         this.advertType = advertType;
         this.title = title;

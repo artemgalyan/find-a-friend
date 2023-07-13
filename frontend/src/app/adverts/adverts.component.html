@@ -9,7 +9,7 @@
       </div>
       <div class="p-1 col-12 col-sm-12 col-md-12 col-lg-3 col-xl-3">
         <div>
-          <p style="margin: 0; font-weight: 500">{{placeToString(advert.place)}}</p>
+          <p style="margin: 0; font-weight: 500">{{placeToString(this.loader.getPlace(advert.placeId)) }}</p>
           <p style="font-weight: 400;">{{getAdvertType(advert)}}</p>
         </div>
         <button class="btn-primary btn w-100" (click)="openAdvert(advert.id)">Подробнее</button>

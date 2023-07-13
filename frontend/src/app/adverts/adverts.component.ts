@@ -1,9 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {Advert, Place, Roles} from "../../shared/models";
+import {Advert, AdvertType} from "../../shared/models";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {Constants} from "../constants";
 import {placeToString} from "../../shared/utils";
+import {PlaceService} from "../../shared/PlaceService";
+import {PlaceLoader} from "../../shared/PlaceLoader";
 
 @Component({
   selector: 'app-adverts',
@@ -14,13 +16,15 @@ export class AdvertsComponent implements OnInit {
   adverts: Advert[] = [];
 
   private readonly maxLength: number = 100;
-
+  readonly loader: PlaceLoader
   constructor(private httpClient: HttpClient,
-              private router: Router) {
+              private router: Router,
+              placeService: PlaceService) {
+    this.loader = new PlaceLoader(placeService);
   }
 
   ngOnInit(): void {
-    this.httpClient.get<Advert[]>(Constants.api + 'adverts/getAll')
+    this.httpClient.get<Advert[]>(Constants.api + '/adverts/getAll')
       .subscribe(r => {
         this.adverts = r
       });
@@ -42,7 +46,7 @@ export class AdvertsComponent implements OnInit {
   }
 
   getAdvertType(a: Advert) {
-    return a.advertType == "VOLUNTEER"
+    return a.advertType == AdvertType.Volunteer
       ? 'Волонтёр'
       : 'Ситтер'
   }

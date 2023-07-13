@@ -19,24 +19,29 @@ export interface Place {
 export interface Shelter {
   id: number
   name: string
-  place: Place,
+  placeId: number,
   address: string,
   website: string
 }
 
 export interface AnimalAdvert {
-  advertId: number
-  userId: number
+  id: number
+  ownerId: number
   title: string
   description: string,
   animalType: string,
   creationDate: string,
-  place: Place,
+  placeId: number,
   birthDate: string,
-  sex: symbol
+  sex: AnimalSex
   isCastrated: boolean
   shelterId: number
   shelterName: string
+}
+
+export enum AnimalSex {
+  Male = 0,
+  Female
 }
 
 export interface Advert {
@@ -44,13 +49,23 @@ export interface Advert {
   title: string,
   description: string,
   ownerId: number,
-  advertType: string,
-  place: Place,
+  advertType: AdvertType,
+  placeId: number,
   creationDate: string
 }
 
+export enum AdvertType {
+  Sitter = 0,
+  Volunteer
+}
+
 export interface Photo {
-  base64content: string;
+  base64Content: string;
+}
+
+export const advertTypes: any = {
+  0: 'Ситтер',
+  1: 'Волонтёр'
 }
 
 export class AnimalAdvertWithPhoto {
@@ -59,8 +74,14 @@ export class AnimalAdvertWithPhoto {
 }
 
 export class Roles {
-  public static readonly User: string = 'USER'
-  public static readonly Moderator: string = 'MODERATOR'
-  public static readonly ShelterAdministrator: string = 'SHELTER_ADMINISTRATOR'
-  public static readonly Administrator: string = 'ADMINISTRATOR'
+  public static readonly User: string = 'User'
+  public static readonly Moderator: string = 'Moderator'
+  public static readonly ShelterAdministrator: string = 'ShelterAdministrator'
+  public static readonly Administrator: string = 'Administrator'
+  public static readonly NumberToRole = {
+    '0': Roles.User,
+    '1': Roles.Moderator,
+    '2': Roles.Administrator,
+    '3': Roles.ShelterAdministrator
+  };
 }

@@ -28,8 +28,9 @@ import {AdvertComponent} from './advert/advert.component';
 import {PreviewComponent} from './preview/preview.component';
 import {SheltersComponent} from './shelters/shelters.component';
 import {EditShelterComponent} from './edit-shelter/edit-shelter.component';
-import { ChangeInfoComponent } from './change-info/change-info.component';
-import { UpdatePasswordComponent } from './update-password/update-password.component';
+import {ChangeInfoComponent} from './change-info/change-info.component';
+import {UpdatePasswordComponent} from './update-password/update-password.component';
+import {PlaceService} from "../shared/PlaceService";
 
 @NgModule({
   declarations: [
@@ -62,8 +63,10 @@ import { UpdatePasswordComponent } from './update-password/update-password.compo
     FormsModule,
     HttpClientModule
   ],
-  providers: [CanActivateAdminPanelGuard, CanActivateModeratorPanelGuard, CanActivateShelterModeratorPanelGuard, CanActivateIfAuthenticated],
-  bootstrap: [AppComponent]
+  providers: [CanActivateAdminPanelGuard, CanActivateModeratorPanelGuard,
+    CanActivateShelterModeratorPanelGuard, CanActivateIfAuthenticated, PlaceService],
+  bootstrap: [AppComponent],
+
 })
 export class AppModule {
 }

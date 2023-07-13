@@ -37,12 +37,12 @@ export class AdminPanelComponent {
   district: string = ''
 
   deleteUser() {
-    this.httpClient.delete(Constants.api + 'users/delete?id=' + this.userId + '&token=' + this.token())
+    this.httpClient.delete(Constants.api + '/users/delete?id=' + this.userId + '&token=' + this.token())
       .subscribe(r => alert('Done'))
   }
 
   deleteShelter() {
-    this.httpClient.delete(Constants.api + 'shelters/delete?id=' + this.shelterIdToDelete + '&token=' + this.token())
+    this.httpClient.delete(Constants.api + '/shelters/delete?id=' + this.shelterIdToDelete + '&token=' + this.token())
       .subscribe(r => alert('Done'))
   }
 
@@ -51,7 +51,7 @@ export class AdminPanelComponent {
   }
 
   createShelter() {
-    this.httpClient.post(Constants.api + 'shelters/create?token=' + this.token(), {
+    this.httpClient.post(Constants.api + '/shelters/create?token=' + this.token(), {
       'name': this.shelterToCreateName,
       'placeId': this.placeSelector.selectedPlace.id,
       'address': this.shelterAddress,
@@ -64,7 +64,7 @@ export class AdminPanelComponent {
   }
 
   createPlace() {
-    this.httpClient.post(Constants.api + 'places/create?token=' + this.token(), {
+    this.httpClient.post(Constants.api + '/places/create?token=' + this.token(), {
       'country': this.country,
       'region': this.region,
       'city': this.city,
@@ -77,13 +77,13 @@ export class AdminPanelComponent {
   }
 
   deletePlace() {
-    this.httpClient.delete(Constants.api + 'places/delete?id=' + this.toDeleteplaceSelector.selectedPlace.id + '&token=' + this.token())
+    this.httpClient.delete(Constants.api + '/places/delete?id=' + this.toDeleteplaceSelector.selectedPlace.id + '&token=' + this.token())
       .subscribe(r => {},
                 e => console.log(e))
   }
 
   updateRole() {
-    this.httpClient.put(Constants.api + 'users/setRole?token=' + localStorage.getItem('jwt'), {
+    this.httpClient.put(Constants.api + '/users/setRole?token=' + localStorage.getItem('jwt'), {
       'userId': this.setRoleUserId,
       'role': this.setRoleUserRole
     }).subscribe(_ => alert('Done'))

@@ -4,6 +4,8 @@ import {HttpClient} from "@angular/common/http";
 import {Advert, Roles, User} from "../../shared/models";
 import {Constants} from "../constants";
 import {dateToString} from "../../shared/utils";
+import {PlaceService} from "../../shared/PlaceService";
+import {PlaceLoader} from "../../shared/PlaceLoader";
 
 @Component({
   selector: 'app-advert',
@@ -14,9 +16,17 @@ export class AdvertComponent implements OnInit {
   advert?: Advert
   user?: User
 
+  advertTypes: any = {
+    0: 'Ситтер',
+    1: 'Волонтёр'
+  }
+
+  readonly loader: PlaceLoader
   constructor(private route: ActivatedRoute,
               private httpClient: HttpClient,
-              private router: Router) {
+              private router: Router,
+              placeService: PlaceService) {
+    this.loader = new PlaceLoader(placeService);
   }
 
 
@@ -28,20 +38,20 @@ export class AdvertComponent implements OnInit {
       }
 
       let id = result['id']
-      this.httpClient.get<Advert>(Constants.api + 'adverts/getById?id=' + id).subscribe(r => {
+      this.httpClient.get<Advert>(Constants.api + '/adverts/getById?id=' + id).subscribe(r => {
         this.advert = r;
-        this.httpClient.get<User>(Constants.api + 'users/getById?id=' + this.advert.ownerId + '&token=' + localStorage.getItem('jwt'))
+        this.httpClient.get<User>(Constants.api + '/users/getById?id=' + this.advert.ownerId + '&token=' + localStorage.getItem('jwt'))
           .subscribe(u => this.user = u,
             e => this.user = null!)
       })
     })
   }
 
-  typeToString(type?: string): string {
+  typeToString(type?: number): string {
     if (type === undefined || type === null) {
       return 'Загрузка..'
     }
-    return type == 'VOLUNTEER' ? 'Волонтёр' : 'Ситтер'
+    return this.advertTypes[type];
   }
 
 

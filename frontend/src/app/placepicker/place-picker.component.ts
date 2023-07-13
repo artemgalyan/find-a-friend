@@ -19,7 +19,7 @@ export class PlacePickerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.httpClient.get<Place[]>(Constants.api + 'places/getAll', {
+    this.httpClient.get<Place[]>(Constants.api + '/places/getAll', {
       headers: {
         'Content-type': 'text/json; charset=UTF-8',
       }
@@ -37,6 +37,10 @@ export class PlacePickerComponent implements OnInit {
 
   updateSelected(p: Place) {
     this.selectedPlace = p;
+  }
+
+  setSelected(id: number) {
+    this.selectedPlace = this.places.filter(s => s.id === id)[0];
   }
   readonly LoadingState = LoadingState;
 }

@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {Advert, AnimalAdvert, AnimalAdvertWithPhoto, Photo, Place} from "../../shared/models";
+import {AnimalAdvert, Place} from "../../shared/models";
 import {HttpClient} from "@angular/common/http";
 import {Constants} from "../constants";
-import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 import {Router} from "@angular/router";
 
 @Component({
@@ -22,7 +21,7 @@ export class AnimalAdvertsComponent implements OnInit {
   }
 
   private fetchAdverts() {
-    this.httpClient.get<AnimalAdvert[]>(Constants.api + 'animalAdverts/getAll')
+    this.httpClient.get<AnimalAdvert[]>(Constants.api + '/animalAdverts/getAll')
       .subscribe(r => this.adverts = r);
   }
 

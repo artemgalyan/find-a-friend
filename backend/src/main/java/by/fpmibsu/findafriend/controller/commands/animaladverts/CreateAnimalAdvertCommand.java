@@ -12,7 +12,7 @@ public class CreateAnimalAdvertCommand extends Request<Boolean> {
     public String animalType;
     public int placeId;
     public Date birthdate;
-    public String sex;
+    public int sex;
     public boolean isCastrated;
     public List<String> photos; // base64 strings
 }

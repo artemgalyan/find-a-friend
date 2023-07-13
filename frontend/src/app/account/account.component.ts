@@ -19,7 +19,7 @@ export class AccountComponent implements OnInit {
 
   ngOnInit(): void {
     let token = localStorage.getItem('jwt');
-    this.httpClient.get<User>(Constants.api + 'users/getSelfInfo?token=' + token, {
+    this.httpClient.get<User>(Constants.api + '/users/getSelfInfo?token=' + token, {
       headers: {
         'Content-type': 'text/json; charset=UTF-8',
         'Authentication': 'Bearer'
@@ -29,7 +29,7 @@ export class AccountComponent implements OnInit {
   }
 
   private fetchMine() {
-    this.httpClient.get<AnimalAdvert[]>(Constants.api + 'animalAdverts/getMine?token=' + localStorage.getItem('jwt'))
+    this.httpClient.get<AnimalAdvert[]>(Constants.api + '/animalAdverts/getMine?token=' + localStorage.getItem('jwt'))
       .subscribe(r => this.adverts = r);
   }
 

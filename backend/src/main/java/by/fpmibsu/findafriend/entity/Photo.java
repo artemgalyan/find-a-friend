@@ -49,7 +49,7 @@ public class Photo extends Entity {
     @Override
     public String toString() {
         return "Photo{" +
-                "advertId=" + advertId +
+                "id=" + advertId +
                 ", id=" + id +
                 '}';
     }

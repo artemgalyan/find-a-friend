@@ -35,6 +35,21 @@ public class AnimalAdvert extends Entity {
                 default -> throw new IllegalArgumentException("No sex for string " + value);
             };
         }
+
+        public int toInt() {
+            return switch (this) {
+                case MALE -> 0;
+                case FEMALE -> 1;
+            };
+        }
+
+        public static Sex fromInt(int value) {
+            return switch (value) {
+                case 0 -> MALE;
+                case 1 -> FEMALE;
+                default -> throw new IllegalArgumentException();
+            };
+        }
     }
 
     public AnimalAdvert(int id, String title, String description, String animalType,

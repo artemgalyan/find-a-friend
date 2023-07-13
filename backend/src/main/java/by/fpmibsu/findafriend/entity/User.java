@@ -16,6 +16,7 @@ public class User extends Entity {
         MODERATOR,
         ADMINISTRATOR,
         SHELTER_ADMINISTRATOR;
+
         public int toInt() {
             return switch (this) {
                 case USER -> 1;
@@ -32,6 +33,16 @@ public class User extends Entity {
                 case 3 -> ADMINISTRATOR;
                 case 4 -> SHELTER_ADMINISTRATOR;
                 default -> throw new IllegalArgumentException("No role for value " + value);
+            };
+        }
+
+        @Override
+        public String toString() {
+            return switch (this) {
+                case USER -> "User";
+                case MODERATOR -> "Moderator";
+                case SHELTER_ADMINISTRATOR -> "ShelterAdministrator";
+                case ADMINISTRATOR -> "Administrator";
             };
         }
     }

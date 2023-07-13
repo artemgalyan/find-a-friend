@@ -28,7 +28,7 @@ public class CreateAdvertHandler extends RequestHandler<Boolean, CreateAdvertCom
         place.setId(request.placeId);
         var u = new User();
         u.setId(Integer.parseInt(authenticationData.getClaim("id")));
-        var advert = new Advert(0, request.title, request.description, Date.from(Instant.now()), place, u, Advert.AdvertType.fromValue(request.advertType));
+        var advert = new Advert(0, request.title, request.description, Date.from(Instant.now()), place, u, Advert.AdvertType.fromInt(request.advertType));
         advertDao.create(advert);
         return true;
     }

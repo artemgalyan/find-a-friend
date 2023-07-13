@@ -1,20 +1,19 @@
 package by.fpmibsu.findafriend.controller.models;
 
 import by.fpmibsu.findafriend.entity.AnimalAdvert;
-import by.fpmibsu.findafriend.entity.Place;
 
 import java.util.Date;
 
 public record AnimalAdvertModel(
-        int advertId,
-        int userId,
+        int id,
+        int ownerId,
         String title,
         String description,
         String animalType,
         Date creationDate,
-        Place place,
+        int placeId,
         Date birthDate,
-        char sex,
+        int sex,
         boolean isCastrated,
         int shelterId,
         String shelterName) implements Model<AnimalAdvert> {
@@ -27,9 +26,9 @@ public record AnimalAdvertModel(
                 animalAdvert.getDescription(),
                 animalAdvert.getAnimalType(),
                 animalAdvert.getCreationDate(),
-                animalAdvert.getPlace(),
+                animalAdvert.getPlace().getId(),
                 animalAdvert.getBirthdate(),
-                animalAdvert.getSex().getValue(),
+                animalAdvert.getSex().toInt(),
                 animalAdvert.isCastrated(),
                 shelterId,
                 shelterName
