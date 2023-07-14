@@ -20,23 +20,23 @@
 [ТЗ.docx](https://github.com/ShTatti/find-a-friend/files/11590986/default.docx)
 
 # Диаграмма классов
-![Диаграмма классов](https://github.com/artemgalyan/find-a-friend/blob/main/backend/documentation/class-diagram.png)
+![Диаграмма классов](https://github.com/artemgalyan/find-a-friend/blob/main/documentation/class-diagram.png)
 # Диаграмма пакетов
-![Диаграмма пакетов](https://github.com/artemgalyan/find-a-friend/blob/main/backend/documentation/package-diagram.png)
+![Диаграмма пакетов](https://github.com/artemgalyan/find-a-friend/blob/main/documentation/package-diagram.png)
 
 # Диаграмма компонентов
-![Диаграмма компонентов](https://github.com/artemgalyan/find-a-friend/blob/main/backend/documentation/component-diagram.png)
+![Диаграмма компонентов](https://github.com/artemgalyan/find-a-friend/blob/main/documentation/component-diagram.png)
 
 # Диаграмма развертывания
-![Диаграмма развёртывания](https://github.com/artemgalyan/find-a-friend/blob/main/backend/documentation/deployment-diagram.png)
+![Диаграмма развёртывания](https://github.com/artemgalyan/find-a-friend/blob/main/documentation/deployment-diagram.png)
 
 # Диаграммы последовательностей
-![3 сценария](https://github.com/artemgalyan/find-a-friend/blob/main/backend/documentation/sequence-diagram.png)
+![3 сценария](https://github.com/artemgalyan/find-a-friend/blob/main/documentation/sequence-diagram.png)
 
 # Use case диаграмма - возможности пользователей
-![Use case](https://github.com/artemgalyan/find-a-friend/blob/main/backend/documentation/usecase-diagram.jpg)
+![Use case](https://github.com/artemgalyan/find-a-friend/blob/main/documentation/usecase-diagram.jpg)
 
 # ER-диаграмма
-![ER](https://github.com/artemgalyan/find-a-friend/blob/main/backend/documentation/er-diagram.png)
+![ER](https://github.com/artemgalyan/find-a-friend/blob/main/documentation/er-diagram.png)
 
 
