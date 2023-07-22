@@ -90,6 +90,7 @@ app.UseCors("myPolicy");
 
 app.UseMiddleware<RequestDurationMiddleware>();
 app.UseMiddleware<DbTokenValidatorMiddleware>();
+app.UseMiddleware<UnauthorizedAccessLoggerMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();
