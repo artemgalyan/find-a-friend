@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using Backend.Commands.Users.CreateUser;
+﻿using Backend.Commands.Users.CreateUser;
 using Backend.Commands.Users.DeleteUser;
 using Backend.Commands.Users.SetUserRole;
 using Backend.Commands.Users.UpdateUser;
@@ -7,21 +6,24 @@ using Backend.Dto;
 using Backend.Queries.Users.GetAllUsers;
 using Backend.Queries.Users.GetIdAndLogin;
 using Backend.Queries.Users.GetUserById;
-using Backend.Repository;
+using Backend.Services;
 using Backend.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static Backend.Entities.User;
 
 namespace Backend.Controllers;
 
-public class UserController : ControllerBase
+public class UserController : ApiController
 {
     private readonly IMediator _mediator;
+    private readonly IUserService _userService;
 
-    public UserController(IMediator mediator)
+    public UserController(IMediator mediator, IUserService userService)
     {
         _mediator = mediator;
+        _userService = userService;
     }
 
     [HttpGet("/users/getAll")]
@@ -44,8 +46,15 @@ public class UserController : ControllerBase
         {
             return BadRequest("Too short password");
         }
-        var repo = HttpContext.RequestServices.GetRequiredService<IUserRepository>();
-        if (await repo.GetByLoginAsync(command.Login, HttpContext.RequestAborted) is not null)
+        if (!EmailVerifier.IsValidEmail(command.Email))
+        {
+            return BadRequest("Bad email");
+        }
+        if (!PhoneNumberVerifier.IsValidPhoneNumber(command.PhoneNumber))
+        {
+            return BadRequest("Bad phone number");
+        }
+        if (await _userService.IsDuplicateLoginAsync(command.Login, CancellationToken))
         {
             return BadRequest("Duplicate login");
         }
@@ -56,8 +65,7 @@ public class UserController : ControllerBase
     [HttpPut("/users/update")]
     public async Task<IActionResult> UpdateAsync([FromBody] UpdateUserCommand command)
     {
-        int userId = int.Parse(HttpContext.User.GetClaim("id"));
-        if (userId != command.UserId && HttpContext.User.GetClaim(ClaimTypes.Role) != "Administrator")
+        if (AuthData.UserId != command.UserId && AuthData.UserRole is not UserRole.Administrator)
         {
             return Unauthorized();
         }
@@ -69,8 +77,7 @@ public class UserController : ControllerBase
     [HttpPut("/users/delete")]
     public async Task<IActionResult> DeleteAsync([FromQuery] int id)
     {
-        int userId = int.Parse(HttpContext.User.GetClaim("id"));
-        if (userId != id && HttpContext.User.GetClaim(ClaimTypes.Role) != "Administrator")
+        if (AuthData.UserId != id && AuthData.UserRole is not UserRole.Administrator)
         {
             return Unauthorized();
         }
@@ -82,9 +89,9 @@ public class UserController : ControllerBase
     [HttpPut("/users/setRole")]
     public async Task<IActionResult> SetRoleAsync([FromBody] SetUserRoleCommand command)
     {
-        if (command.NewRole == Entities.User.UserRole.Administrator)
+        if (command.NewRole is UserRole.Administrator)
         {
-            return BadRequest();
+            return Unauthorized();
         }
 
         return Ok(await _mediator.Send(command));
@@ -94,15 +101,10 @@ public class UserController : ControllerBase
     [HttpGet("/users/getId")]
     public async Task<ActionResult<GetIdAndLoginResponse>> GetIdAsync()
     {
-        int userId = int.Parse(HttpContext.User.GetClaim("id"));
-        return Ok(await _mediator.Send(new GetIdAndLoginQuery { UserId = userId }));
+        return Ok(await _mediator.Send(new GetIdAndLoginQuery { UserId = AuthData.UserId }));
     }
 
     [Authorize]
     [HttpGet("/users/getSelfInfo")]
-    public Task<ActionResult<UserDto?>> GetSelfInfoAsync()
-    {
-        int userId = int.Parse(HttpContext.User.GetClaim("id"));
-        return GetByIdAsync(userId);
-    } 
+    public Task<ActionResult<UserDto?>> GetSelfInfoAsync() => GetByIdAsync(AuthData.UserId);
 }

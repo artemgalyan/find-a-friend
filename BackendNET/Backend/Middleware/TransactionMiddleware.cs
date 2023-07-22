@@ -1,15 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace Backend.Utils;
+namespace Backend.Middleware;
 
 public class TransactionMiddleware<TDbContext> where TDbContext : DbContext
 {
     private readonly RequestDelegate _next;
+    private readonly ILogger<TransactionMiddleware<TDbContext>> _logger;
 
-    public TransactionMiddleware(RequestDelegate next)
+    public TransactionMiddleware(RequestDelegate next, ILogger<TransactionMiddleware<TDbContext>> logger)
     {
         _next = next;
+        _logger = logger;
     }
 
     public async Task InvokeAsync(HttpContext context, TDbContext dbContext)
@@ -26,10 +28,11 @@ public class TransactionMiddleware<TDbContext> where TDbContext : DbContext
         {
             await _next(context);
         }
-        catch (Exception e)
+        catch (Exception exception)
         {
             await transaction.RollbackAsync();
             await transaction.DisposeAsync();
+            _logger.LogError("Exception during request to {RequestMethod}: {Exception}", context.Request.Path, exception.Message);
             throw;
         }
 

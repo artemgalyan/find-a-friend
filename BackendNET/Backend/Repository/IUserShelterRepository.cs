@@ -10,7 +10,7 @@ public interface IUserShelterRepository : IRepository<UserShelter, (int UserId, 
     public Task<int> RemoveByUserIdAsync(int userId, CancellationToken cancellationToken = default);
     public Task<int> RemoveByShelterIdAsync(int shelterId, CancellationToken cancellationToken = default);
     public Task<List<int>> GetUsersByShelterIdAsync(int shelterId, CancellationToken cancellationToken = default);
-    public Task<int?> GetShelterByUserId(int userId, CancellationToken cancellationToken = default);
+    public Task<int?> GetShelterByUserIdAsync(int userId, CancellationToken cancellationToken = default);
 }
 
 public class UserShelterRepository : IUserShelterRepository
@@ -81,7 +81,7 @@ public class UserShelterRepository : IUserShelterRepository
                      .ToListAsync(cancellationToken);
     }
 
-    public async Task<int?> GetShelterByUserId(int userId, CancellationToken cancellationToken = default)
+    public async Task<int?> GetShelterByUserIdAsync(int userId, CancellationToken cancellationToken = default)
     {
         var result = await _dbSet.Where(e => e.UserId == userId)
                                  .Select(x => x.UserId)

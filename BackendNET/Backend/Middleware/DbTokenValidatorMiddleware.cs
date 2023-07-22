@@ -1,12 +1,12 @@
 ﻿using Backend.Repository;
 
-namespace Backend.Utils;
+namespace Backend.Middleware;
 
-public class DbTokenValidator
+public class DbTokenValidatorMiddleware
 {
     private readonly RequestDelegate _next;
 
-    public DbTokenValidator(RequestDelegate next)
+    public DbTokenValidatorMiddleware(RequestDelegate next)
     {
         _next = next;
     }

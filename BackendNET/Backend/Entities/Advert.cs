@@ -8,12 +8,12 @@ public class Advert : Entity
         Volunteer
     }
     
-    public string Title { get; set; }
-    public string Description { get; set; }
+    public string Title { get; set; } = "";
+    public string Description { get; set; } = "";
     public DateTime CreationDate { get; set; }
     public int PlaceId { get; set; }
-    public Place Place { get; set; }
+    public Place Place { get; set; } = null!;
     public int OwnerId { get; set; }
-    public User Owner { get; set; }
+    public User Owner { get; set; } = null!;
     public AdvertType Type { get; set; }
 }

@@ -30,7 +30,7 @@ public class GetAnimalAdvertByIdHandler : IRequestHandler<GetAnimalAdvertByIdQue
             return null;
         }
 
-        instance.ShelterId = await _userShelterRepository.GetShelterByUserId(instance.OwnerId, cancellationToken);
+        instance.ShelterId = await _userShelterRepository.GetShelterByUserIdAsync(instance.OwnerId, cancellationToken);
         if (instance.ShelterId is not null)
         {
             var shelter = await _shelterRepository.GetByIdAsync(instance.ShelterId.Value, cancellationToken);

@@ -64,7 +64,7 @@ export class AdvertComponent implements OnInit {
   }
 
   deleteAdvert() {
-    this.httpClient.delete(Constants.api + 'adverts/delete?id=' + this.advert?.id + '&token=' + localStorage.getItem('jwt'))
+    this.httpClient.delete(Constants.api + '/adverts/delete?id=' + this.advert?.id + '&token=' + localStorage.getItem('jwt'))
       .subscribe(_ => {
         alert('Удалено')
         this.router.navigate(['adverts'])

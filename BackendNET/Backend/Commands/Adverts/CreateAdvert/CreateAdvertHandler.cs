@@ -1,5 +1,4 @@
-﻿using System.Data.Common;
-using Backend.Entities;
+﻿using Backend.Entities;
 using Backend.Repository;
 using MediatR;
 
@@ -25,14 +24,7 @@ public class CreateAdvertHandler : IRequestHandler<CreateAdvertCommand, bool>
             Type = request.AdvertType
         };
 
-        try
-        {
-            await _repository.InsertAsync(instance, cancellationToken);
-            return true;
-        }
-        catch (DbException e)
-        {
-            return false;
-        }
+        await _repository.InsertAsync(instance, cancellationToken);
+        return true;
     }
 }

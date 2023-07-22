@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using Backend.Constants;
 using Backend.Entities;
 using Backend.Repository;
 using Backend.Utils;
@@ -38,11 +39,11 @@ public class SignInHandler : IRequestHandler<SignInCommand, SignInResponse?>
             return null;
         }
 
-        int shelterId = await _userShelterRepository.GetShelterByUserId(user.Id, cancellationToken) ?? -1;
-        var claims = new List<Claim> { new(ClaimTypes.Role, user.Role.ToString()), new("id", user.Id.ToString()) };
+        int shelterId = await _userShelterRepository.GetShelterByUserIdAsync(user.Id, cancellationToken) ?? -1;
+        var claims = new List<Claim> { new(Claims.Role, user.Role.ToString()), new(Claims.Id, user.Id.ToString()) };
         if (shelterId != -1)
         {
-            claims.Add(new("shelter_id", shelterId.ToString()));
+            claims.Add(new Claim(Claims.ShelterId, shelterId.ToString()));
         }
         var token = _jwtProducer.MakeToken(claims);
         await _tokenRepository.AddTokenAsync(new AuthToken { Token = token, UserId = user.Id }, cancellationToken);

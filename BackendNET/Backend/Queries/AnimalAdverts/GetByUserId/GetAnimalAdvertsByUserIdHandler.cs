@@ -24,7 +24,7 @@ public class GetAnimalAdvertsByUserIdHandler : IRequestHandler<GetAnimalAdvertsB
 
     public async Task<IEnumerable<AnimalAdvertDto>> Handle(GetAnimalAdvertsByUserIdQuery request, CancellationToken cancellationToken)
     {
-        int? shelterId = await _userShelterRepository.GetShelterByUserId(request.UserId, cancellationToken);
+        int? shelterId = await _userShelterRepository.GetShelterByUserIdAsync(request.UserId, cancellationToken);
         string? shelterName = shelterId is null
             ? null
             : (await _shelterRepository.GetByIdAsync(shelterId.Value, cancellationToken))!.Name;

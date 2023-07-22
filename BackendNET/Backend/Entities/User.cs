@@ -10,13 +10,13 @@ public class User : Entity
         ShelterAdministrator = 3
     }
 
-    public string Login { get; set; }
-    public string Password { get; set; }
-    public string Name { get; set; }
-    public string Surname { get; set; }
-    public string PhoneNumber { get; set; }
-    public string Email { get; set; }
+    public string Login { get; set; } = "";
+    public string Password { get; set; } = "";
+    public string Name { get; set; } = "";
+    public string Surname { get; set; } = "";
+    public string PhoneNumber { get; set; } = "";
+    public string Email { get; set; } = "";
     public UserRole Role { get; set; }
-    public List<Advert> Adverts { get; set; }
-    public List<AnimalAdvert> AnimalAdverts { get; set; }
+    public List<Advert> Adverts { get; set; } = null!;
+    public List<AnimalAdvert> AnimalAdverts { get; set; } = null!;
 }

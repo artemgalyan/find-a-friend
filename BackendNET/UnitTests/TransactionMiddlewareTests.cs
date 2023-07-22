@@ -1,9 +1,10 @@
-﻿using System.Data;
+﻿using Backend.Middleware;
 using Backend.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace UnitTests;
@@ -12,6 +13,7 @@ public class TransactionMiddlewareTests
 {
     private readonly Mock<RequestDelegate> _requestDelegateMock = new();
     private readonly Mock<IDbContextTransaction> _dbTransactionMock = new();
+    private readonly Mock<ILogger<TransactionMiddleware<FakeDbContext>>> _loggerMock = new();
     
     [Theory]
     [InlineData("GET")]
@@ -22,7 +24,7 @@ public class TransactionMiddlewareTests
         var ctx = new FakeDbContext();
         _requestDelegateMock.Setup(r => r.Invoke(It.IsAny<HttpContext>()))
                             .Returns(Task.CompletedTask);
-        var middleware = new TransactionMiddleware<FakeDbContext>(_requestDelegateMock.Object);
+        var middleware = new TransactionMiddleware<FakeDbContext>(_requestDelegateMock.Object, _loggerMock.Object);
         var fakeHttpContext = CreateFakeHttpContext(method);
         await middleware.InvokeAsync(fakeHttpContext, ctx);
         Assert.Equal(0, ctx.Facade.InvocationsCount);
@@ -37,8 +39,8 @@ public class TransactionMiddlewareTests
         var ctx = new FakeDbContext();
         _requestDelegateMock.Setup(r => r.Invoke(It.IsAny<HttpContext>()))
                             .Returns(Task.CompletedTask);
-        
-        var middleware = new TransactionMiddleware<FakeDbContext>(_requestDelegateMock.Object);
+
+        var middleware = new TransactionMiddleware<FakeDbContext>(_requestDelegateMock.Object, _loggerMock.Object);
         var fakeHttpContext = CreateFakeHttpContext(method);
         ctx.Facade.TransactionToReturn = _dbTransactionMock.Object;
         await middleware.InvokeAsync(fakeHttpContext, ctx);
@@ -58,7 +60,7 @@ public class TransactionMiddlewareTests
         _requestDelegateMock.Setup(r => r.Invoke(It.IsAny<HttpContext>()))
                             .Throws<Exception>();
         
-        var middleware = new TransactionMiddleware<FakeDbContext>(_requestDelegateMock.Object);
+        var middleware = new TransactionMiddleware<FakeDbContext>(_requestDelegateMock.Object, _loggerMock.Object);
         var fakeHttpContext = CreateFakeHttpContext(method);
         ctx.Facade.TransactionToReturn = _dbTransactionMock.Object;
         await Assert.ThrowsAsync<Exception>(async () => await middleware.InvokeAsync(fakeHttpContext, ctx));
@@ -70,37 +72,35 @@ public class TransactionMiddlewareTests
     private HttpContext CreateFakeHttpContext(string method) => new DefaultHttpContext { Request = { Method = method } };
 }
 
-file class FakeDbContext : DbContext
+internal class FakeDbContext : DbContext
 {
     public FakeDatabaseFacade Facade { get; set; }
     public override DatabaseFacade Database => Facade;
 
-    public int SavesCount { get; set; } = 0;
+    public int SavesCount { get; private set; } = 0;
     
     public FakeDbContext()
     {
         Facade = new FakeDatabaseFacade(this);
     }
 
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         ++SavesCount;
         return Task.FromResult(1);
     }
 }
 
-file class FakeDatabaseFacade : DatabaseFacade
+internal class FakeDatabaseFacade : DatabaseFacade
 {
-    public IDbContextTransaction TransactionToReturn { get; set; }
-    public int InvocationsCount { get; set; } = 0;
+    public IDbContextTransaction TransactionToReturn { get; set; } = null!;
+    public int InvocationsCount { get; private set; } = 0;
     
-    public FakeDatabaseFacade(DbContext context) : base(context)
-    {
-    }
+    public FakeDatabaseFacade(DbContext context) : base(context) {}
 
-    public override async Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = new CancellationToken())
+    public override Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = new CancellationToken())
     {
         ++InvocationsCount;
-        return TransactionToReturn;
+        return Task.FromResult(TransactionToReturn);
     }
 }

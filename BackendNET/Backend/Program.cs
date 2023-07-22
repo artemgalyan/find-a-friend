@@ -1,7 +1,10 @@
 using Backend;
+using Backend.Controllers;
 using Backend.Database;
 using Backend.Entities;
+using Backend.Middleware;
 using Backend.Repository;
+using Backend.Services;
 using Backend.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -14,7 +17,7 @@ var km = new KeyManager();
 
 var builder = WebApplication.CreateBuilder(args);
 
-var issuer = builder.Configuration["Issuer"];
+var issuer = builder.Configuration["Issuer"]!;
 
 var producer = new JwtProducer(
     tokenExpirationTime: TimeSpan.FromDays(31),
@@ -58,6 +61,10 @@ builder.Services.AddSingleton<IJwtProducer>(producer);
 builder.Services.AddSingleton<IPasswordHasher<User>, PasswordHasher>();
 builder.Services.AddRepositories();
 
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAdvertService, AdvertService>();
+builder.Services.AddScoped<IAnimalAdvertService, AnimalAdvertService>();
+
 builder.Services.AddAutoMapper(profileAssemblyMarkerTypes: typeof(MappingProfile));
 
 var config = new MediatRServiceConfiguration { Lifetime = ServiceLifetime.Scoped };
@@ -81,7 +88,8 @@ var app = builder.Build();
 
 app.UseCors("myPolicy");
 
-app.UseMiddleware<DbTokenValidator>();
+app.UseMiddleware<RequestDurationMiddleware>();
+app.UseMiddleware<DbTokenValidatorMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();

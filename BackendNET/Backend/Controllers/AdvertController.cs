@@ -1,19 +1,20 @@
-﻿using System.Security.Claims;
-using Backend.Commands.Adverts.CreateAdvert;
+﻿using Backend.Commands.Adverts.CreateAdvert;
 using Backend.Commands.Adverts.DeleteAdvert;
 using Backend.Commands.Adverts.UpdateAdvert;
+using Backend.Constants;
 using Backend.Dto;
 using Backend.Queries.Adverts.GetAll;
 using Backend.Queries.Adverts.GetById;
-using Backend.Repository;
+using Backend.Services;
 using Backend.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static Backend.Entities.User;
 
 namespace Backend.Controllers;
 
-public class AdvertController : ControllerBase
+public class AdvertController : ApiController
 {
     private readonly IMediator _mediator;
 
@@ -38,7 +39,7 @@ public class AdvertController : ControllerBase
     [HttpPost("/adverts/create")]
     public async Task<IActionResult> CreateAsync([FromBody] CreateAdvertCommand command)
     {
-        command.UserId = int.Parse(HttpContext.User.GetClaim("id"));
+        command.UserId = AuthData.UserId;
         return Ok(await _mediator.Send(command));
     }
 
@@ -46,22 +47,15 @@ public class AdvertController : ControllerBase
     [HttpPut("/adverts/update")]
     public async Task<IActionResult> UpdateAsync([FromBody] UpdateAdvertCommand command)
     {
-        var principal = HttpContext.User;
         if (string.IsNullOrEmpty(command.Title) || string.IsNullOrEmpty(command.Description))
         {
             return BadRequest();
         }
 
-        if (principal.GetClaim(ClaimTypes.Role) is not "Administrator" and "Moderator")
+        if (AuthData.UserRole is not UserRole.Administrator and not UserRole.Moderator)
         {
-            var repo = HttpContext.RequestServices.GetRequiredService<IAdvertRepository>();
-            var advert = await repo.GetByIdAsync(command.AdvertId, HttpContext.RequestAborted);
-            if (advert is null)
-            {
-                return BadRequest();
-            }
-
-            if (advert.OwnerId.ToString() != principal.GetClaim("id"))
+            var userId = AuthData.UserId;
+            if (!await Service<IAdvertService>().IsOwnerOfAdvertAsync(userId, command.AdvertId, CancellationToken))
             {
                 return Unauthorized();
             }
@@ -74,16 +68,10 @@ public class AdvertController : ControllerBase
     public async Task<IActionResult> DeleteAsync([FromQuery] int id)
     {
         var principal = HttpContext.User;
-        if (principal.GetClaim(ClaimTypes.Role) is not "Administrator" and "Moderator")
+        if (AuthData.UserRole is not UserRole.Administrator and not UserRole.Moderator)
         {
-            var repo = HttpContext.RequestServices.GetRequiredService<IAdvertRepository>();
-            var advert = await repo.GetByIdAsync(id, HttpContext.RequestAborted);
-            if (advert is null)
-            {
-                return BadRequest();
-            }
-
-            if (advert.OwnerId.ToString() != principal.GetClaim("id"))
+            var userId = AuthData.UserId;
+            if (!await Service<IAdvertService>().IsOwnerOfAdvertAsync(userId, id, CancellationToken))
             {
                 return Unauthorized();
             }

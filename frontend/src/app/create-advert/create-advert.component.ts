@@ -91,7 +91,7 @@ export class CreateAdvertComponent implements OnInit {
       return
     }
 
-    this.httpClient.post(Constants.api + 'adverts/create?token=' + localStorage.getItem('jwt'), {
+    this.httpClient.post(Constants.api + '/adverts/create?token=' + localStorage.getItem('jwt'), {
       'advertType': this.advertType,
       'title': this.title,
       'description': this.description,
