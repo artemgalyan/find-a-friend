@@ -1,5 +1,4 @@
 using Backend;
-using Backend.Controllers;
 using Backend.Database;
 using Backend.Entities;
 using Backend.Middleware;
@@ -13,7 +12,6 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 
 var km = new KeyManager();
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,7 +37,7 @@ builder.Services.AddAuthentication()
            };
 
            b.Events = new JwtBearerEvents {
-               OnMessageReceived = (ctx) =>
+               OnMessageReceived = ctx =>
                {
                    var token = ctx.Request.Query.TryGetValue("token", out var t)
                        ? t.FirstOrDefault()
@@ -54,8 +52,6 @@ builder.Services.AddAuthentication()
 builder.Services.AddDbContext<ApplicationDbContext>(
     b => b.UseSqlServer(builder.Configuration["ConnectionString"])
 );
-
-builder.Services.AddAuthentication();
 
 builder.Services.AddSingleton<IJwtProducer>(producer);
 builder.Services.AddSingleton<IPasswordHasher<User>, PasswordHasher>();

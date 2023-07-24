@@ -16,7 +16,8 @@ public class UnauthorizedAccessLoggerMiddleware
         await _next(context);
         if (context.Response.StatusCode == StatusCodes.Status401Unauthorized)
         {
-            _logger.LogWarning("Unauthorized access to {Path} from IP {Ip}", context.Request.Path, context.Connection.RemoteIpAddress);
+            _logger.LogWarning("Unauthorized access to {Path} from IP {Ip}", context.Request.Path,
+                context.Connection.RemoteIpAddress);
         }
     }
 }

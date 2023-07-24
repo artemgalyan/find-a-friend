@@ -32,7 +32,6 @@ public class JwtProducer : IJwtProducer
             expires: DateTime.Now + _tokenExpirationTime,
             signingCredentials: new SigningCredentials(_securityKey, SecurityAlgorithms.RsaSha256)
         );
-        var token = _securityTokenHandler.WriteToken(jwt);
-        return token;
+        return _securityTokenHandler.WriteToken(jwt);
     }
 }

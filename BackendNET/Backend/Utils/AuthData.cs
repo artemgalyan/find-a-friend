@@ -21,9 +21,9 @@ public class AuthData
 
     private T GetClaim<T>(string claim, Func<string, T> parser)
     {
-        return parser(ClaimValue(claim));
+        return parser(ClaimValue(claim)!);
     }
 
-    private string ClaimValue(string claim) =>
-        _apiController.HttpContext.User.Claims.FirstOrDefault(c => c.Type == claim)!.Value;
+    private string? ClaimValue(string claim) =>
+        _apiController.HttpContext.User.Claims.FirstOrDefault(c => c.Type == claim)?.Value;
 }

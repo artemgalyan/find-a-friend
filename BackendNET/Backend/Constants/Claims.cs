@@ -4,7 +4,7 @@ namespace Backend.Constants;
 
 public static class Claims
 {
-    public static readonly string Id = "id";
-    public static readonly string Role = ClaimTypes.Role;
-    public static readonly string ShelterId = "shelter_id";
+    public const string Id = "id";
+    public const string Role = ClaimTypes.Role;
+    public const string ShelterId = "shelter_id";
 }

@@ -1,5 +1,4 @@
 ﻿using Backend.Middleware;
-using Backend.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -13,7 +12,7 @@ public class TransactionMiddlewareTests
 {
     private readonly Mock<RequestDelegate> _requestDelegateMock = new();
     private readonly Mock<IDbContextTransaction> _dbTransactionMock = new();
-    private readonly Mock<ILogger<TransactionMiddleware<FakeDbContext>>> _loggerMock = new();
+    private readonly ILogger<TransactionMiddleware<FakeDbContext>> _loggerMock = new FakeLogger();
     
     [Theory]
     [InlineData("GET")]
@@ -24,7 +23,7 @@ public class TransactionMiddlewareTests
         var ctx = new FakeDbContext();
         _requestDelegateMock.Setup(r => r.Invoke(It.IsAny<HttpContext>()))
                             .Returns(Task.CompletedTask);
-        var middleware = new TransactionMiddleware<FakeDbContext>(_requestDelegateMock.Object, _loggerMock.Object);
+        var middleware = new TransactionMiddleware<FakeDbContext>(_requestDelegateMock.Object, _loggerMock);
         var fakeHttpContext = CreateFakeHttpContext(method);
         await middleware.InvokeAsync(fakeHttpContext, ctx);
         Assert.Equal(0, ctx.Facade.InvocationsCount);
@@ -34,13 +33,14 @@ public class TransactionMiddlewareTests
     [InlineData("POST")]
     [InlineData("PUT")]
     [InlineData("DELETE")]
+    [InlineData("PATCH")]
     public async Task CreatesTransaction(string method)
     {
         var ctx = new FakeDbContext();
         _requestDelegateMock.Setup(r => r.Invoke(It.IsAny<HttpContext>()))
                             .Returns(Task.CompletedTask);
 
-        var middleware = new TransactionMiddleware<FakeDbContext>(_requestDelegateMock.Object, _loggerMock.Object);
+        var middleware = new TransactionMiddleware<FakeDbContext>(_requestDelegateMock.Object, _loggerMock);
         var fakeHttpContext = CreateFakeHttpContext(method);
         ctx.Facade.TransactionToReturn = _dbTransactionMock.Object;
         await middleware.InvokeAsync(fakeHttpContext, ctx);
@@ -60,7 +60,7 @@ public class TransactionMiddlewareTests
         _requestDelegateMock.Setup(r => r.Invoke(It.IsAny<HttpContext>()))
                             .Throws<Exception>();
         
-        var middleware = new TransactionMiddleware<FakeDbContext>(_requestDelegateMock.Object, _loggerMock.Object);
+        var middleware = new TransactionMiddleware<FakeDbContext>(_requestDelegateMock.Object, _loggerMock);
         var fakeHttpContext = CreateFakeHttpContext(method);
         ctx.Facade.TransactionToReturn = _dbTransactionMock.Object;
         await Assert.ThrowsAsync<Exception>(async () => await middleware.InvokeAsync(fakeHttpContext, ctx));
@@ -102,5 +102,23 @@ internal class FakeDatabaseFacade : DatabaseFacade
     {
         ++InvocationsCount;
         return Task.FromResult(TransactionToReturn);
+    }
+}
+
+internal class FakeLogger : ILogger<TransactionMiddleware<FakeDbContext>>
+{
+    public IDisposable? BeginScope<TState>(TState state) where TState : notnull
+    {
+        return null;
+    }
+
+    public bool IsEnabled(LogLevel logLevel)
+    {
+        return true;
+    }
+
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
+    {
+        
     }
 }

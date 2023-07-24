@@ -23,7 +23,7 @@ public class TransactionMiddleware<TDbContext> where TDbContext : DbContext
             return;
         }
 
-        IDbContextTransaction transaction = await dbContext.Database.BeginTransactionAsync();
+        await using IDbContextTransaction transaction = await dbContext.Database.BeginTransactionAsync();
         try
         {
             await _next(context);
@@ -31,18 +31,16 @@ public class TransactionMiddleware<TDbContext> where TDbContext : DbContext
         catch (Exception exception)
         {
             await transaction.RollbackAsync();
-            await transaction.DisposeAsync();
             _logger.LogError("Exception during request to {RequestMethod}: {Exception}", context.Request.Path, exception.Message);
             throw;
         }
 
         await transaction.CommitAsync();
         await dbContext.SaveChangesAsync();
-        await transaction.DisposeAsync();
     }
 
     private static bool MethodChangesState(string method)
     {
-        return method is "POST" or "PUT" or "DELETE";
+        return method is "POST" or "PUT" or "DELETE" or "PATCH";
     }
 }

@@ -6,17 +6,17 @@ public class KeyManager
 {
     private const string KeyFile = "key";
 
-    public KeyManager()
+    public KeyManager(string fileName = KeyFile)
     {
         RsaKey = RSA.Create();
-        if (File.Exists(KeyFile))
+        if (File.Exists(fileName))
         {
-            RsaKey.ImportRSAPrivateKey(File.ReadAllBytes(KeyFile), out _);
+            RsaKey.ImportRSAPrivateKey(File.ReadAllBytes(fileName), out _);
         }
         else
         {
             var key = RsaKey.ExportRSAPrivateKey();
-            File.WriteAllBytes(KeyFile, key);
+            File.WriteAllBytes(fileName, key);
         }
     }
 
