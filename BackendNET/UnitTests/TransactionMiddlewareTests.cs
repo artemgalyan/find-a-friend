@@ -69,7 +69,7 @@ public class TransactionMiddlewareTests
         _dbTransactionMock.Verify(t => t.DisposeAsync(), Times.Once);
     }
 
-    private HttpContext CreateFakeHttpContext(string method) => new DefaultHttpContext { Request = { Method = method } };
+    private static HttpContext CreateFakeHttpContext(string method) => new DefaultHttpContext { Request = { Method = method } };
 }
 
 internal class FakeDbContext : DbContext
@@ -98,7 +98,7 @@ internal class FakeDatabaseFacade : DatabaseFacade
     
     public FakeDatabaseFacade(DbContext context) : base(context) {}
 
-    public override Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = new CancellationToken())
+    public override Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = new())
     {
         ++InvocationsCount;
         return Task.FromResult(TransactionToReturn);

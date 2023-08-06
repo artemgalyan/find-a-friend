@@ -26,14 +26,12 @@ public class AnimalAdvertService : IAnimalAdvertService
     public async Task<bool> CanDeleteAdvertAsync(int userId, User.UserRole role, int animalAdvertId, int? userShelterId,
         CancellationToken cancellationToken = default)
     {
-        if (role == User.UserRole.ShelterAdministrator && userShelterId is null)
+        switch (role)
         {
-            throw new ArgumentException("User shelter id must be specified if user is shelter administrator");
-        }
-
-        if (role is User.UserRole.Administrator or User.UserRole.Moderator)
-        {
-            return true;
+            case User.UserRole.ShelterAdministrator when userShelterId is null:
+                throw new ArgumentException("User shelter id must be specified if user is shelter administrator");
+            case User.UserRole.Administrator or User.UserRole.Moderator:
+                return true;
         }
 
         var advert = await _animalAdvertRepository.GetByIdAsync(animalAdvertId, cancellationToken);
@@ -52,8 +50,8 @@ public class AnimalAdvertService : IAnimalAdvertService
                userShelterId!.Value;
     }
 
-    public Task<bool> ExistsAsync(int advertId, CancellationToken cancellationToken = default)
+    public async Task<bool> ExistsAsync(int advertId, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return await _animalAdvertRepository.GetByIdAsync(advertId, cancellationToken) is not null;
     }
 }

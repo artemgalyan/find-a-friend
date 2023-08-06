@@ -32,7 +32,6 @@ builder.Services.AddAuthentication()
                ValidateAudience = false,
                ValidateIssuerSigningKey = true,
                RequireExpirationTime = true,
-               ClockSkew = TimeSpan.FromDays(31),
                ValidIssuer = issuer
            };
 
@@ -95,4 +94,4 @@ app.UseMiddleware<TransactionMiddleware<ApplicationDbContext>>();
 
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();

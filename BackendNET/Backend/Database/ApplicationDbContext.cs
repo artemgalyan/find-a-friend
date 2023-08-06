@@ -85,12 +85,12 @@ public class ApplicationDbContext : DbContext
         base.OnModelCreating(modelBuilder);
     }
 
-    public DbSet<Advert> Adverts { get; set; }
-    public DbSet<AnimalAdvert> AnimalAdverts { get; set; }
-    public DbSet<Photo> Photos { get; set; }
-    public DbSet<Place> Places { get; set; }
-    public DbSet<Shelter> Shelters { get; set; }
-    public DbSet<User> Users { get; set; }
-    public DbSet<UserShelter> UserShelters { get; set; }
-    public DbSet<AuthToken> Tokens { get; set; }
+    public DbSet<Advert> Adverts { get; set; } = null!;
+    public DbSet<AnimalAdvert> AnimalAdverts { get; set; } = null!;
+    public DbSet<Photo> Photos { get; set; } = null!;
+    public DbSet<Place> Places { get; set; } = null!;
+    public DbSet<Shelter> Shelters { get; set; } = null!;
+    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<UserShelter> UserShelters { get; set; } = null!;
+    public DbSet<AuthToken> Tokens { get; set; } = null!;
 }

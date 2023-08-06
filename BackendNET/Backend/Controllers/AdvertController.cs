@@ -1,7 +1,6 @@
 ﻿using Backend.Commands.Adverts.CreateAdvert;
 using Backend.Commands.Adverts.DeleteAdvert;
 using Backend.Commands.Adverts.UpdateAdvert;
-using Backend.Constants;
 using Backend.Dto;
 using Backend.Queries.Adverts.GetAll;
 using Backend.Queries.Adverts.GetById;
@@ -67,7 +66,6 @@ public class AdvertController : ApiController
     [HttpDelete("/adverts/delete")]
     public async Task<IActionResult> DeleteAsync([FromQuery] int id)
     {
-        var principal = HttpContext.User;
         if (AuthData.UserRole is not UserRole.Administrator and not UserRole.Moderator)
         {
             var userId = AuthData.UserId;

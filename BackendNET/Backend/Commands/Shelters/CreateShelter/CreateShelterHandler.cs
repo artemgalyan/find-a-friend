@@ -18,7 +18,7 @@ public class CreateShelterHandler : IRequestHandler<CreateShelterCommand, bool>
         var instance = new Shelter {
             Name = request.Name,
             Address = request.Address,
-            Administrators = new(),
+            Administrators = new List<User>(),
             PlaceId = request.PlaceId,
             Website = request.Website
         };

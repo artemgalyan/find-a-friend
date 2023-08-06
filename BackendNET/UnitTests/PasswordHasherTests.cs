@@ -24,7 +24,6 @@ public class PasswordHasherTests
     [Fact]
     public void UserCantSignInWithAWrongPassword()
     {
-        
         var user = new User { Login = "login" };
         var hashedPassword = _passwordHasher.HashPassword(user, "password");
         user.Password = hashedPassword;
